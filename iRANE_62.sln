@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iRANE_62", "iRANE_62.csproj", "{A1F5B801-5F00-4612-87CA-46C306BD3E4D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaveFormRendererLib", "..\NAudio.WaveFormRenderer\WaveFormRendererLib\WaveFormRendererLib.csproj", "{017C9463-2CA7-4214-985C-DF85D0559E07}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|ARM = Debug|ARM
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|ARM = Release|ARM
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A1F5B801-5F00-4612-87CA-46C306BD3E4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1F5B801-5F00-4612-87CA-46C306BD3E4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1F5B801-5F00-4612-87CA-46C306BD3E4D}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{A1F5B801-5F00-4612-87CA-46C306BD3E4D}.Debug|ARM.Build.0 = Debug|Any CPU
+		{A1F5B801-5F00-4612-87CA-46C306BD3E4D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A1F5B801-5F00-4612-87CA-46C306BD3E4D}.Debug|x64.Build.0 = Debug|Any CPU
+		{A1F5B801-5F00-4612-87CA-46C306BD3E4D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A1F5B801-5F00-4612-87CA-46C306BD3E4D}.Debug|x86.Build.0 = Debug|Any CPU
+		{A1F5B801-5F00-4612-87CA-46C306BD3E4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1F5B801-5F00-4612-87CA-46C306BD3E4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1F5B801-5F00-4612-87CA-46C306BD3E4D}.Release|ARM.ActiveCfg = Release|Any CPU
+		{A1F5B801-5F00-4612-87CA-46C306BD3E4D}.Release|ARM.Build.0 = Release|Any CPU
+		{A1F5B801-5F00-4612-87CA-46C306BD3E4D}.Release|x64.ActiveCfg = Release|Any CPU
+		{A1F5B801-5F00-4612-87CA-46C306BD3E4D}.Release|x64.Build.0 = Release|Any CPU
+		{A1F5B801-5F00-4612-87CA-46C306BD3E4D}.Release|x86.ActiveCfg = Release|Any CPU
+		{A1F5B801-5F00-4612-87CA-46C306BD3E4D}.Release|x86.Build.0 = Release|Any CPU
+		{017C9463-2CA7-4214-985C-DF85D0559E07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{017C9463-2CA7-4214-985C-DF85D0559E07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{017C9463-2CA7-4214-985C-DF85D0559E07}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{017C9463-2CA7-4214-985C-DF85D0559E07}.Debug|ARM.Build.0 = Debug|Any CPU
+		{017C9463-2CA7-4214-985C-DF85D0559E07}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{017C9463-2CA7-4214-985C-DF85D0559E07}.Debug|x64.Build.0 = Debug|Any CPU
+		{017C9463-2CA7-4214-985C-DF85D0559E07}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{017C9463-2CA7-4214-985C-DF85D0559E07}.Debug|x86.Build.0 = Debug|Any CPU
+		{017C9463-2CA7-4214-985C-DF85D0559E07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{017C9463-2CA7-4214-985C-DF85D0559E07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{017C9463-2CA7-4214-985C-DF85D0559E07}.Release|ARM.ActiveCfg = Release|Any CPU
+		{017C9463-2CA7-4214-985C-DF85D0559E07}.Release|ARM.Build.0 = Release|Any CPU
+		{017C9463-2CA7-4214-985C-DF85D0559E07}.Release|x64.ActiveCfg = Release|Any CPU
+		{017C9463-2CA7-4214-985C-DF85D0559E07}.Release|x64.Build.0 = Release|Any CPU
+		{017C9463-2CA7-4214-985C-DF85D0559E07}.Release|x86.ActiveCfg = Release|Any CPU
+		{017C9463-2CA7-4214-985C-DF85D0559E07}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F9BAAA30-6C9E-4C6D-8638-B3DB99AE4A18}
+	EndGlobalSection
+EndGlobal

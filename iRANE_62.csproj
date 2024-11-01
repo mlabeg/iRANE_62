@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="AudioPlaybackDemo\**" />
+    <Compile Remove="NAudio.Extras\**" />
+    <Compile Remove="NAudio.WinForms\**" />
+    <EmbeddedResource Remove="AudioPlaybackDemo\**" />
+    <EmbeddedResource Remove="NAudio.Extras\**" />
+    <EmbeddedResource Remove="NAudio.WinForms\**" />
+    <None Remove="AudioPlaybackDemo\**" />
+    <None Remove="NAudio.Extras\**" />
+    <None Remove="NAudio.WinForms\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.14" />
+    <PackageReference Include="NAudio" Version="2.2.1" />
+    <PackageReference Include="NAudio.Core" Version="2.2.1" />
+    <PackageReference Include="NAudio.Extras" Version="2.2.1" />
+    <PackageReference Include="NAudio.Wasapi" Version="2.2.1" />
+    <PackageReference Include="NAudio.WinForms" Version="2.2.1" />
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+    <PackageReference Include="System.Runtime.WindowsRuntime" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NAudio.WaveFormRenderer\WaveFormRendererLib\WaveFormRendererLib.csproj" />
+  </ItemGroup>
+
+</Project>
