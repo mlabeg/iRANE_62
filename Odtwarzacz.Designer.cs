@@ -37,7 +37,7 @@
             btnPlay_2 = new Button();
             btnPause_2 = new Button();
             btnStop_2 = new Button();
-            listBox1 = new ListBox();
+            playlista = new ListBox();
             timer1 = new System.Windows.Forms.Timer(components);
             labelNowTime_1 = new Label();
             labelTotalTime_1 = new Label();
@@ -138,18 +138,18 @@
             btnStop_2.UseVisualStyleBackColor = true;
             btnStop_2.Click += btnStop_2_Click;
             // 
-            // listBox1
+            // playlista
             // 
-            listBox1.AllowDrop = true;
-            listBox1.FormattingEnabled = true;
-            listBox1.ItemHeight = 25;
-            listBox1.Location = new Point(22, 283);
-            listBox1.Name = "listBox1";
-            listBox1.Size = new Size(1344, 304);
-            listBox1.TabIndex = 2;
-            listBox1.DragDrop += listBox1_DragDrop;
-            listBox1.DragEnter += listBox1_DragEnter;
-            listBox1.KeyDown += listBox1_KeyDown;
+            playlista.AllowDrop = true;
+            playlista.FormattingEnabled = true;
+            playlista.ItemHeight = 25;
+            playlista.Location = new Point(22, 283);
+            playlista.Name = "playlista";
+            playlista.Size = new Size(1344, 304);
+            playlista.TabIndex = 2;
+            playlista.DragDrop += listBox1_DragDrop;
+            playlista.DragEnter += listBox1_DragEnter;
+            playlista.KeyDown += listBox1_KeyDown;
             // 
             // labelNowTime_1
             // 
@@ -257,7 +257,7 @@
             Controls.Add(labelTotalTime_1);
             Controls.Add(labelNowTime_2);
             Controls.Add(labelNowTime_1);
-            Controls.Add(listBox1);
+            Controls.Add(playlista);
             Controls.Add(btnStop_2);
             Controls.Add(btnStop_1);
             Controls.Add(btnPause_2);
@@ -268,6 +268,7 @@
             Controls.Add(btnOpen_1);
             Name = "Odtwarzacz";
             Text = "Odtwarzacz";
+            Load += Odtwarzacz_Load;
             KeyDown += Odtwarzacz_KeyDown;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
@@ -285,7 +286,7 @@
         private Button btnPlay_2;
         private Button btnPause_2;
         private Button btnStop_2;
-        private ListBox listBox1;
+        private ListBox playlista;
         private System.Windows.Forms.Timer timer1;
         private Label labelNowTime_1;
         private Label labelTotalTime_1;

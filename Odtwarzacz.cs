@@ -17,6 +17,8 @@ namespace iRANE_62
 {
     public partial class Odtwarzacz : Form
     {
+        private Mikser mikser;
+
         private Player player1;
         private Player player2;
 
@@ -38,6 +40,24 @@ namespace iRANE_62
 
             standardSettings = new StandardWaveFormRendererSettings() { Name = "Standard" };
             waveFormRenderer = new WaveFormRenderer();
+        }
+
+        private void Odtwarzacz_Load(object sender, EventArgs e)
+        {
+            OpenMikser();
+        }
+
+        private void OpenMikser()
+        {
+            if (mikser == null || mikser.IsDisposed)
+            {
+                mikser = new Mikser(ref player1, ref player2);
+                mikser.Show();
+            }
+            else
+            {
+                mikser.Focus();
+            }
         }
 
 
@@ -63,7 +83,7 @@ namespace iRANE_62
         }
 
         private void BeginPlayback(ref Player player)
-        { 
+        {
 
             if (player.wavePlayer != null)
             {
@@ -144,7 +164,7 @@ namespace iRANE_62
                 LabelTrackUpdate(player);
                 RenderWaveform(player);
                 Song song = new Song(player.fileName);
-                listBox1.Items.Add(song);
+                playlista.Items.Add(song);
             }
         }
 
@@ -181,9 +201,9 @@ namespace iRANE_62
         {
             if (e.KeyCode == Keys.Left && e.Shift)
             {
-                if (listBox1.SelectedItem != null)
+                if (playlista.SelectedItem != null)
                 {
-                    Song song = (Song)listBox1.SelectedItem;
+                    Song song = (Song)playlista.SelectedItem;
                     OpenSongFromPlaylist(player1, song);
                 }
             }
@@ -191,9 +211,9 @@ namespace iRANE_62
             if (e.KeyCode == Keys.Right && e.Shift)
             {
 
-                if (listBox1.SelectedItem != null)
+                if (playlista.SelectedItem != null)
                 {
-                    Song song = (Song)listBox1.SelectedItem;
+                    Song song = (Song)playlista.SelectedItem;
                     OpenSongFromPlaylist(player2, song);
                 }
             }
@@ -421,7 +441,7 @@ namespace iRANE_62
                 foreach (string file in files)
                 {
                     Song song = new Song(file);
-                    listBox1.Items.Add(song);
+                    playlista.Items.Add(song);
                 }
             }
         }
@@ -453,8 +473,6 @@ namespace iRANE_62
                 e.Effect = DragDropEffects.None;
             }
         }
-
-
 
 
     }
