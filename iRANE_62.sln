@@ -5,8 +5,6 @@ VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iRANE_62", "iRANE_62.csproj", "{A1F5B801-5F00-4612-87CA-46C306BD3E4D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaveFormRendererLib", "..\NAudio.WaveFormRenderer\WaveFormRendererLib\WaveFormRendererLib.csproj", "{017C9463-2CA7-4214-985C-DF85D0559E07}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,22 +33,6 @@ Global
 		{A1F5B801-5F00-4612-87CA-46C306BD3E4D}.Release|x64.Build.0 = Release|Any CPU
 		{A1F5B801-5F00-4612-87CA-46C306BD3E4D}.Release|x86.ActiveCfg = Release|Any CPU
 		{A1F5B801-5F00-4612-87CA-46C306BD3E4D}.Release|x86.Build.0 = Release|Any CPU
-		{017C9463-2CA7-4214-985C-DF85D0559E07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{017C9463-2CA7-4214-985C-DF85D0559E07}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{017C9463-2CA7-4214-985C-DF85D0559E07}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{017C9463-2CA7-4214-985C-DF85D0559E07}.Debug|ARM.Build.0 = Debug|Any CPU
-		{017C9463-2CA7-4214-985C-DF85D0559E07}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{017C9463-2CA7-4214-985C-DF85D0559E07}.Debug|x64.Build.0 = Debug|Any CPU
-		{017C9463-2CA7-4214-985C-DF85D0559E07}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{017C9463-2CA7-4214-985C-DF85D0559E07}.Debug|x86.Build.0 = Debug|Any CPU
-		{017C9463-2CA7-4214-985C-DF85D0559E07}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{017C9463-2CA7-4214-985C-DF85D0559E07}.Release|Any CPU.Build.0 = Release|Any CPU
-		{017C9463-2CA7-4214-985C-DF85D0559E07}.Release|ARM.ActiveCfg = Release|Any CPU
-		{017C9463-2CA7-4214-985C-DF85D0559E07}.Release|ARM.Build.0 = Release|Any CPU
-		{017C9463-2CA7-4214-985C-DF85D0559E07}.Release|x64.ActiveCfg = Release|Any CPU
-		{017C9463-2CA7-4214-985C-DF85D0559E07}.Release|x64.Build.0 = Release|Any CPU
-		{017C9463-2CA7-4214-985C-DF85D0559E07}.Release|x86.ActiveCfg = Release|Any CPU
-		{017C9463-2CA7-4214-985C-DF85D0559E07}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

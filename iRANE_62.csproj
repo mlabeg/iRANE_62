@@ -26,13 +26,11 @@
     <PackageReference Include="NAudio.Core" Version="2.2.1" />
     <PackageReference Include="NAudio.Extras" Version="2.2.1" />
     <PackageReference Include="NAudio.Wasapi" Version="2.2.1" />
+    <PackageReference Include="NAudio.WaveFormRenderer" Version="2.0.0" />
     <PackageReference Include="NAudio.WinForms" Version="2.2.1" />
     <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
     <PackageReference Include="System.Runtime.WindowsRuntime" Version="4.7.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\NAudio.WaveFormRenderer\WaveFormRendererLib\WaveFormRendererLib.csproj" />
-  </ItemGroup>
 
 </Project>
