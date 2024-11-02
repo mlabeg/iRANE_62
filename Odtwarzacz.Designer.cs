@@ -140,12 +140,16 @@
             // 
             // listBox1
             // 
+            listBox1.AllowDrop = true;
             listBox1.FormattingEnabled = true;
             listBox1.ItemHeight = 25;
             listBox1.Location = new Point(22, 283);
             listBox1.Name = "listBox1";
             listBox1.Size = new Size(1344, 304);
             listBox1.TabIndex = 2;
+            listBox1.DragDrop += listBox1_DragDrop;
+            listBox1.DragEnter += listBox1_DragEnter;
+            listBox1.KeyDown += listBox1_KeyDown;
             // 
             // labelNowTime_1
             // 

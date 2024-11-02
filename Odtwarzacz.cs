@@ -8,6 +8,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -62,14 +63,13 @@ namespace iRANE_62
         }
 
         private void BeginPlayback(ref Player player)
-        {
+        { 
 
             if (player.wavePlayer != null)
             {
                 if (player.wavePlayer.PlaybackState == PlaybackState.Playing)
                 {
-                    player.wavePlayer.Stop();
-                    player.wavePlayer.Play();
+                    player.wavePlayer.Pause();
                     return;
                 }
 
@@ -143,6 +143,8 @@ namespace iRANE_62
             {
                 LabelTrackUpdate(player);
                 RenderWaveform(player);
+                Song song = new Song(player.fileName);
+                listBox1.Items.Add(song);
             }
         }
 
@@ -173,6 +175,56 @@ namespace iRANE_62
                 labelTrack2.Text = songName;
             }
 
+        }
+
+        private void listBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Left && e.Shift)
+            {
+                if (listBox1.SelectedItem != null)
+                {
+                    Song song = (Song)listBox1.SelectedItem;
+                    OpenSongFromPlaylist(player1, song);
+                }
+            }
+
+            if (e.KeyCode == Keys.Right && e.Shift)
+            {
+
+                if (listBox1.SelectedItem != null)
+                {
+                    Song song = (Song)listBox1.SelectedItem;
+                    OpenSongFromPlaylist(player2, song);
+                }
+            }
+
+            if (e.KeyCode == Keys.Space)
+            {
+                if (player1.fileName != null)
+                {
+                    BeginPlayback(ref player1);
+                }
+            }
+
+            if (e.KeyCode == Keys.Enter)
+            {
+
+                if (player2.fileName != null)
+                {
+                    BeginPlayback(ref player2);
+                }
+            }
+
+        }
+
+        private void OpenSongFromPlaylist(Player player, Song song)
+        {
+            player.fileName = song.Path;
+            if (player.fileName != null)
+            {
+                LabelTrackUpdate(player);
+                RenderWaveform(player);
+            }
         }
 
         #endregion
@@ -359,6 +411,51 @@ namespace iRANE_62
             }
             player.wavePlayer.Play();
         }
+
+        private void listBox1_DragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                foreach (string file in files)
+                {
+                    Song song = new Song(file);
+                    listBox1.Items.Add(song);
+                }
+            }
+        }
+
+        private void listBox1_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                bool allValid = files.All(file =>
+                    file.EndsWith(".wav", StringComparison.OrdinalIgnoreCase) ||
+                    file.EndsWith(".mp3", StringComparison.OrdinalIgnoreCase) ||
+                    file.EndsWith(".aiff", StringComparison.OrdinalIgnoreCase) ||
+                    file.EndsWith(".wma", StringComparison.OrdinalIgnoreCase));
+
+
+                if (allValid)
+                {
+                    e.Effect = DragDropEffects.Copy;
+                }
+                else
+                {
+                    e.Effect = DragDropEffects.None;
+                }
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+
+
 
     }
 
