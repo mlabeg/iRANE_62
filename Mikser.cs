@@ -1,14 +1,15 @@
+using iRANE_62.Models;
+
 namespace iRANE_62
 {
     public partial class Mikser : Form
     {
-        //protected Odtwarzacz_first Odt;
+        private Player player1;
+        private Player player2;
 
         public Mikser()
         {
             InitializeComponent();
-
-            
 
             //efx
 
@@ -23,36 +24,14 @@ namespace iRANE_62
 
         }
 
-        
-        private void Form1_Load(object sender, EventArgs e)
+        public Mikser(ref Player player1, ref Player player2)
         {
-          //  Odt = new Odtwarzacz_first();
+            this.player1 = player1;
+            this.player2 = player2;
         }
 
-        private void panSlider1_Load(object sender, EventArgs e)
-        {
 
-        }
 
-        private void pot2_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pot11_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void checkBox1_CheckedChanged_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btn_cue_usb_aux_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
 
         #region EFX
         //EFX
@@ -87,7 +66,7 @@ namespace iRANE_62
         }
         private void efx_filter_CheckedChanged(object sender, EventArgs e)
         {
-            
+
 
         }
 

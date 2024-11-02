@@ -13,12 +13,13 @@ namespace iRANE_62
             Application.SetCompatibleTextRenderingDefault(false);
 
             Form mikser = new Mikser();
-            Form odt1 = new Odtwarzacz();
+            Form odtwarzacz = new Odtwarzacz();
+
+            Application.Run(odtwarzacz);
 
             var thread1 = new System.Threading.Thread(() =>
-            {   
+            {
                 //Application.Run(mikser);
-                Application.Run(odt1);
             });
 
             thread1.SetApartmentState(System.Threading.ApartmentState.STA);

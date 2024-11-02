@@ -113,6 +113,7 @@ namespace iRANE_62
             odt2_cue4 = new Button();
             odt2_cue5 = new Button();
             cue = new Panel();
+            chBox_cue_samples = new CheckBox();
             odt1_cue_pgm1 = new CheckBox();
             btn_cue_usb_aux = new CheckBox();
             odt2_cue_pgm2 = new CheckBox();
@@ -129,7 +130,7 @@ namespace iRANE_62
             odt2_upfader = new NAudio.Gui.VolumeSlider();
             odt1_upfader = new NAudio.Gui.VolumeSlider();
             volumeSlider1 = new NAudio.Gui.VolumeSlider();
-            chBox_cue_samples = new CheckBox();
+            volumeMeter1 = new NAudio.Gui.VolumeMeter();
             odt1.SuspendLayout();
             odt2.SuspendLayout();
             loops1.SuspendLayout();
@@ -146,7 +147,6 @@ namespace iRANE_62
             pan_odt1.Pan = 0F;
             pan_odt1.Size = new Size(83, 40);
             pan_odt1.TabIndex = 1;
-            pan_odt1.Load += panSlider1_Load;
             // 
             // level_odt1
             // 
@@ -169,7 +169,6 @@ namespace iRANE_62
             high_odt1.Size = new Size(54, 69);
             high_odt1.TabIndex = 3;
             high_odt1.Value = 0.5D;
-            high_odt1.Load += pot2_Load;
             // 
             // mid_odt1
             // 
@@ -211,7 +210,6 @@ namespace iRANE_62
             pan_odt2.Pan = 0F;
             pan_odt2.Size = new Size(83, 40);
             pan_odt2.TabIndex = 1;
-            pan_odt2.Load += panSlider1_Load;
             // 
             // level_odt2
             // 
@@ -278,7 +276,6 @@ namespace iRANE_62
             mic_level.Size = new Size(54, 69);
             mic_level.TabIndex = 3;
             mic_level.Value = 0.5D;
-            mic_level.Load += pot11_Load;
             // 
             // mic_high
             // 
@@ -383,6 +380,7 @@ namespace iRANE_62
             // 
             // odt1
             // 
+            odt1.Controls.Add(volumeMeter1);
             odt1.Controls.Add(odt1_low);
             odt1.Controls.Add(odt1_flexfx);
             odt1.Location = new Point(298, 41);
@@ -556,7 +554,6 @@ namespace iRANE_62
             session_out.Size = new Size(54, 69);
             session_out.TabIndex = 3;
             session_out.Value = 0.5D;
-            session_out.Load += pot2_Load;
             // 
             // session_in
             // 
@@ -921,6 +918,16 @@ namespace iRANE_62
             cue.Size = new Size(1025, 104);
             cue.TabIndex = 7;
             // 
+            // chBox_cue_samples
+            // 
+            chBox_cue_samples.AutoSize = true;
+            chBox_cue_samples.Location = new Point(445, 35);
+            chBox_cue_samples.Name = "chBox_cue_samples";
+            chBox_cue_samples.Size = new Size(121, 29);
+            chBox_cue_samples.TabIndex = 5;
+            chBox_cue_samples.Text = "checkBox1";
+            chBox_cue_samples.UseVisualStyleBackColor = true;
+            // 
             // odt1_cue_pgm1
             // 
             odt1_cue_pgm1.AutoSize = true;
@@ -940,7 +947,6 @@ namespace iRANE_62
             btn_cue_usb_aux.TabIndex = 5;
             btn_cue_usb_aux.Text = "CUE USB AUX";
             btn_cue_usb_aux.UseVisualStyleBackColor = true;
-            btn_cue_usb_aux.CheckedChanged += btn_cue_usb_aux_CheckedChanged;
             // 
             // odt2_cue_pgm2
             // 
@@ -972,7 +978,6 @@ namespace iRANE_62
             aux_flexfx.TabIndex = 5;
             aux_flexfx.Text = "FLEXFX";
             aux_flexfx.UseVisualStyleBackColor = true;
-            aux_flexfx.CheckedChanged += checkBox1_CheckedChanged_1;
             // 
             // panel_aux
             // 
@@ -1019,7 +1024,6 @@ namespace iRANE_62
             phones_split_sue.TabIndex = 5;
             phones_split_sue.Text = "SPLIT CUE";
             phones_split_sue.UseVisualStyleBackColor = true;
-            phones_split_sue.CheckedChanged += checkBox1_CheckedChanged_1;
             // 
             // mix
             // 
@@ -1070,15 +1074,16 @@ namespace iRANE_62
             volumeSlider1.Size = new Size(363, 24);
             volumeSlider1.TabIndex = 14;
             // 
-            // chBox_cue_samples
+            // volumeMeter1
             // 
-            chBox_cue_samples.AutoSize = true;
-            chBox_cue_samples.Location = new Point(445, 35);
-            chBox_cue_samples.Name = "chBox_cue_samples";
-            chBox_cue_samples.Size = new Size(121, 29);
-            chBox_cue_samples.TabIndex = 5;
-            chBox_cue_samples.Text = "checkBox1";
-            chBox_cue_samples.UseVisualStyleBackColor = true;
+            volumeMeter1.Amplitude = 0F;
+            volumeMeter1.Location = new Point(146, 89);
+            volumeMeter1.MaxDb = 18F;
+            volumeMeter1.MinDb = -60F;
+            volumeMeter1.Name = "volumeMeter1";
+            volumeMeter1.Size = new Size(30, 271);
+            volumeMeter1.TabIndex = 12;
+            volumeMeter1.Text = "volumeMeter1";
             // 
             // Mikser
             // 
@@ -1158,7 +1163,6 @@ namespace iRANE_62
             Controls.Add(panel_aux);
             Name = "Mikser";
             Text = "Form1";
-            Load += Form1_Load;
             odt1.ResumeLayout(false);
             odt1.PerformLayout();
             odt2.ResumeLayout(false);
@@ -1276,5 +1280,6 @@ namespace iRANE_62
         private NAudio.Gui.VolumeSlider volumeSlider1;
         public NAudio.Gui.VolumeSlider odt1_upfader;
         private CheckBox chBox_cue_samples;
+        private NAudio.Gui.VolumeMeter volumeMeter1;
     }
 }
