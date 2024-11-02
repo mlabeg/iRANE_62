@@ -19,7 +19,7 @@ namespace iRANE_62
         private Player player1;
         private Player player2;
 
-        private string imageFile;
+        private string? imageFile;
         private readonly WaveFormRenderer waveFormRenderer;
         private readonly WaveFormRendererSettings standardSettings;
 
@@ -28,7 +28,6 @@ namespace iRANE_62
         public Odtwarzacz()
         {
             InitializeComponent();
-            EnableButtons(false);
             Disposed += PlaybackPanel_Disposed;
             timer1.Interval = 250;
             timer1.Tick += OnTimerTick;
@@ -38,7 +37,6 @@ namespace iRANE_62
 
             standardSettings = new StandardWaveFormRendererSettings() { Name = "Standard" };
             waveFormRenderer = new WaveFormRenderer();
-
         }
 
 
@@ -92,9 +90,7 @@ namespace iRANE_62
             player.audioFileReader = new AudioFileReader(player.fileName);
             player.wavePlayer.Init(player.audioFileReader);
 
-            //player.wavePlayer.PlaybackStopped += OnPlaybackStopped;
             player.wavePlayer.Play();
-            EnableButtons(true);
             timer1.Enabled = true;
         }
 
@@ -111,21 +107,7 @@ namespace iRANE_62
                      return new WaveOut();
              }
          }*/
-        /*
-        void OnPlaybackStopped(object sender, StoppedEventArgs e)
-        {
-            // we want to be always on the GUI thread and be able to change GUI components
-            Debug.Assert(!InvokeRequired, "PlaybackStopped on wrong thread");
-            // we want it to be safe to clean up input stream and playback device in the handler for PlaybackStopped
-            //CleanUp();
-            EnableButtons(false);
-            timer1.Enabled = false;
-            labelNowTime_1.Text = "00:00";
-            if (e.Exception != null)
-            {
-                MessageBox.Show(String.Format("Playback Stopped due to an error {0}", e.Exception.Message));
-            }
-        }*/
+
 
         #endregion
 
@@ -136,8 +118,13 @@ namespace iRANE_62
             Open(player1);
         }
 
-        private void btnOpen_1_KeyDown(object sender, KeyEventArgs e)
+        private void btnOpen_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.O && e.Shift)
+            {
+                Open(player2);
+            }
+
             if (e.KeyCode == Keys.O)
             {
                 Open(player1);
@@ -147,14 +134,6 @@ namespace iRANE_62
         private void btnOpen_2_Click(object sender, EventArgs e)
         {
             Open(player2);
-        }
-
-        private void btnOpen_2_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.O && e.Shift)
-            {
-                Open(player2);
-            }
         }
 
         private void Open(Player player)
@@ -167,8 +146,8 @@ namespace iRANE_62
             }
         }
 
-        private /*static */ string SelectInputFile()
-        {//nie wiem dlaczego w programie NAudioDemo ta metoda była statyczna
+        private string SelectInputFile()
+        {
 
             var ofd = new OpenFileDialog();
             ofd.Filter = "Audio Files|*.mp3;*.wav;*.aiff;*.wma";
@@ -223,13 +202,11 @@ namespace iRANE_62
         private void btnPause_1_Click(object sender, EventArgs e)
         {
             Pause(ref player1);
-            //player1.wavePlayer.Pause();
         }
 
         private void btnPause_2_Click(object sender, EventArgs e)
         {
             Pause(ref player2);
-            //player2.wavePlayer.Pause();
         }
 
         private void Pause(ref Player player)
@@ -258,7 +235,6 @@ namespace iRANE_62
         private void RenderWaveform(Player player)
         {
             if (player.fileName == null) return;
-            //var settings = GetRendererSettings();
 
             var settings = standardSettings;//TODO zmień na jednolity "ładny" kolor waveforma
 
@@ -276,9 +252,7 @@ namespace iRANE_62
                 pictureBox2.Image = null;
             }
 
-            //labelRendering.Visible = true;
             Enabled = false; //nie wiem czy to nie będzie blokować obu odtwarzaczy na raz
-            //var peakProvider = GetPeakProvider();
             var peakProvider = new RmsPeakProvider(200);
             Task.Factory.StartNew(() => RenderThreadFunc(peakProvider, settings, player));
         }
@@ -293,13 +267,13 @@ namespace iRANE_62
                     image = waveFormRenderer.Render(wavestream, peakProvider, settings);
                 }
 
+                BeginInvoke((Action)(() => FinishedRender(image, player)));
 
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
             }
-            BeginInvoke((Action)(() => FinishedRender(image, player)));
         }
 
         private void FinishedRender(Image image, Player player)
@@ -318,24 +292,9 @@ namespace iRANE_62
                 Enabled = true;
 
             }
-            //selectedFile = String.Empty;
-            //player.fileName = String.Empty;
         }
 
         #endregion
-
-        private void EnableButtons(bool playing)
-        {//TODO rozbić funkcję na odt1 i odt2 
-            //sprawdzić czy wgl będzie potrzebne
-            /*
-            btnPlay_1.Enabled = !playing;
-            btnStop_1.Enabled = playing;
-            btnOpen_1.Enabled = !playing;
-            /*
-            btnPlay_2.Enabled = !playing;
-            btnStop_2.Enabled = playing;
-            btnOpen_2.Enabled = !playing;*/
-        }
 
         void PlaybackPanel_Disposed(object sender, EventArgs e)
         {
@@ -355,18 +314,6 @@ namespace iRANE_62
                 player2.audioFileReader.Dispose();
                 player2.audioFileReader = null;
             }
-            /*
-            if (wavePlayer_odt1 != null)
-            {
-                wavePlayer_odt1.Dispose();
-                wavePlayer_odt1 = null;
-            }
-
-            if (wavePlayer_odt2 != null)
-            {
-                wavePlayer_odt2.Dispose();
-                wavePlayer_odt2 = null;
-            }*/
         }
 
         void OnTimerTick(object sender, EventArgs e)
@@ -374,7 +321,7 @@ namespace iRANE_62
             if (player1.audioFileReader != null)
             {
                 labelNowTime_1.Text = FormatTimeSpan(player1.audioFileReader.CurrentTime);
-                labelTotalTime_1.Text = FormatTimeSpan(player1.audioFileReader.TotalTime);//zmienić na czas pobierany z właściwości utworu
+                labelTotalTime_1.Text = FormatTimeSpan(player1.audioFileReader.TotalTime);//TODO zmienić na czas pobierany z właściwości utworu
             }
             if (player2.audioFileReader != null)
             {
@@ -388,38 +335,30 @@ namespace iRANE_62
             return string.Format("{0:D2}:{1:D2}", (int)ts.TotalMinutes, ts.Seconds);
         }
 
-        /*
-private void Odtwarzacz_KeyDown(object sender, KeyEventArgs e)
-{
-   if (e.KeyCode == Keys.Space)
-   {
-       PressedSpaceBar(ref player1);
-   }
 
-   if (e.KeyCode == Keys.Enter)
-   {
-       PressedSpaceBar(ref player2);
-   }
-}
+        private void Odtwarzacz_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Space)
+            {
+                PressedSpacebarOrEnter(ref player1);
+            }
 
-private void PressedSpaceBar(ref Player player)
-{
-   if (player.wavePlayer == null) return;
+            if (e.KeyCode == Keys.Enter)
+            {
+                PressedSpacebarOrEnter(ref player2);
+            }
+        }
 
-   if (player.wavePlayer.PlaybackState == PlaybackState.Playing)
-   {
-       player.wavePlayer.Pause();
-   }
-   player.wavePlayer.Play();
-}
+        private void PressedSpacebarOrEnter(ref Player player)
+        {
+            if (player.wavePlayer == null) return;
 
-private void Odtwarzacz_Load(object sender, EventArgs e)
-{
-  // this.ActiveControl = null;
-   this.Focus();
-}*/
-
-       
+            if (player.wavePlayer.PlaybackState == PlaybackState.Playing)
+            {
+                player.wavePlayer.Pause();
+            }
+            player.wavePlayer.Play();
+        }
 
     }
 

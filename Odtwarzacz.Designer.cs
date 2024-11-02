@@ -63,7 +63,7 @@
             btnOpen_1.Text = "Open";
             btnOpen_1.UseVisualStyleBackColor = true;
             btnOpen_1.Click += btnOpen_1_Click;
-            btnOpen_1.KeyDown += btnOpen_1_KeyDown;
+            btnOpen_1.KeyDown += btnOpen_KeyDown;
             // 
             // btnPlay_1
             // 
@@ -74,6 +74,7 @@
             btnPlay_1.Text = "Play";
             btnPlay_1.UseVisualStyleBackColor = true;
             btnPlay_1.Click += btnPlay1_Click;
+            btnPlay_1.KeyDown += Odtwarzacz_KeyDown;
             // 
             // btnPause_1
             // 
@@ -104,7 +105,7 @@
             btnOpen_2.Text = "Open";
             btnOpen_2.UseVisualStyleBackColor = true;
             btnOpen_2.Click += btnOpen_2_Click;
-            btnOpen_2.KeyDown += btnOpen_2_KeyDown;
+            btnOpen_2.KeyDown += btnOpen_KeyDown;
             // 
             // btnPlay_2
             // 
@@ -115,6 +116,7 @@
             btnPlay_2.Text = "Play";
             btnPlay_2.UseVisualStyleBackColor = true;
             btnPlay_2.Click += btnPlay_2_Click;
+            btnPlay_2.KeyDown += Odtwarzacz_KeyDown;
             // 
             // btnPause_2
             // 
@@ -262,6 +264,7 @@
             Controls.Add(btnOpen_1);
             Name = "Odtwarzacz";
             Text = "Odtwarzacz";
+            KeyDown += Odtwarzacz_KeyDown;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ResumeLayout(false);
