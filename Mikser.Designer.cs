@@ -58,6 +58,7 @@ namespace iRANE_62
             odt1_source = new ComboBox();
             odt2_source = new ComboBox();
             odt1 = new Panel();
+            volumeMeter1 = new NAudio.Gui.VolumeMeter();
             odt1_low = new NAudio.Gui.Pot();
             odt1_flexfx = new CheckBox();
             odt1_volume = new NAudio.Gui.VolumeMeter();
@@ -130,7 +131,6 @@ namespace iRANE_62
             odt2_upfader = new NAudio.Gui.VolumeSlider();
             odt1_upfader = new NAudio.Gui.VolumeSlider();
             volumeSlider1 = new NAudio.Gui.VolumeSlider();
-            volumeMeter1 = new NAudio.Gui.VolumeMeter();
             odt1.SuspendLayout();
             odt2.SuspendLayout();
             loops1.SuspendLayout();
@@ -387,6 +387,17 @@ namespace iRANE_62
             odt1.Name = "odt1";
             odt1.Size = new Size(291, 399);
             odt1.TabIndex = 7;
+            // 
+            // volumeMeter1
+            // 
+            volumeMeter1.Amplitude = 0F;
+            volumeMeter1.Location = new Point(146, 89);
+            volumeMeter1.MaxDb = 18F;
+            volumeMeter1.MinDb = -60F;
+            volumeMeter1.Name = "volumeMeter1";
+            volumeMeter1.Size = new Size(30, 271);
+            volumeMeter1.TabIndex = 12;
+            volumeMeter1.Text = "volumeMeter1";
             // 
             // odt1_low
             // 
@@ -1073,17 +1084,6 @@ namespace iRANE_62
             volumeSlider1.Name = "volumeSlider1";
             volumeSlider1.Size = new Size(363, 24);
             volumeSlider1.TabIndex = 14;
-            // 
-            // volumeMeter1
-            // 
-            volumeMeter1.Amplitude = 0F;
-            volumeMeter1.Location = new Point(146, 89);
-            volumeMeter1.MaxDb = 18F;
-            volumeMeter1.MinDb = -60F;
-            volumeMeter1.Name = "volumeMeter1";
-            volumeMeter1.Size = new Size(30, 271);
-            volumeMeter1.TabIndex = 12;
-            volumeMeter1.Text = "volumeMeter1";
             // 
             // Mikser
             // 
