@@ -35,10 +35,6 @@ namespace iRANE_62
 
  * */
 
-/*ŁATANIE APLIKCAJI:
- * - przy nie wybraniu pliku metodą Open() aplikacja wyrzuca błąd - zamienić na powrót do ekranu głównego 
- * --w późniejszych iteracjach systemu nie będzie wyboru przez Open()
- * 
 
 
 /* TESTY:

@@ -83,10 +83,8 @@ namespace iRANE_62
 
                 player.wavePlayer.Stop();
                 player.wavePlayer.Dispose();
-                // player.wavePlayer = null; - chyba nie jest potrzebne skoro zaraz pod tworzysz go na nowo
             }
 
-            // Debug.Assert(wavePlayer == null);
             if (player.fileName == String.Empty) return;
 
             player.wavePlayer = new WaveOutEvent();
@@ -94,42 +92,13 @@ namespace iRANE_62
             player.audioFileReader = new AudioFileReader(player.fileName);
             player.wavePlayer.Init(player.audioFileReader);
 
-            //audioFileReader.Volume = volumeSlider1.Volume;
-            player.wavePlayer.PlaybackStopped += OnPlaybackStopped;
+            //player.wavePlayer.PlaybackStopped += OnPlaybackStopped;
             player.wavePlayer.Play();
             EnableButtons(true);
             timer1.Enabled = true;
         }
 
-        private void BeginPlayback(string filename, ref IWavePlayer wavePlayer, ref AudioFileReader audioFileReader)
-        {//"int playerNumber" można zamienić na "AudioFileReader player" żby linijka 82+ była ładniejsza
-            if (wavePlayer != null)
-            {
-                if (wavePlayer.PlaybackState == PlaybackState.Paused)
-                {
-                    wavePlayer.Play();
-                    return;
-                }
-
-                wavePlayer.Stop();
-                wavePlayer.Dispose();
-                wavePlayer = null;
-            }
-
-            // Debug.Assert(wavePlayer == null);
-
-            wavePlayer = new WaveOutEvent();
-
-            audioFileReader = new AudioFileReader(filename);
-            wavePlayer.Init(audioFileReader);
-
-            //audioFileReader.Volume = volumeSlider1.Volume;
-            wavePlayer.PlaybackStopped += OnPlaybackStopped;//sprawdz czy to jest ci potrzebne 
-            wavePlayer.Play();
-            EnableButtons(true);
-            timer1.Enabled = true; // timer for updating current time label
-        }
-
+        // ten kawałek kodu może być potrzebny później przy dodaniu obsługi słuchawek
         /* private IWavePlayer CreateWavePlayer()//możesz to dodać jako menu rozwijane z paska u góry
          {
              switch (comboBoxOutputDriver.SelectedIndex)
@@ -142,13 +111,13 @@ namespace iRANE_62
                      return new WaveOut();
              }
          }*/
-
+        /*
         void OnPlaybackStopped(object sender, StoppedEventArgs e)
         {
             // we want to be always on the GUI thread and be able to change GUI components
             Debug.Assert(!InvokeRequired, "PlaybackStopped on wrong thread");
             // we want it to be safe to clean up input stream and playback device in the handler for PlaybackStopped
-            CleanUp();
+            //CleanUp();
             EnableButtons(false);
             timer1.Enabled = false;
             labelNowTime_1.Text = "00:00";
@@ -156,7 +125,7 @@ namespace iRANE_62
             {
                 MessageBox.Show(String.Format("Playback Stopped due to an error {0}", e.Exception.Message));
             }
-        }
+        }*/
 
         #endregion
 
@@ -207,11 +176,24 @@ namespace iRANE_62
 
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                //    selectedFile = ofd.FileName;
                 return ofd.FileName;
             }
 
             return String.Empty;
+        }
+
+        private void LabelTrackUpdate(Player player)
+        {
+            string songName = player.fileName.Split('\\').Last().ToString();
+            if (player.Id == 1)
+            {
+                labelTrack1.Text = songName;
+            }
+            else
+            {
+                labelTrack2.Text = songName;
+            }
+
         }
 
         #endregion
@@ -221,13 +203,11 @@ namespace iRANE_62
         private void btnStop_1_Click(object sender, EventArgs e)
         {
             Stop(ref player1);
-            //player1.wavePlayer.Stop();
         }
         private void btnStop_2_Click(object sender, EventArgs e)
         {
 
             Stop(ref player2);
-            //player2.wavePlayer.Stop();
         }
         private void Stop(ref Player player)
         {
@@ -439,19 +419,7 @@ private void Odtwarzacz_Load(object sender, EventArgs e)
    this.Focus();
 }*/
 
-        private void LabelTrackUpdate(Player player)
-        {
-            string songName = player.fileName.Split('\\').Last().ToString();
-            if (player.Id == 1)
-            {
-                labelTrack1.Text = songName;
-            }
-            else
-            {
-                labelTrack2.Text = songName;
-            }
-
-        }
+       
 
     }
 

@@ -24,15 +24,6 @@ namespace iRANE_62
             thread1.SetApartmentState(System.Threading.ApartmentState.STA);
             thread1.Start();
 
-            /*
-            var thread2 = new System.Threading.Thread(() =>
-            {
-                Application.Run(odt1);
-            });
-
-            thread2.SetApartmentState(System.Threading.ApartmentState.STA); 
-            thread2.Start();
-            */
 
         }
     }
