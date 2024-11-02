@@ -15,6 +15,7 @@ namespace iRANE_62.Models
         public string fileName { get; set; }
         public List<Song> Playlist { get; set; } = new List<Song>();
 
+       
         public Player(int id)
         {
             this.Id = id;
