@@ -1,4 +1,5 @@
 using iRANE_62.Models;
+using NAudio.Wave;
 
 namespace iRANE_62
 {
@@ -7,12 +8,20 @@ namespace iRANE_62
         private Player player1;
         private Player player2;
 
+
         public Mikser()
         {
+
+        }
+
+        public Mikser(ref Player player1, ref Player player2)
+        {
+            this.player1 = player1;
+            this.player2 = player2;
             InitializeComponent();
 
-            //efx
 
+            //efx
             efx_echo.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
             efx_ext_insert.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
             efx_flanger.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
@@ -21,17 +30,7 @@ namespace iRANE_62
             efx_reverb.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
             efx_robot.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
             efx_insert.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
-
         }
-
-        public Mikser(ref Player player1, ref Player player2)
-        {
-            this.player1 = player1;
-            this.player2 = player2;
-        }
-
-
-
 
         #region EFX
         //EFX
@@ -94,5 +93,23 @@ namespace iRANE_62
         }
         #endregion
 
+
+
+        private void level_odt1_ValueChanged(object sender, EventArgs e)
+        {
+            if (player1.wavePlayer != null)
+            {
+                player1.setVolumeDelegate((float)level_odt1.Value);
+            }
+        }
+
+        private void level_odt2_ValueChanged(object sender, EventArgs e)
+        {
+            if (player2.wavePlayer != null)
+            {
+                player2.setVolumeDelegate((float)level_odt2.Value);
+            }
+
+        }
     }
 }
