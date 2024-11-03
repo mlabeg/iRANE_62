@@ -1,5 +1,7 @@
 using iRANE_62.Models;
+using NAudio.Gui;
 using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
 
 namespace iRANE_62
 {
@@ -109,7 +111,19 @@ namespace iRANE_62
             {
                 player2.setVolumeDelegate((float)level_odt2.Value);
             }
-
         }
+
+        public void OnPostMainVolumeMeter(object sender, StreamVolumeEventArgs e)
+        {
+            mainVolumeLeft.Amplitude = e.MaxSampleValues[0];
+            mainVolumeRight.Amplitude = e.MaxSampleValues[1];
+        }
+
+        public void OnPostChanelVolumeMeter(object sender, StreamVolumeEventArgs e)
+        {
+            volumeMeter_ch1.Amplitude = Math.Max(e.MaxSampleValues[0], e.MaxSampleValues[1]);
+        }
+
+
     }
 }

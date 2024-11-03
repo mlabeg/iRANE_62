@@ -58,14 +58,14 @@ namespace iRANE_62
             odt1_source = new ComboBox();
             odt2_source = new ComboBox();
             odt1 = new Panel();
-            volumeMeter1 = new NAudio.Gui.VolumeMeter();
+            volumeMeter_ch1 = new NAudio.Gui.VolumeMeter();
             odt1_low = new NAudio.Gui.Pot();
             odt1_flexfx = new CheckBox();
             odt1_volume = new NAudio.Gui.VolumeMeter();
             odt2 = new Panel();
             odt2_volume = new NAudio.Gui.VolumeMeter();
-            main_volume_right = new NAudio.Gui.VolumeMeter();
-            main_volume_left = new NAudio.Gui.VolumeMeter();
+            mainVolumeRight = new NAudio.Gui.VolumeMeter();
+            mainVolumeLeft = new NAudio.Gui.VolumeMeter();
             loops1 = new Panel();
             button14 = new Button();
             hScrollBar5 = new HScrollBar();
@@ -382,7 +382,7 @@ namespace iRANE_62
             // 
             // odt1
             // 
-            odt1.Controls.Add(volumeMeter1);
+            odt1.Controls.Add(volumeMeter_ch1);
             odt1.Controls.Add(odt1_low);
             odt1.Controls.Add(odt1_flexfx);
             odt1.Location = new Point(298, 41);
@@ -390,16 +390,16 @@ namespace iRANE_62
             odt1.Size = new Size(291, 399);
             odt1.TabIndex = 7;
             // 
-            // volumeMeter1
+            // volumeMeter_ch1
             // 
-            volumeMeter1.Amplitude = 0F;
-            volumeMeter1.Location = new Point(146, 89);
-            volumeMeter1.MaxDb = 18F;
-            volumeMeter1.MinDb = -60F;
-            volumeMeter1.Name = "volumeMeter1";
-            volumeMeter1.Size = new Size(30, 271);
-            volumeMeter1.TabIndex = 12;
-            volumeMeter1.Text = "volumeMeter1";
+            volumeMeter_ch1.Amplitude = 0F;
+            volumeMeter_ch1.Location = new Point(146, 89);
+            volumeMeter_ch1.MaxDb = 18F;
+            volumeMeter_ch1.MinDb = -60F;
+            volumeMeter_ch1.Name = "volumeMeter_ch1";
+            volumeMeter_ch1.Size = new Size(30, 271);
+            volumeMeter_ch1.TabIndex = 12;
+            volumeMeter_ch1.Text = "volumeMeter1";
             // 
             // odt1_low
             // 
@@ -452,27 +452,27 @@ namespace iRANE_62
             odt2_volume.TabIndex = 12;
             odt2_volume.Text = "volumeMeter1";
             // 
-            // main_volume_right
+            // mainVolumeRight
             // 
-            main_volume_right.Amplitude = 0F;
-            main_volume_right.Location = new Point(936, 130);
-            main_volume_right.MaxDb = 18F;
-            main_volume_right.MinDb = -60F;
-            main_volume_right.Name = "main_volume_right";
-            main_volume_right.Size = new Size(30, 271);
-            main_volume_right.TabIndex = 12;
-            main_volume_right.Text = "volumeMeter1";
+            mainVolumeRight.Amplitude = 0F;
+            mainVolumeRight.Location = new Point(936, 130);
+            mainVolumeRight.MaxDb = 18F;
+            mainVolumeRight.MinDb = -60F;
+            mainVolumeRight.Name = "mainVolumeRight";
+            mainVolumeRight.Size = new Size(30, 271);
+            mainVolumeRight.TabIndex = 12;
+            mainVolumeRight.Text = "volumeMeter1";
             // 
-            // main_volume_left
+            // mainVolumeLeft
             // 
-            main_volume_left.Amplitude = 0F;
-            main_volume_left.Location = new Point(889, 130);
-            main_volume_left.MaxDb = 18F;
-            main_volume_left.MinDb = -60F;
-            main_volume_left.Name = "main_volume_left";
-            main_volume_left.Size = new Size(30, 271);
-            main_volume_left.TabIndex = 12;
-            main_volume_left.Text = "volumeMeter1";
+            mainVolumeLeft.Amplitude = 0F;
+            mainVolumeLeft.Location = new Point(889, 130);
+            mainVolumeLeft.MaxDb = 18F;
+            mainVolumeLeft.MinDb = -60F;
+            mainVolumeLeft.Name = "mainVolumeLeft";
+            mainVolumeLeft.Size = new Size(30, 271);
+            mainVolumeLeft.TabIndex = 12;
+            mainVolumeLeft.Text = "volumeMeter1";
             // 
             // loops1
             // 
@@ -1101,8 +1101,8 @@ namespace iRANE_62
             Controls.Add(fader1);
             Controls.Add(odt1_upfader);
             Controls.Add(odt2_upfader);
-            Controls.Add(main_volume_left);
-            Controls.Add(main_volume_right);
+            Controls.Add(mainVolumeLeft);
+            Controls.Add(mainVolumeRight);
             Controls.Add(efx_wyswietlacz);
             Controls.Add(odt1_load);
             Controls.Add(hScrollBar1);
@@ -1279,13 +1279,13 @@ namespace iRANE_62
         private Panel mic;
         private CheckBox mic_flexfx;
         private NAudio.Gui.VolumeMeter odt1_volume;
-        private NAudio.Gui.VolumeMeter main_volume_right;
-        private NAudio.Gui.VolumeMeter main_volume_left;
+        private NAudio.Gui.VolumeMeter mainVolumeRight;
+        private NAudio.Gui.VolumeMeter mainVolumeLeft;
         private NAudio.Gui.VolumeMeter odt2_volume;
         private NAudio.Gui.VolumeSlider odt2_upfader;
         public NAudio.Gui.VolumeSlider odt1_upfader;
         private CheckBox chBox_cue_samples;
-        private NAudio.Gui.VolumeMeter volumeMeter1;
+        private NAudio.Gui.VolumeMeter volumeMeter_ch1;
         private NAudio.Gui.Fader fader1;
         internal NAudio.Gui.Pot level_odt1;
         internal NAudio.Gui.Pot level_odt2;
