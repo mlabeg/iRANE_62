@@ -44,6 +44,11 @@ namespace iRANE_62
             waveFormRenderer = new WaveFormRenderer();
         }
 
+        /*
+         tworzymy nowy mikser
+        wywołujemy meodę w mikserze zwracającą poziomy głośności
+         */
+
         private void Odtwarzacz_Load(object sender, EventArgs e)
         {
             OpenMikser();
@@ -110,6 +115,20 @@ namespace iRANE_62
             player.wavePlayer = new WaveOutEvent();
 
             player.audioFileReader = new AudioFileReader(player.fileName);
+
+
+            //nieładne rozwiązanie z perspektywy rozwijania dalej kodu (nie przestrzeganie zasady Open-Close Principle)
+            if (player.Id == 1)
+            {
+                //player.audioFileReader.Volume = (float)mikser.level_odt1.Value;
+                player.wavePlayer.Volume= (float)mikser.level_odt1.Value;
+            }
+            else
+            {
+                player.audioFileReader.Volume = (float)mikser.level_odt2.Value;
+            }
+
+
             player.wavePlayer.Init(player.audioFileReader);
 
             player.wavePlayer.Play();

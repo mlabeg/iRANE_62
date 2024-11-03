@@ -32,8 +32,6 @@ namespace iRANE_62
             efx_insert.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
         }
 
-
-
         #region EFX
         //EFX
 
@@ -99,12 +97,19 @@ namespace iRANE_62
 
         private void level_odt1_ValueChanged(object sender, EventArgs e)
         {
-            player1.audioFileReader.Volume = (float)level_odt1.Value;
+            if (player1.audioFileReader != null)
+            {
+                player1.audioFileReader.Volume = (float)level_odt1.Value;
+            }
+
         }
 
         private void level_odt2_ValueChanged(object sender, EventArgs e)
         {
-            player2.audioFileReader.Volume = (float)level_odt2.Value;
+            if (player1.audioFileReader != null)
+            {
+                player2.audioFileReader.Volume = (float)level_odt2.Value;
+            }
         }
     }
 }

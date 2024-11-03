@@ -157,7 +157,7 @@ namespace iRANE_62
             level_odt1.Name = "level_odt1";
             level_odt1.Size = new Size(54, 69);
             level_odt1.TabIndex = 3;
-            level_odt1.Value = 0.5D;
+            level_odt1.Value = 0D;
             level_odt1.ValueChanged += level_odt1_ValueChanged;
             // 
             // high_odt1
@@ -221,7 +221,7 @@ namespace iRANE_62
             level_odt2.Name = "level_odt2";
             level_odt2.Size = new Size(54, 69);
             level_odt2.TabIndex = 3;
-            level_odt2.Value = 0.5D;
+            level_odt2.Value = 0D;
             level_odt2.ValueChanged += level_odt2_ValueChanged;
             // 
             // high_odt2
@@ -1188,13 +1188,11 @@ namespace iRANE_62
 
         #endregion
         private NAudio.Gui.PanSlider pan_odt1;
-        private NAudio.Gui.Pot level_odt1;
         private NAudio.Gui.Pot high_odt1;
         private NAudio.Gui.Pot mid_odt1;
         private NAudio.Gui.Pot aux_level;
         private NAudio.Gui.Pot filter_odt1;
         private NAudio.Gui.PanSlider pan_odt2;
-        private NAudio.Gui.Pot level_odt2;
         private NAudio.Gui.Pot high_odt2;
         private NAudio.Gui.Pot mid_odt2;
         private NAudio.Gui.Pot filter_odt2;
@@ -1289,5 +1287,7 @@ namespace iRANE_62
         private CheckBox chBox_cue_samples;
         private NAudio.Gui.VolumeMeter volumeMeter1;
         private NAudio.Gui.Fader fader1;
+        internal NAudio.Gui.Pot level_odt1;
+        internal NAudio.Gui.Pot level_odt2;
     }
 }
