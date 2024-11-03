@@ -8,11 +8,9 @@ namespace iRANE_62
         private Player player1;
         private Player player2;
 
+
         public Mikser()
         {
-
-
-          
 
         }
 
@@ -33,7 +31,7 @@ namespace iRANE_62
             efx_robot.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
             efx_insert.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
         }
-        
+
 
 
         #region EFX
@@ -97,7 +95,16 @@ namespace iRANE_62
         }
         #endregion
 
-    
 
+
+        private void level_odt1_ValueChanged(object sender, EventArgs e)
+        {
+            player1.audioFileReader.Volume = (float)level_odt1.Value;
+        }
+
+        private void level_odt2_ValueChanged(object sender, EventArgs e)
+        {
+            player2.audioFileReader.Volume = (float)level_odt2.Value;
+        }
     }
 }

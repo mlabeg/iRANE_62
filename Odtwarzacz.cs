@@ -26,6 +26,8 @@ namespace iRANE_62
         private readonly WaveFormRenderer waveFormRenderer;
         private readonly WaveFormRendererSettings standardSettings;
 
+        private Action<float> setVolumeDelegate;
+
 
 
         public Odtwarzacz()
