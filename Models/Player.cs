@@ -13,7 +13,6 @@ namespace iRANE_62.Models
         public IWavePlayer wavePlayer { get; set; }
         public AudioFileReader audioFileReader { get; set; }
         public string fileName { get; set; }
-        public List<Song> Playlist { get; set; } = new List<Song>();
 
         public Action<float> setVolumeDelegate;
 

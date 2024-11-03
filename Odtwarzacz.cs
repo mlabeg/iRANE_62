@@ -72,8 +72,6 @@ namespace iRANE_62
             Play(player2);
         }
 
-
-
         private void Play(Player player)
         {
             if (player.fileName == null) player.fileName = SelectInputFile();
@@ -113,7 +111,10 @@ namespace iRANE_62
 
             var sampleChannel = new SampleChannel(player.audioFileReader, true);
             player.setVolumeDelegate = vol => sampleChannel.Volume = vol;
+            sampleChannel.PreVolumeMeter += mikser.OnPostChanelVolumeMeter;
             var postVolumeMeter = new MeteringSampleProvider(sampleChannel);
+            postVolumeMeter.StreamVolume += mikser.OnPostMainVolumeMeter;
+
 
             player.wavePlayer.Init(postVolumeMeter);
 
