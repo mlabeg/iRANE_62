@@ -97,19 +97,19 @@ namespace iRANE_62
 
         private void level_odt1_ValueChanged(object sender, EventArgs e)
         {
-            if (player1.audioFileReader != null)
+            if (player1.wavePlayer != null)
             {
-                player1.audioFileReader.Volume = (float)level_odt1.Value;
+                player1.setVolumeDelegate((float)level_odt1.Value);
             }
-
         }
 
         private void level_odt2_ValueChanged(object sender, EventArgs e)
         {
-            if (player1.audioFileReader != null)
+            if (player2.wavePlayer != null)
             {
-                player2.audioFileReader.Volume = (float)level_odt2.Value;
+                player2.setVolumeDelegate((float)level_odt2.Value);
             }
+
         }
     }
 }

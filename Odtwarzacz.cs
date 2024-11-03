@@ -1,5 +1,6 @@
 ﻿using iRANE_62.Models;
 using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
 using NAudio.WaveFormRenderer;
 using System;
 using System.Collections.Generic;
@@ -26,9 +27,7 @@ namespace iRANE_62
         private readonly WaveFormRenderer waveFormRenderer;
         private readonly WaveFormRendererSettings standardSettings;
 
-        private Action<float> setVolumeDelegate;
-
-
+        
 
         public Odtwarzacz()
         {
@@ -43,11 +42,6 @@ namespace iRANE_62
             standardSettings = new StandardWaveFormRendererSettings() { Name = "Standard" };
             waveFormRenderer = new WaveFormRenderer();
         }
-
-        /*
-         tworzymy nowy mikser
-        wywołujemy meodę w mikserze zwracającą poziomy głośności
-         */
 
         private void Odtwarzacz_Load(object sender, EventArgs e)
         {
@@ -102,6 +96,7 @@ namespace iRANE_62
 
                 if (player.wavePlayer.PlaybackState == PlaybackState.Paused)
                 {
+                    SetVolumeFromMixerLevel(player);
                     player.wavePlayer.Play();
                     return;
                 }
@@ -116,23 +111,28 @@ namespace iRANE_62
 
             player.audioFileReader = new AudioFileReader(player.fileName);
 
+            var sampleChannel = new SampleChannel(player.audioFileReader, true);
+            player.setVolumeDelegate = vol => sampleChannel.Volume = vol;
+            var postVolumeMeter = new MeteringSampleProvider(sampleChannel);
 
-            //nieładne rozwiązanie z perspektywy rozwijania dalej kodu (nie przestrzeganie zasady Open-Close Principle)
-            if (player.Id == 1)
-            {
-                //player.audioFileReader.Volume = (float)mikser.level_odt1.Value;
-                player.wavePlayer.Volume= (float)mikser.level_odt1.Value;
-            }
-            else
-            {
-                player.audioFileReader.Volume = (float)mikser.level_odt2.Value;
-            }
+            player.wavePlayer.Init(postVolumeMeter);
 
-
-            player.wavePlayer.Init(player.audioFileReader);
+            SetVolumeFromMixerLevel(player);
 
             player.wavePlayer.Play();
             timer1.Enabled = true;
+        }
+
+        private void SetVolumeFromMixerLevel(Player player)
+        {
+            if (player.Id == 1)
+            {
+                player.setVolumeDelegate((float)mikser.level_odt1.Value);
+            }
+            else
+            {
+                player.setVolumeDelegate((float)mikser.level_odt2.Value);
+            }
         }
 
         // ten kawałek kodu może być potrzebny później przy dodaniu obsługi słuchawek
