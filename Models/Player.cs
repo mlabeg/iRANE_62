@@ -16,8 +16,6 @@ namespace iRANE_62.Models
 
         public Action<float> setVolumeDelegate;
 
-
-
         public Player(int id)
         {
             this.Id = id;

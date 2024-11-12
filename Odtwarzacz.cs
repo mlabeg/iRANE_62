@@ -27,7 +27,7 @@ namespace iRANE_62
         private readonly WaveFormRenderer waveFormRenderer;
         private readonly WaveFormRendererSettings standardSettings;
 
-        
+
 
         public Odtwarzacz()
         {
@@ -153,7 +153,7 @@ namespace iRANE_62
 
         #endregion
 
-        #region Open button
+        #region Open
 
         private void btnOpen_1_Click(object sender, EventArgs e)
         {
@@ -187,6 +187,20 @@ namespace iRANE_62
                 RenderWaveform(player);
                 Song song = new Song(player.fileName);
                 playlista.Items.Add(song);
+                UpadteTotalSongTime(player,song);
+            }
+        }
+
+        private void UpadteTotalSongTime(Player player, Song song)
+        {
+            if (player.Id == 1)
+            {
+                labelTotalTime_1.Text = FormatTimeSpan(song.SongSpan);
+
+            }
+            else
+            {
+                labelTotalTime_2.Text = FormatTimeSpan(song.SongSpan);
             }
         }
 
@@ -415,12 +429,10 @@ namespace iRANE_62
             if (player1.audioFileReader != null)
             {
                 labelNowTime_1.Text = FormatTimeSpan(player1.audioFileReader.CurrentTime);
-                labelTotalTime_1.Text = FormatTimeSpan(player1.audioFileReader.TotalTime);//TODO zmienić na czas pobierany z właściwości utworu
             }
             if (player2.audioFileReader != null)
             {
                 labelNowTime_2.Text = FormatTimeSpan(player2.audioFileReader.CurrentTime);
-                labelTotalTime_2.Text = FormatTimeSpan(player2.audioFileReader.TotalTime);//zmienić na czas pobierany z właściwości utworu
             }
         }
 

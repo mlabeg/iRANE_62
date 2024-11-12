@@ -15,7 +15,7 @@ namespace iRANE_62.Models
         public string? Author { get; set; }
         public string? Album { get; set; }
         public List<CuePoint>?  CuePoints { get; set; } = new List<CuePoint>();
-        public TimeSpan? SongSpan { get; set; }
+        public TimeSpan SongSpan { get; set; }
 
         public override string ToString()
         {
@@ -36,5 +36,6 @@ namespace iRANE_62.Models
                 return reader.TotalTime;
             }
         }
+       
     }
 }
