@@ -56,9 +56,10 @@
             // 
             // btnOpen_1
             // 
-            btnOpen_1.Location = new Point(31, 72);
+            btnOpen_1.Location = new Point(25, 58);
+            btnOpen_1.Margin = new Padding(2, 2, 2, 2);
             btnOpen_1.Name = "btnOpen_1";
-            btnOpen_1.Size = new Size(85, 34);
+            btnOpen_1.Size = new Size(68, 27);
             btnOpen_1.TabIndex = 1;
             btnOpen_1.Text = "Open";
             btnOpen_1.UseVisualStyleBackColor = true;
@@ -67,9 +68,10 @@
             // 
             // btnPlay_1
             // 
-            btnPlay_1.Location = new Point(122, 72);
+            btnPlay_1.Location = new Point(98, 58);
+            btnPlay_1.Margin = new Padding(2, 2, 2, 2);
             btnPlay_1.Name = "btnPlay_1";
-            btnPlay_1.Size = new Size(76, 34);
+            btnPlay_1.Size = new Size(61, 27);
             btnPlay_1.TabIndex = 1;
             btnPlay_1.Text = "Play";
             btnPlay_1.UseVisualStyleBackColor = true;
@@ -78,9 +80,10 @@
             // 
             // btnPause_1
             // 
-            btnPause_1.Location = new Point(204, 72);
+            btnPause_1.Location = new Point(163, 58);
+            btnPause_1.Margin = new Padding(2, 2, 2, 2);
             btnPause_1.Name = "btnPause_1";
-            btnPause_1.Size = new Size(79, 34);
+            btnPause_1.Size = new Size(63, 27);
             btnPause_1.TabIndex = 1;
             btnPause_1.Text = "Pause";
             btnPause_1.UseVisualStyleBackColor = true;
@@ -88,9 +91,10 @@
             // 
             // btnStop_1
             // 
-            btnStop_1.Location = new Point(289, 72);
+            btnStop_1.Location = new Point(231, 58);
+            btnStop_1.Margin = new Padding(2, 2, 2, 2);
             btnStop_1.Name = "btnStop_1";
-            btnStop_1.Size = new Size(82, 34);
+            btnStop_1.Size = new Size(66, 27);
             btnStop_1.TabIndex = 1;
             btnStop_1.Text = "Stop";
             btnStop_1.UseVisualStyleBackColor = true;
@@ -98,9 +102,10 @@
             // 
             // btnOpen_2
             // 
-            btnOpen_2.Location = new Point(735, 72);
+            btnOpen_2.Location = new Point(588, 58);
+            btnOpen_2.Margin = new Padding(2, 2, 2, 2);
             btnOpen_2.Name = "btnOpen_2";
-            btnOpen_2.Size = new Size(69, 34);
+            btnOpen_2.Size = new Size(55, 27);
             btnOpen_2.TabIndex = 1;
             btnOpen_2.Text = "Open";
             btnOpen_2.UseVisualStyleBackColor = true;
@@ -109,9 +114,10 @@
             // 
             // btnPlay_2
             // 
-            btnPlay_2.Location = new Point(810, 72);
+            btnPlay_2.Location = new Point(648, 58);
+            btnPlay_2.Margin = new Padding(2, 2, 2, 2);
             btnPlay_2.Name = "btnPlay_2";
-            btnPlay_2.Size = new Size(72, 34);
+            btnPlay_2.Size = new Size(58, 27);
             btnPlay_2.TabIndex = 1;
             btnPlay_2.Text = "Play";
             btnPlay_2.UseVisualStyleBackColor = true;
@@ -120,9 +126,10 @@
             // 
             // btnPause_2
             // 
-            btnPause_2.Location = new Point(888, 72);
+            btnPause_2.Location = new Point(710, 58);
+            btnPause_2.Margin = new Padding(2, 2, 2, 2);
             btnPause_2.Name = "btnPause_2";
-            btnPause_2.Size = new Size(78, 34);
+            btnPause_2.Size = new Size(62, 27);
             btnPause_2.TabIndex = 1;
             btnPause_2.Text = "Pause";
             btnPause_2.UseVisualStyleBackColor = true;
@@ -130,9 +137,10 @@
             // 
             // btnStop_2
             // 
-            btnStop_2.Location = new Point(972, 72);
+            btnStop_2.Location = new Point(778, 58);
+            btnStop_2.Margin = new Padding(2, 2, 2, 2);
             btnStop_2.Name = "btnStop_2";
-            btnStop_2.Size = new Size(75, 34);
+            btnStop_2.Size = new Size(60, 27);
             btnStop_2.TabIndex = 1;
             btnStop_2.Text = "Stop";
             btnStop_2.UseVisualStyleBackColor = true;
@@ -142,10 +150,10 @@
             // 
             playlista.AllowDrop = true;
             playlista.FormattingEnabled = true;
-            playlista.ItemHeight = 25;
-            playlista.Location = new Point(22, 283);
+            playlista.Location = new Point(18, 226);
+            playlista.Margin = new Padding(2, 2, 2, 2);
             playlista.Name = "playlista";
-            playlista.Size = new Size(1344, 304);
+            playlista.Size = new Size(1076, 244);
             playlista.TabIndex = 2;
             playlista.DragDrop += listBox1_DragDrop;
             playlista.DragEnter += listBox1_DragEnter;
@@ -154,44 +162,49 @@
             // labelNowTime_1
             // 
             labelNowTime_1.AutoSize = true;
-            labelNowTime_1.Location = new Point(489, 72);
+            labelNowTime_1.Location = new Point(391, 58);
+            labelNowTime_1.Margin = new Padding(2, 0, 2, 0);
             labelNowTime_1.Name = "labelNowTime_1";
-            labelNowTime_1.Size = new Size(56, 25);
+            labelNowTime_1.Size = new Size(44, 20);
             labelNowTime_1.TabIndex = 3;
             labelNowTime_1.Text = "00:00";
             // 
             // labelTotalTime_1
             // 
             labelTotalTime_1.AutoSize = true;
-            labelTotalTime_1.Location = new Point(588, 72);
+            labelTotalTime_1.Location = new Point(470, 58);
+            labelTotalTime_1.Margin = new Padding(2, 0, 2, 0);
             labelTotalTime_1.Name = "labelTotalTime_1";
-            labelTotalTime_1.Size = new Size(56, 25);
+            labelTotalTime_1.Size = new Size(44, 20);
             labelTotalTime_1.TabIndex = 3;
             labelTotalTime_1.Text = "00:00";
             // 
             // labelNowTime_2
             // 
             labelNowTime_2.AutoSize = true;
-            labelNowTime_2.Location = new Point(1143, 72);
+            labelNowTime_2.Location = new Point(914, 58);
+            labelNowTime_2.Margin = new Padding(2, 0, 2, 0);
             labelNowTime_2.Name = "labelNowTime_2";
-            labelNowTime_2.Size = new Size(56, 25);
+            labelNowTime_2.Size = new Size(44, 20);
             labelNowTime_2.TabIndex = 3;
             labelNowTime_2.Text = "00:00";
             // 
             // labelTotalTime_2
             // 
             labelTotalTime_2.AutoSize = true;
-            labelTotalTime_2.Location = new Point(1242, 72);
+            labelTotalTime_2.Location = new Point(994, 58);
+            labelTotalTime_2.Margin = new Padding(2, 0, 2, 0);
             labelTotalTime_2.Name = "labelTotalTime_2";
-            labelTotalTime_2.Size = new Size(56, 25);
+            labelTotalTime_2.Size = new Size(44, 20);
             labelTotalTime_2.TabIndex = 3;
             labelTotalTime_2.Text = "00:00";
             // 
             // pictureBox1
             // 
-            pictureBox1.Location = new Point(22, 126);
+            pictureBox1.Location = new Point(18, 101);
+            pictureBox1.Margin = new Padding(2, 2, 2, 2);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(655, 125);
+            pictureBox1.Size = new Size(524, 100);
             pictureBox1.TabIndex = 4;
             pictureBox1.TabStop = false;
             // 
@@ -199,17 +212,19 @@
             // 
             labelRendering1.AutoSize = true;
             labelRendering1.Font = new Font("Segoe UI", 20F);
-            labelRendering1.Location = new Point(31, 163);
+            labelRendering1.Location = new Point(25, 130);
+            labelRendering1.Margin = new Padding(2, 0, 2, 0);
             labelRendering1.Name = "labelRendering1";
-            labelRendering1.Size = new Size(239, 54);
+            labelRendering1.Size = new Size(201, 46);
             labelRendering1.TabIndex = 5;
             labelRendering1.Text = "Ładowanie...";
             // 
             // pictureBox2
             // 
-            pictureBox2.Location = new Point(711, 126);
+            pictureBox2.Location = new Point(569, 101);
+            pictureBox2.Margin = new Padding(2, 2, 2, 2);
             pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(655, 125);
+            pictureBox2.Size = new Size(524, 100);
             pictureBox2.TabIndex = 4;
             pictureBox2.TabStop = false;
             // 
@@ -217,42 +232,44 @@
             // 
             labelRendering2.AutoSize = true;
             labelRendering2.Font = new Font("Segoe UI", 20F);
-            labelRendering2.Location = new Point(735, 163);
+            labelRendering2.Location = new Point(588, 130);
+            labelRendering2.Margin = new Padding(2, 0, 2, 0);
             labelRendering2.Name = "labelRendering2";
-            labelRendering2.Size = new Size(239, 54);
+            labelRendering2.Size = new Size(201, 46);
             labelRendering2.TabIndex = 5;
             labelRendering2.Text = "Ładowanie...";
             // 
             // labelTrack1
             // 
             labelTrack1.AutoSize = true;
-            labelTrack1.Location = new Point(31, 23);
+            labelTrack1.Location = new Point(25, 18);
+            labelTrack1.Margin = new Padding(2, 0, 2, 0);
             labelTrack1.Name = "labelTrack1";
-            labelTrack1.Size = new Size(108, 25);
+            labelTrack1.Size = new Size(90, 20);
             labelTrack1.TabIndex = 6;
             labelTrack1.Text = "Ładowanie...";
             // 
             // labelTrack2
             // 
             labelTrack2.AutoSize = true;
-            labelTrack2.Location = new Point(735, 23);
+            labelTrack2.Location = new Point(588, 18);
+            labelTrack2.Margin = new Padding(2, 0, 2, 0);
             labelTrack2.Name = "labelTrack2";
-            labelTrack2.Size = new Size(108, 25);
+            labelTrack2.Size = new Size(90, 20);
             labelTrack2.TabIndex = 6;
             labelTrack2.Text = "Ładowanie...";
             // 
             // Odtwarzacz
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoScroll = true;
-            ClientSize = new Size(1393, 622);
+            ClientSize = new Size(1114, 498);
             Controls.Add(labelTrack2);
             Controls.Add(labelTrack1);
             Controls.Add(labelRendering2);
             Controls.Add(labelRendering1);
             Controls.Add(pictureBox2);
-            Controls.Add(pictureBox1);
             Controls.Add(labelTotalTime_2);
             Controls.Add(labelTotalTime_1);
             Controls.Add(labelNowTime_2);
@@ -266,6 +283,8 @@
             Controls.Add(btnPlay_1);
             Controls.Add(btnOpen_2);
             Controls.Add(btnOpen_1);
+            Controls.Add(pictureBox1);
+            Margin = new Padding(2, 2, 2, 2);
             Name = "Odtwarzacz";
             Text = "Odtwarzacz";
             Load += Odtwarzacz_Load;

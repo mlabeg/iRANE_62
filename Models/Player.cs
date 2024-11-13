@@ -10,11 +10,11 @@ namespace iRANE_62.Models
     public class Player
     {
         public int Id { get; set; }
-        public IWavePlayer wavePlayer { get; set; }
-        public AudioFileReader audioFileReader { get; set; }
-        public string fileName { get; set; }
+        public IWavePlayer WavePlayer { get; set; }
+        public AudioFileReader AudioFileReader { get; set; }
+        public string FileName { get; set; }
 
-        public Action<float> setVolumeDelegate;
+        public Action<float> SetVolumeDelegate;
 
         public Player(int id)
         {

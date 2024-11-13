@@ -99,17 +99,17 @@ namespace iRANE_62
 
         private void level_odt1_ValueChanged(object sender, EventArgs e)
         {
-            if (player1.wavePlayer != null)
+            if (player1.WavePlayer != null)
             {
-                player1.setVolumeDelegate((float)level_odt1.Value);
+                player1.SetVolumeDelegate((float)level_odt1.Value);
             }
         }
 
         private void level_odt2_ValueChanged(object sender, EventArgs e)
         {
-            if (player2.wavePlayer != null)
+            if (player2.WavePlayer != null)
             {
-                player2.setVolumeDelegate((float)level_odt2.Value);
+                player2.SetVolumeDelegate((float)level_odt2.Value);
             }
         }
 

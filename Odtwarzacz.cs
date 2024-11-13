@@ -74,8 +74,8 @@ namespace iRANE_62
 
         private void Play(Player player)
         {
-            if (player.fileName == null) player.fileName = SelectInputFile();
-            if (player.fileName != null)
+            if (player.FileName == null) player.FileName = SelectInputFile();
+            if (player.FileName != null)
             {
                 BeginPlayback(ref player);
             }
@@ -84,43 +84,43 @@ namespace iRANE_62
         private void BeginPlayback(ref Player player)
         {
 
-            if (player.wavePlayer != null)
+            if (player.WavePlayer != null)
             {
-                if (player.wavePlayer.PlaybackState == PlaybackState.Playing)
+                if (player.WavePlayer.PlaybackState == PlaybackState.Playing)
                 {
-                    player.wavePlayer.Pause();
+                    player.WavePlayer.Pause();
                     return;
                 }
 
-                if (player.wavePlayer.PlaybackState == PlaybackState.Paused)
+                if (player.WavePlayer.PlaybackState == PlaybackState.Paused)
                 {
                     SetVolumeFromMixerLevel(player);
-                    player.wavePlayer.Play();
+                    player.WavePlayer.Play();
                     return;
                 }
 
-                player.wavePlayer.Stop();
-                player.wavePlayer.Dispose();
+                player.WavePlayer.Stop();
+                player.WavePlayer.Dispose();
             }
 
-            if (player.fileName == String.Empty) return;
+            if (player.FileName == String.Empty) return;
 
-            player.wavePlayer = new WaveOutEvent();
+            player.WavePlayer = new WaveOutEvent();
 
-            player.audioFileReader = new AudioFileReader(player.fileName);
+            player.AudioFileReader = new AudioFileReader(player.FileName);
 
-            var sampleChannel = new SampleChannel(player.audioFileReader, true);
-            player.setVolumeDelegate = vol => sampleChannel.Volume = vol;
+            var sampleChannel = new SampleChannel(player.AudioFileReader, true);
+            player.SetVolumeDelegate = vol => sampleChannel.Volume = vol;
             sampleChannel.PreVolumeMeter += mikser.OnPostChanelVolumeMeter;
             var postVolumeMeter = new MeteringSampleProvider(sampleChannel);
             postVolumeMeter.StreamVolume += mikser.OnPostMainVolumeMeter;
 
 
-            player.wavePlayer.Init(postVolumeMeter);
+            player.WavePlayer.Init(postVolumeMeter);
 
             SetVolumeFromMixerLevel(player);
 
-            player.wavePlayer.Play();
+            player.WavePlayer.Play();
             timer1.Enabled = true;
         }
 
@@ -128,11 +128,11 @@ namespace iRANE_62
         {
             if (player.Id == 1)
             {
-                player.setVolumeDelegate((float)mikser.level_odt1.Value);
+                player.SetVolumeDelegate((float)mikser.level_odt1.Value);
             }
             else
             {
-                player.setVolumeDelegate((float)mikser.level_odt2.Value);
+                player.SetVolumeDelegate((float)mikser.level_odt2.Value);
             }
         }
 
@@ -180,12 +180,12 @@ namespace iRANE_62
 
         private void Open(Player player)
         {
-            player.fileName = SelectInputFile();
-            if (player.fileName != String.Empty)
+            player.FileName = SelectInputFile();
+            if (player.FileName != String.Empty)
             {
                 LabelTrackUpdate(player);
                 RenderWaveform(player);
-                Song song = new Song(player.fileName);
+                Song song = new Song(player.FileName);
                 playlista.Items.Add(song);
                 UpadteTotalSongTime(player,song);
             }
@@ -221,7 +221,7 @@ namespace iRANE_62
 
         private void LabelTrackUpdate(Player player)
         {
-            string songName = player.fileName.Split('\\').Last().ToString();
+            string songName = player.FileName.Split('\\').Last().ToString();
             if (player.Id == 1)
             {
                 labelTrack1.Text = songName;
@@ -256,7 +256,7 @@ namespace iRANE_62
 
             if (e.KeyCode == Keys.Space)
             {
-                if (player1.fileName != null)
+                if (player1.FileName != null)
                 {
                     BeginPlayback(ref player1);
                 }
@@ -265,7 +265,7 @@ namespace iRANE_62
             if (e.KeyCode == Keys.Enter)
             {
 
-                if (player2.fileName != null)
+                if (player2.FileName != null)
                 {
                     BeginPlayback(ref player2);
                 }
@@ -275,8 +275,8 @@ namespace iRANE_62
 
         private void OpenSongFromPlaylist(Player player, Song song)
         {
-            player.fileName = song.Path;
-            if (player.fileName != null)
+            player.FileName = song.Path;
+            if (player.FileName != null)
             {
                 LabelTrackUpdate(player);
                 RenderWaveform(player);
@@ -298,9 +298,9 @@ namespace iRANE_62
         }
         private void Stop(ref Player player)
         {
-            if (player.wavePlayer != null)
+            if (player.WavePlayer != null)
             {
-                player.wavePlayer.Stop();
+                player.WavePlayer.Stop();
             }
         }
         #endregion
@@ -319,12 +319,11 @@ namespace iRANE_62
 
         private void Pause(ref Player player)
         {
-            if (player.wavePlayer != null)
-                player.wavePlayer.Pause();
+            if (player.WavePlayer != null)
+                player.WavePlayer.Pause();
         }
 
         #endregion
-
 
         #region Waveform Rendering
 
@@ -342,7 +341,7 @@ namespace iRANE_62
 
         private void RenderWaveform(Player player)
         {
-            if (player.fileName == null) return;
+            if (player.FileName == null) return;
 
             var settings = standardSettings;//TODO zmień na jednolity "ładny" kolor waveforma
 
@@ -370,7 +369,7 @@ namespace iRANE_62
             Image image = null;
             try
             {
-                using (var wavestream = new AudioFileReader(player.fileName))
+                using (var wavestream = new AudioFileReader(player.FileName))
                 {
                     image = waveFormRenderer.Render(wavestream, peakProvider, settings);
                 }
@@ -411,28 +410,28 @@ namespace iRANE_62
 
         private void CleanUp()
         {
-            if (player1.audioFileReader != null)
+            if (player1.AudioFileReader != null)
             {
-                player1.audioFileReader.Dispose();
-                player1.audioFileReader = null;
+                player1.AudioFileReader.Dispose();
+                player1.AudioFileReader = null;
             }
 
-            if (player2.audioFileReader != null)
+            if (player2.AudioFileReader != null)
             {
-                player2.audioFileReader.Dispose();
-                player2.audioFileReader = null;
+                player2.AudioFileReader.Dispose();
+                player2.AudioFileReader = null;
             }
         }
 
         void OnTimerTick(object sender, EventArgs e)
         {
-            if (player1.audioFileReader != null)
+            if (player1.AudioFileReader != null)
             {
-                labelNowTime_1.Text = FormatTimeSpan(player1.audioFileReader.CurrentTime);
+                labelNowTime_1.Text = FormatTimeSpan(player1.AudioFileReader.CurrentTime);
             }
-            if (player2.audioFileReader != null)
+            if (player2.AudioFileReader != null)
             {
-                labelNowTime_2.Text = FormatTimeSpan(player2.audioFileReader.CurrentTime);
+                labelNowTime_2.Text = FormatTimeSpan(player2.AudioFileReader.CurrentTime);
             }
         }
 
@@ -457,13 +456,13 @@ namespace iRANE_62
 
         private void PressedSpacebarOrEnter(ref Player player)
         {
-            if (player.wavePlayer == null) return;
+            if (player.WavePlayer == null) return;
 
-            if (player.wavePlayer.PlaybackState == PlaybackState.Playing)
+            if (player.WavePlayer.PlaybackState == PlaybackState.Playing)
             {
-                player.wavePlayer.Pause();
+                player.WavePlayer.Pause();
             }
-            player.wavePlayer.Play();
+            player.WavePlayer.Play();
         }
 
         private void listBox1_DragDrop(object sender, DragEventArgs e)
