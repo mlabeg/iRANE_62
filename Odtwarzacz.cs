@@ -1,4 +1,5 @@
 ﻿using iRANE_62.Models;
+using Microsoft.VisualBasic;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using NAudio.WaveFormRenderer;
@@ -109,12 +110,19 @@ namespace iRANE_62
 
             player.AudioFileReader = new AudioFileReader(player.FileName);
 
+
+            //Pre
             var sampleChannel = new SampleChannel(player.AudioFileReader, true);
             player.SetVolumeDelegate = vol => sampleChannel.Volume = vol;
             sampleChannel.PreVolumeMeter += mikser.OnPostChanelVolumeMeter;
-            var postVolumeMeter = new MeteringSampleProvider(sampleChannel);
-            postVolumeMeter.StreamVolume += mikser.OnPostMainVolumeMeter;
 
+            //EQ
+            mikser.equalizer = new NAudio.Extras.Equalizer(sampleChannel, mikser.bands);
+
+
+            //Post
+            var postVolumeMeter = new MeteringSampleProvider(mikser.equalizer);
+            postVolumeMeter.StreamVolume += mikser.OnPostMainVolumeMeter;
 
             player.WavePlayer.Init(postVolumeMeter);
 
@@ -135,6 +143,7 @@ namespace iRANE_62
                 player.SetVolumeDelegate((float)mikser.level_odt2.Value);
             }
         }
+
 
         // ten kawałek kodu może być potrzebny później przy dodaniu obsługi słuchawek
         /* private IWavePlayer CreateWavePlayer()//możesz to dodać jako menu rozwijane z paska u góry
@@ -179,7 +188,7 @@ namespace iRANE_62
         }
 
         private void Open(Player player)
-        {
+        {//TODO przepisz to tak, żeby nie powielało OpenSongFromPlaylist
             player.FileName = SelectInputFile();
             if (player.FileName != String.Empty)
             {
@@ -187,7 +196,7 @@ namespace iRANE_62
                 RenderWaveform(player);
                 Song song = new Song(player.FileName);
                 playlista.Items.Add(song);
-                UpadteTotalSongTime(player,song);
+                UpadteTotalSongTime(player, song);
             }
         }
 
@@ -274,12 +283,13 @@ namespace iRANE_62
         }
 
         private void OpenSongFromPlaylist(Player player, Song song)
-        {
+        {//TODO scal to z funkcją Open
             player.FileName = song.Path;
             if (player.FileName != null)
             {
                 LabelTrackUpdate(player);
                 RenderWaveform(player);
+                UpadteTotalSongTime(player, song);
             }
         }
 
