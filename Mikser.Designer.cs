@@ -97,6 +97,7 @@ namespace iRANE_62
             efx_depth = new NAudio.Gui.Pot();
             efx = new Panel();
             loops2 = new Panel();
+            hScrollBar2 = new HScrollBar();
             button15 = new Button();
             hScrollBar6 = new HScrollBar();
             button16 = new Button();
@@ -810,6 +811,7 @@ namespace iRANE_62
             // 
             // loops2
             // 
+            loops2.Controls.Add(hScrollBar2);
             loops2.Controls.Add(button15);
             loops2.Controls.Add(hScrollBar6);
             loops2.Controls.Add(button16);
@@ -821,6 +823,13 @@ namespace iRANE_62
             loops2.Name = "loops2";
             loops2.Size = new Size(70, 422);
             loops2.TabIndex = 7;
+            // 
+            // hScrollBar2
+            // 
+            hScrollBar2.Location = new Point(29, 417);
+            hScrollBar2.Name = "hScrollBar2";
+            hScrollBar2.Size = new Size(8, 8);
+            hScrollBar2.TabIndex = 9;
             // 
             // button15
             // 
@@ -1135,6 +1144,7 @@ namespace iRANE_62
             // 
             // odt2_upfader
             // 
+            odt2_upfader.ImeMode = ImeMode.NoControl;
             odt2_upfader.Location = new Point(711, 834);
             odt2_upfader.Margin = new Padding(2);
             odt2_upfader.Name = "odt2_upfader";
@@ -1153,13 +1163,13 @@ namespace iRANE_62
             // 
             // fader1
             // 
-            fader1.Location = new Point(322, 1140);
+            fader1.Location = new Point(289, 1128);
             fader1.Margin = new Padding(2);
             fader1.Maximum = 0;
             fader1.Minimum = 1;
             fader1.Name = "fader1";
             fader1.Orientation = Orientation.Horizontal;
-            fader1.Size = new Size(342, 99);
+            fader1.Size = new Size(410, 99);
             fader1.TabIndex = 14;
             fader1.Text = "fader1";
             fader1.Value = 1;
@@ -1362,5 +1372,6 @@ namespace iRANE_62
         private NAudio.Gui.Fader fader1;
         internal NAudio.Gui.Pot level_odt1;
         internal NAudio.Gui.Pot level_odt2;
+        private HScrollBar hScrollBar2;
     }
 }

@@ -32,8 +32,6 @@ namespace iRANE_62
                 new EqualizerBand { Frequency = 16000, Gain = 0f, Bandwidth = 0.8f } // Air
 
                 };
-           // this.PropertyChanged += OnPropertyChanged;
-
         }
 
         public Mikser(ref Player player1, ref Player player2) : this()
@@ -230,7 +228,7 @@ namespace iRANE_62
                 if (bands[7].Gain != value)
                 {
                     bands[7].Gain = value;
-                   // OnPropertyChanged("Band8");
+                    // OnPropertyChanged("Band8");
                 }
             }
         }
@@ -298,5 +296,6 @@ namespace iRANE_62
             Band8 = (float)low_odt1.Value;
             Band9 = (float)low_odt1.Value;
         }
+
     }
 }
