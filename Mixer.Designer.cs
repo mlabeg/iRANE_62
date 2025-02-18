@@ -3,7 +3,7 @@ using NAudio.Wave;
 
 namespace iRANE_62
 {
-    partial class Mikser
+    partial class Mixer
     {
         /// <summary>
         ///  Required designer variable.
@@ -34,13 +34,13 @@ namespace iRANE_62
         {
             components = new System.ComponentModel.Container();
             pan_odt1 = new NAudio.Gui.PanSlider();
-            level_odt1 = new NAudio.Gui.Pot();
+            gain_ch1 = new NAudio.Gui.Pot();
             high_odt1 = new NAudio.Gui.Pot();
             mid_odt1 = new NAudio.Gui.Pot();
             aux_level = new NAudio.Gui.Pot();
             filter_odt1 = new NAudio.Gui.Pot();
             pan_odt2 = new NAudio.Gui.PanSlider();
-            level_odt2 = new NAudio.Gui.Pot();
+            gain_ch2 = new NAudio.Gui.Pot();
             high_odt2 = new NAudio.Gui.Pot();
             mid_odt2 = new NAudio.Gui.Pot();
             filter_odt2 = new NAudio.Gui.Pot();
@@ -150,17 +150,17 @@ namespace iRANE_62
             pan_odt1.Size = new Size(66, 32);
             pan_odt1.TabIndex = 1;
             // 
-            // level_odt1
+            // gain_ch1
             // 
-            level_odt1.Location = new Point(389, 39);
-            level_odt1.Margin = new Padding(4, 5, 4, 5);
-            level_odt1.Maximum = 1D;
-            level_odt1.Minimum = 0D;
-            level_odt1.Name = "level_odt1";
-            level_odt1.Size = new Size(43, 55);
-            level_odt1.TabIndex = 3;
-            level_odt1.Value = 0D;
-            level_odt1.ValueChanged += level_odt1_ValueChanged;
+            gain_ch1.Location = new Point(389, 39);
+            gain_ch1.Margin = new Padding(4, 5, 4, 5);
+            gain_ch1.Maximum = 1D;
+            gain_ch1.Minimum = 0D;
+            gain_ch1.Name = "gain_ch1";
+            gain_ch1.Size = new Size(43, 55);
+            gain_ch1.TabIndex = 3;
+            gain_ch1.Value = 0D;
+            gain_ch1.ValueChanged += level_odt1_ValueChanged;
             // 
             // high_odt1
             // 
@@ -217,17 +217,17 @@ namespace iRANE_62
             pan_odt2.Size = new Size(66, 32);
             pan_odt2.TabIndex = 1;
             // 
-            // level_odt2
+            // gain_ch2
             // 
-            level_odt2.Location = new Point(514, 39);
-            level_odt2.Margin = new Padding(4, 5, 4, 5);
-            level_odt2.Maximum = 1D;
-            level_odt2.Minimum = 0D;
-            level_odt2.Name = "level_odt2";
-            level_odt2.Size = new Size(43, 55);
-            level_odt2.TabIndex = 3;
-            level_odt2.Value = 0D;
-            level_odt2.ValueChanged += level_odt2_ValueChanged;
+            gain_ch2.Location = new Point(514, 39);
+            gain_ch2.Margin = new Padding(4, 5, 4, 5);
+            gain_ch2.Maximum = 1D;
+            gain_ch2.Minimum = 0D;
+            gain_ch2.Name = "gain_ch2";
+            gain_ch2.Size = new Size(43, 55);
+            gain_ch2.TabIndex = 3;
+            gain_ch2.Value = 0D;
+            gain_ch2.ValueChanged += level_odt2_ValueChanged;
             // 
             // high_odt2
             // 
@@ -383,6 +383,7 @@ namespace iRANE_62
             odt1_source.Name = "odt1_source";
             odt1_source.Size = new Size(73, 28);
             odt1_source.TabIndex = 6;
+            odt1_source.SelectedIndexChanged += this.odt1_source_SelectedIndexChanged;
             // 
             // odt2_source
             // 
@@ -1174,12 +1175,12 @@ namespace iRANE_62
             fader1.Text = "fader1";
             fader1.Value = 1;
             // 
-            // Mikser
+            // Mixer
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoScroll = true;
-            ClientSize = new Size(1055, 1256);
+            ClientSize = new Size(1011, 1256);
             Controls.Add(fader1);
             Controls.Add(odt1_upfader);
             Controls.Add(odt2_upfader);
@@ -1236,9 +1237,9 @@ namespace iRANE_62
             Controls.Add(session_out);
             Controls.Add(high_odt1);
             Controls.Add(mic_level);
-            Controls.Add(level_odt2);
+            Controls.Add(gain_ch2);
             Controls.Add(main);
-            Controls.Add(level_odt1);
+            Controls.Add(gain_ch1);
             Controls.Add(pan_odt2);
             Controls.Add(pan_odt1);
             Controls.Add(mix);
@@ -1252,7 +1253,7 @@ namespace iRANE_62
             Controls.Add(panel_phones);
             Controls.Add(panel_aux);
             Margin = new Padding(2);
-            Name = "Mikser";
+            Name = "Mixer";
             Text = "Form1";
             odt1.ResumeLayout(false);
             odt1.PerformLayout();
@@ -1370,8 +1371,8 @@ namespace iRANE_62
         private CheckBox chBox_cue_samples;
         private NAudio.Gui.VolumeMeter volumeMeter_ch1;
         private NAudio.Gui.Fader fader1;
-        internal NAudio.Gui.Pot level_odt1;
-        internal NAudio.Gui.Pot level_odt2;
+        internal NAudio.Gui.Pot gain_ch1;
+        internal NAudio.Gui.Pot gain_ch2;
         private HScrollBar hScrollBar2;
     }
 }

@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 namespace iRANE_62
 {
-    public partial class Mikser : Form//, INotifyPropertyChanged
+    public partial class Mixer : Form//, INotifyPropertyChanged
     {
         private Player player1;
         private Player player2;
@@ -17,7 +17,7 @@ namespace iRANE_62
 
         //public event PropertyChangedEventHandler PropertyChanged;
 
-        public Mikser()
+        public Mixer()
         {
             bands = new EqualizerBand[]
                 {
@@ -34,7 +34,7 @@ namespace iRANE_62
                 };
         }
 
-        public Mikser(ref Player player1, ref Player player2) : this()
+        public Mixer(ref Player player1, ref Player player2) : this()
         {
             this.player1 = player1;
             this.player2 = player2;
@@ -246,13 +246,13 @@ namespace iRANE_62
             }
         }
 
-        #endregion
+        
 
         private void level_odt1_ValueChanged(object sender, EventArgs e)
         {
             if (player1.WavePlayer != null)
             {
-                player1.SetVolumeDelegate((float)level_odt1.Value);
+                player1.SetVolumeDelegate((float)gain_ch1.Value);
             }
         }
 
@@ -260,7 +260,7 @@ namespace iRANE_62
         {
             if (player2.WavePlayer != null)
             {
-                player2.SetVolumeDelegate((float)level_odt2.Value);
+                player2.SetVolumeDelegate((float)gain_ch2.Value);
             }
         }
 
@@ -296,6 +296,6 @@ namespace iRANE_62
             Band8 = (float)low_odt1.Value;
             Band9 = (float)low_odt1.Value;
         }
-
+        #endregion
     }
 }

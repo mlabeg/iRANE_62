@@ -19,7 +19,7 @@ namespace iRANE_62
 {
     public partial class Odtwarzacz : Form
     {
-        private Mikser mikser;
+        private Mixer mixer;
 
         private Player player1;
         private Player player2;
@@ -51,14 +51,14 @@ namespace iRANE_62
 
         private void OpenMikser()
         {
-            if (mikser == null || mikser.IsDisposed)
+            if (mixer == null || mixer.IsDisposed)
             {
-                mikser = new Mikser(ref player1, ref player2);
-                mikser.Show();
+                mixer = new Mixer(ref player1, ref player2);
+                mixer.Show();
             }
             else
             {
-                mikser.Focus();
+                mixer.Focus();
             }
         }
 
@@ -114,15 +114,15 @@ namespace iRANE_62
             //Pre
             var sampleChannel = new SampleChannel(player.AudioFileReader, true);
             player.SetVolumeDelegate = vol => sampleChannel.Volume = vol;
-            sampleChannel.PreVolumeMeter += mikser.OnPostChanelVolumeMeter;
+            sampleChannel.PreVolumeMeter += mixer.OnPostChanelVolumeMeter;
 
             //EQ
-            mikser.equalizer = new NAudio.Extras.Equalizer(sampleChannel, mikser.bands);
+            mixer.equalizer = new NAudio.Extras.Equalizer(sampleChannel, mixer.bands);
 
 
             //Post
-            var postVolumeMeter = new MeteringSampleProvider(mikser.equalizer);
-            postVolumeMeter.StreamVolume += mikser.OnPostMainVolumeMeter;
+            var postVolumeMeter = new MeteringSampleProvider(mixer.equalizer);
+            postVolumeMeter.StreamVolume += mixer.OnPostMainVolumeMeter;
 
             player.WavePlayer.Init(postVolumeMeter);
 
@@ -136,11 +136,11 @@ namespace iRANE_62
         {
             if (player.Id == 1)
             {
-                player.SetVolumeDelegate((float)mikser.level_odt1.Value);
+                player.SetVolumeDelegate((float)mixer.gain_ch1.Value);
             }
             else
             {
-                player.SetVolumeDelegate((float)mikser.level_odt2.Value);
+                player.SetVolumeDelegate((float)mixer.gain_ch2.Value);
             }
         }
 
