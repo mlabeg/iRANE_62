@@ -1,4 +1,6 @@
-﻿using NAudio.Extras;
+﻿using iRANE_62.Extensions;
+using NAudio.Extras;
+using NAudio.Wave.SampleProviders;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,6 +14,10 @@ namespace iRANE_62.Models
     {
         public Equalizer equalizer;
         public EqualizerBand[] bands { get; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public StereoPanningSampleProvider PanningProvider { get; set; }
 
         public Eq()
         {
@@ -30,13 +36,12 @@ namespace iRANE_62.Models
                 };
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        #region Bands
         public float Band1
         {
             get => bands[0].Gain;
@@ -153,5 +158,6 @@ namespace iRANE_62.Models
                 OnPropertyChanged(nameof(Band9));
             }
         }
+        #endregion
     }
 }

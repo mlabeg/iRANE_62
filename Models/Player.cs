@@ -18,20 +18,15 @@ namespace iRANE_62.Models
 
         public Action<float> SetVolumeDelegate;
 
-        public Eq Eq { get; set; }
+        public Eq Equalizer { get; set; }
 
-        public PanningSampleProvider Panning { get; set; }
 
         public Player(int id)
         {
             this.Id = id;
-            Eq = new Eq();
+            Equalizer = new Eq();
         }
 
-        public void SetPan(float panValue) { 
-            
-            Panning.Pan = panValue;
-        }
     }
     
 }

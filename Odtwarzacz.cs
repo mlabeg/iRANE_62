@@ -1,4 +1,5 @@
-﻿using iRANE_62.Models;
+﻿using iRANE_62.Extensions;
+using iRANE_62.Models;
 using Microsoft.VisualBasic;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
@@ -123,12 +124,16 @@ namespace iRANE_62
                 sampleChannel.PreVolumeMeter += mixer.OnPostChanel2VolumeMeter;
             }
 
+            //Pan
+            var panningProvider = new StereoPanningSampleProvider(sampleChannel);
+            player.Equalizer.PanningProvider = panningProvider;
+
             //EQ
-            player.Eq.equalizer = new NAudio.Extras.Equalizer(sampleChannel, player.Eq.bands);
+            player.Equalizer.equalizer = new NAudio.Extras.Equalizer(panningProvider, player.Equalizer.bands);
 
 
             //Post
-            var postVolumeMeter = new MeteringSampleProvider(player.Eq.equalizer);
+            var postVolumeMeter = new MeteringSampleProvider(player.Equalizer.equalizer);
             postVolumeMeter.StreamVolume += mixer.OnPostMainVolumeMeter;
 
             player.WavePlayer.Init(postVolumeMeter);

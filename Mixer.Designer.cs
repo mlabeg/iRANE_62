@@ -149,6 +149,7 @@ namespace iRANE_62
             pan_odt1.Pan = 0F;
             pan_odt1.Size = new Size(66, 32);
             pan_odt1.TabIndex = 1;
+            pan_odt1.PanChanged += pan_odt1_PanChanged;
             // 
             // gain_ch1
             // 
@@ -216,6 +217,7 @@ namespace iRANE_62
             pan_odt2.Pan = 0F;
             pan_odt2.Size = new Size(66, 32);
             pan_odt2.TabIndex = 1;
+            pan_odt2.PanChanged += pan_odt2_PanChanged;
             // 
             // gain_ch2
             // 

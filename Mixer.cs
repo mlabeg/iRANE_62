@@ -150,52 +150,52 @@ namespace iRANE_62
         private void high_odt1_ValueChanged(object sender, EventArgs e)
         {
 
-            player1.Eq.Band7 = (float)high_odt1.Value;
-            player1.Eq.Band8 = (float)high_odt1.Value;
-            player1.Eq.Band9 = (float)high_odt1.Value;
-            player1.Eq.equalizer.Update();
+            player1.Equalizer.Band7 = (float)high_odt1.Value;
+            player1.Equalizer.Band8 = (float)high_odt1.Value;
+            player1.Equalizer.Band9 = (float)high_odt1.Value;
+            player1.Equalizer.equalizer.Update();
         }
 
         private void mid_odt1_ValueChanged(object sender, EventArgs e)
         {
-            player1.Eq.Band4 = (float)mid_odt1.Value;
-            player1.Eq.Band5 = (float)mid_odt1.Value;
-            player1.Eq.Band6 = (float)mid_odt1.Value;
-            player1.Eq.equalizer.Update();
+            player1.Equalizer.Band4 = (float)mid_odt1.Value;
+            player1.Equalizer.Band5 = (float)mid_odt1.Value;
+            player1.Equalizer.Band6 = (float)mid_odt1.Value;
+            player1.Equalizer.equalizer.Update();
         }
 
         private void low_odt1_ValueChanged(object sender, EventArgs e)
         {
 
-            player1.Eq.Band1 = (float)low_odt1.Value;
-            player1.Eq.Band2 = (float)low_odt1.Value;
-            player1.Eq.Band3 = (float)low_odt1.Value;
-            player1.Eq.equalizer.Update();
+            player1.Equalizer.Band1 = (float)low_odt1.Value;
+            player1.Equalizer.Band2 = (float)low_odt1.Value;
+            player1.Equalizer.Band3 = (float)low_odt1.Value;
+            player1.Equalizer.equalizer.Update();
         }
 
         private void high_odt2_ValueChanged(object sender, EventArgs e)
         {
-            player2.Eq.Band7 = (float)high_odt2.Value;
-            player2.Eq.Band9 = (float)high_odt2.Value;
-            player2.Eq.Band8 = (float)high_odt2.Value;
-            player2.Eq.equalizer.Update();
+            player2.Equalizer.Band7 = (float)high_odt2.Value;
+            player2.Equalizer.Band9 = (float)high_odt2.Value;
+            player2.Equalizer.Band8 = (float)high_odt2.Value;
+            player2.Equalizer.equalizer.Update();
         }
 
         private void mid_odt2_ValueChanged(object sender, EventArgs e)
         {
-            player2.Eq.Band4 = (float)mid_odt2.Value;
-            player2.Eq.Band5 = (float)mid_odt2.Value;
-            player2.Eq.Band6 = (float)mid_odt2.Value;
-            player2.Eq.equalizer.Update();
+            player2.Equalizer.Band4 = (float)mid_odt2.Value;
+            player2.Equalizer.Band5 = (float)mid_odt2.Value;
+            player2.Equalizer.Band6 = (float)mid_odt2.Value;
+            player2.Equalizer.equalizer.Update();
         }
 
         private void low_odt2_ValueChanged(object sender, EventArgs e)
         {
 
-            player2.Eq.Band1 = (float)low_odt2.Value;
-            player2.Eq.Band2 = (float)low_odt2.Value;
-            player2.Eq.Band3 = (float)low_odt2.Value;
-            player2.Eq.equalizer.Update();
+            player2.Equalizer.Band1 = (float)low_odt2.Value;
+            player2.Equalizer.Band2 = (float)low_odt2.Value;
+            player2.Equalizer.Band3 = (float)low_odt2.Value;
+            player2.Equalizer.equalizer.Update();
         }
 
 
@@ -203,10 +203,17 @@ namespace iRANE_62
 
         private void pan_odt1_PanChanged(object sender, EventArgs e)
         {
-            float panValue = (float)pan_odt1.Pan;
-            player1.SetPan(panValue);
+            if (player1.Equalizer.PanningProvider != null)
+            {
+                float panValue = (float)pan_odt1.Pan;
+                player1.Equalizer.PanningProvider.Pan = panValue;
+            }
+        }
 
-
+        private void pan_odt2_PanChanged(object sender, EventArgs e)
+        {
+            float panValue = (float)pan_odt2.Pan;
+            player2.Equalizer.PanningProvider.Pan = panValue;
         }
     }
 }
