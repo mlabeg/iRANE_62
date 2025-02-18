@@ -1,6 +1,7 @@
 ﻿using NAudio.Extras;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,6 +30,13 @@ namespace iRANE_62.Models
                 };
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         public float Band1
         {
             get => bands[0].Gain;
@@ -37,8 +45,8 @@ namespace iRANE_62.Models
                 if (bands[0].Gain != value)
                 {
                     bands[0].Gain = value;
-                    //equalizer?.Update();
                 }
+                OnPropertyChanged(nameof(Band1));
             }
         }
 
@@ -51,6 +59,7 @@ namespace iRANE_62.Models
                 {
                     bands[1].Gain = value;
                 }
+                OnPropertyChanged(nameof(Band2));
             }
         }
 
@@ -63,6 +72,7 @@ namespace iRANE_62.Models
                 {
                     bands[2].Gain = value;
                 }
+                OnPropertyChanged(nameof(Band3));
             }
         }
 
@@ -74,8 +84,8 @@ namespace iRANE_62.Models
                 if (bands[3].Gain != value)
                 {
                     bands[3].Gain = value;
-                    //equalizer?.Update();
                 }
+                OnPropertyChanged(nameof(Band4));
             }
         }
 
@@ -88,6 +98,7 @@ namespace iRANE_62.Models
                 {
                     bands[4].Gain = value;
                 }
+                OnPropertyChanged(nameof(Band5));
             }
         }
 
@@ -100,6 +111,7 @@ namespace iRANE_62.Models
                 {
                     bands[5].Gain = value;
                 }
+                OnPropertyChanged(nameof(Band6));
             }
         }
 
@@ -111,8 +123,8 @@ namespace iRANE_62.Models
                 if (bands[6].Gain != value)
                 {
                     bands[6].Gain = value;
-                    //equalizer?.Update();
                 }
+                OnPropertyChanged(nameof(Band7));
             }
         }
 
@@ -125,6 +137,7 @@ namespace iRANE_62.Models
                 {
                     bands[7].Gain = value;
                 }
+                OnPropertyChanged(nameof(Band8));
             }
         }
 
@@ -137,6 +150,7 @@ namespace iRANE_62.Models
                 {
                     bands[8].Gain = value;
                 }
+                OnPropertyChanged(nameof(Band9));
             }
         }
     }

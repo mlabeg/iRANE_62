@@ -1,5 +1,6 @@
 ﻿using NAudio.Extras;
 using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,17 @@ namespace iRANE_62.Models
 
         public Eq Eq { get; set; }
 
+        public PanningSampleProvider Panning { get; set; }
+
         public Player(int id)
         {
             this.Id = id;
             Eq = new Eq();
+        }
+
+        public void SetPan(float panValue) { 
+            
+            Panning.Pan = panValue;
         }
     }
     
