@@ -383,7 +383,6 @@ namespace iRANE_62
             odt1_source.Name = "odt1_source";
             odt1_source.Size = new Size(73, 28);
             odt1_source.TabIndex = 6;
-            odt1_source.SelectedIndexChanged += this.odt1_source_SelectedIndexChanged;
             // 
             // odt2_source
             // 
