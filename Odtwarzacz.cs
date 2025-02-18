@@ -194,10 +194,11 @@ namespace iRANE_62
             Open(player2);
         }
 
-        private void Open(Player player)
-        {//TODO przepisz to tak, żeby nie powielało OpenSongFromPlaylist
-            player.FileName = SelectInputFile();
-            if (player.FileName != String.Empty)
+        private void OpenCommon(Player player, string fileName)
+        {
+            player.FileName = fileName;
+
+            if (player.FileName != null)
             {
                 LabelTrackUpdate(player);
                 RenderWaveform(player);
@@ -206,6 +207,17 @@ namespace iRANE_62
                 UpadteTotalSongTime(player, song);
             }
         }
+
+        private void Open(Player player)
+        {
+            OpenCommon(player, SelectInputFile());
+        }
+
+        private void OpenSongFromPlaylist(Player player, Song song)
+        {
+            OpenCommon(player, song.Path);
+        }
+
 
         private void UpadteTotalSongTime(Player player, Song song)
         {
@@ -289,16 +301,7 @@ namespace iRANE_62
 
         }
 
-        private void OpenSongFromPlaylist(Player player, Song song)
-        {//TODO scal to z funkcją Open
-            player.FileName = song.Path;
-            if (player.FileName != null)
-            {
-                LabelTrackUpdate(player);
-                RenderWaveform(player);
-                UpadteTotalSongTime(player, song);
-            }
-        }
+       
 
         #endregion
 
