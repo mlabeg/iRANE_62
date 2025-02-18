@@ -1,4 +1,5 @@
-﻿using iRANE_62.Models;
+﻿using iRANE_62.Extensions;
+using iRANE_62.Models;
 using Microsoft.VisualBasic;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
@@ -123,12 +124,16 @@ namespace iRANE_62
                 sampleChannel.PreVolumeMeter += mixer.OnPostChanel2VolumeMeter;
             }
 
+            //Pan
+            var panningProvider = new StereoPanningSampleProvider(sampleChannel);
+            player.Equalizer.PanningProvider = panningProvider;
+
             //EQ
-            mixer.equalizer = new NAudio.Extras.Equalizer(sampleChannel, mixer.bands);
+            player.Equalizer.equalizer = new NAudio.Extras.Equalizer(panningProvider, player.Equalizer.bands);
 
 
             //Post
-            var postVolumeMeter = new MeteringSampleProvider(mixer.equalizer);
+            var postVolumeMeter = new MeteringSampleProvider(player.Equalizer.equalizer);
             postVolumeMeter.StreamVolume += mixer.OnPostMainVolumeMeter;
 
             player.WavePlayer.Init(postVolumeMeter);
@@ -211,6 +216,16 @@ namespace iRANE_62
         private void Open(Player player)
         {
             OpenCommon(player, SelectInputFile());
+        }
+        private void OpenSongFromPlaylist(Player player, Song song)
+        {//TODO scal to z funkcją Open
+            player.FileName = song.Path;
+            if (player.FileName != null)
+            {
+                LabelTrackUpdate(player);
+                RenderWaveform(player);
+                UpadteTotalSongTime(player, song);
+            }
         }
 
         private void OpenSongFromPlaylist(Player player, Song song)
@@ -302,6 +317,42 @@ namespace iRANE_62
         }
 
        
+        {//TODO scal to z funkcją Open
+            player.FileName = song.Path;
+            if (player.FileName != null)
+            {
+                LabelTrackUpdate(player);
+                RenderWaveform(player);
+                UpadteTotalSongTime(player, song);
+            }
+        }
+        {//TODO scal to z funkcją Open
+            player.FileName = song.Path;
+            if (player.FileName != null)
+            {
+                LabelTrackUpdate(player);
+                RenderWaveform(player);
+                UpadteTotalSongTime(player, song);
+            }
+        }
+        {//TODO scal to z funkcją Open
+            player.FileName = song.Path;
+            if (player.FileName != null)
+            {
+                LabelTrackUpdate(player);
+                RenderWaveform(player);
+                UpadteTotalSongTime(player, song);
+            }
+        }
+        {//TODO scal to z funkcją Open
+            player.FileName = song.Path;
+            if (player.FileName != null)
+            {
+                LabelTrackUpdate(player);
+                RenderWaveform(player);
+                UpadteTotalSongTime(player, song);
+            }
+        }
 
         #endregion
 

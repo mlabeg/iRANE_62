@@ -12,26 +12,13 @@ namespace iRANE_62
         private Player player1;
         private Player player2;
 
-        public Equalizer equalizer;
-        public EqualizerBand[] bands { get; }
+
 
         //public event PropertyChangedEventHandler PropertyChanged;
 
         public Mixer()
         {
-            bands = new EqualizerBand[]
-                {
-                new EqualizerBand { Frequency = 60, Gain = 0f, Bandwidth = 0.8f },   // Sub-bass
-                new EqualizerBand { Frequency = 120, Gain = 0f, Bandwidth = 0.8f },  // Bass
-                new EqualizerBand { Frequency = 250, Gain = 0f, Bandwidth = 0.8f },  // Low-mid
-                new EqualizerBand { Frequency = 500, Gain = 0f, Bandwidth = 0.8f },  // Mid
-                new EqualizerBand { Frequency = 1000, Gain = 0f, Bandwidth = 0.8f }, // Upper-mid
-                new EqualizerBand { Frequency = 2000, Gain = 0f, Bandwidth = 0.8f }, // Presence
-                new EqualizerBand { Frequency = 4000, Gain = 0f, Bandwidth = 0.8f }, // High-mid
-                new EqualizerBand { Frequency = 8000, Gain = 0f, Bandwidth = 0.8f }, // Treble
-                new EqualizerBand { Frequency = 16000, Gain = 0f, Bandwidth = 0.8f } // Air
 
-                };
         }
 
         public Mixer(ref Player player1, ref Player player2) : this()
@@ -126,126 +113,6 @@ namespace iRANE_62
         }
 
         */
-        public float Band1
-        {
-            get => bands[0].Gain;
-            set
-            {
-                if (bands[0].Gain != value)
-                {
-                    bands[0].Gain = value;
-                    equalizer?.Update();
-                    //OnPropertyChanged("high_odt1");
-                }
-            }
-        }
-
-        public float Band2
-        {
-            get => bands[1].Gain;
-            set
-            {
-                if (bands[1].Gain != value)
-                {
-                    bands[1].Gain = value;
-                    //OnPropertyChanged("Band2");
-                }
-            }
-        }
-
-        public float Band3
-        {
-            get => bands[2].Gain;
-            set
-            {
-                if (bands[2].Gain != value)
-                {
-                    bands[2].Gain = value;
-                    //OnPropertyChanged("Band3");
-                }
-            }
-        }
-
-        public float Band4
-        {
-            get => bands[3].Gain;
-            set
-            {
-                if (bands[3].Gain != value)
-                {
-                    bands[3].Gain = value;
-                    equalizer?.Update();
-                    //OnPropertyChanged("Band4");
-                }
-            }
-        }
-
-        public float Band5
-        {
-            get => bands[4].Gain;
-            set
-            {
-                if (bands[4].Gain != value)
-                {
-                    bands[4].Gain = value;
-                    //OnPropertyChanged("Band5");
-                }
-            }
-        }
-
-        public float Band6
-        {
-            get => bands[5].Gain;
-            set
-            {
-                if (bands[5].Gain != value)
-                {
-                    bands[5].Gain = value;
-                    //OnPropertyChanged("Band6");
-                }
-            }
-        }
-
-        public float Band7
-        {
-            get => bands[6].Gain;
-            set
-            {
-                if (bands[6].Gain != value)
-                {
-                    bands[6].Gain = value;
-                    equalizer?.Update();
-                    //OnPropertyChanged("Band7");
-                }
-            }
-        }
-
-        public float Band8
-        {
-            get => bands[7].Gain;
-            set
-            {
-                if (bands[7].Gain != value)
-                {
-                    bands[7].Gain = value;
-                    // OnPropertyChanged("Band8");
-                }
-            }
-        }
-
-        public float Band9
-        {
-            get => bands[8].Gain;
-            set
-            {
-                if (bands[8].Gain != value)
-                {
-                    bands[8].Gain = value;
-                    //OnPropertyChanged("Band9");
-                }
-            }
-        }
-
 
 
         private void level_odt1_ValueChanged(object sender, EventArgs e)
@@ -274,6 +141,7 @@ namespace iRANE_62
         {
             volumeMeter_ch1.Amplitude = Math.Max(e.MaxSampleValues[0], e.MaxSampleValues[1]);
         }
+
         public void OnPostChanel2VolumeMeter(object sender, StreamVolumeEventArgs e)
         {
             volumeMeter_ch2.Amplitude = Math.Max(e.MaxSampleValues[0], e.MaxSampleValues[1]);
@@ -282,51 +150,70 @@ namespace iRANE_62
         private void high_odt1_ValueChanged(object sender, EventArgs e)
         {
 
-            Band7 = (float)low_odt1.Value;
-            Band8 = (float)low_odt1.Value;
-            Band9 = (float)low_odt1.Value;
+            player1.Equalizer.Band7 = (float)high_odt1.Value;
+            player1.Equalizer.Band8 = (float)high_odt1.Value;
+            player1.Equalizer.Band9 = (float)high_odt1.Value;
+            player1.Equalizer.equalizer.Update();
         }
 
         private void mid_odt1_ValueChanged(object sender, EventArgs e)
         {
-            Band4 = (float)mid_odt1.Value;
-            Band5 = (float)mid_odt1.Value;
-            Band6 = (float)mid_odt1.Value;
+            player1.Equalizer.Band4 = (float)mid_odt1.Value;
+            player1.Equalizer.Band5 = (float)mid_odt1.Value;
+            player1.Equalizer.Band6 = (float)mid_odt1.Value;
+            player1.Equalizer.equalizer.Update();
         }
 
         private void low_odt1_ValueChanged(object sender, EventArgs e)
         {
 
-            Band1 = (float)high_odt1.Value;
-            Band2 = (float)high_odt1.Value;
-            Band3 = (float)high_odt1.Value;
+            player1.Equalizer.Band1 = (float)low_odt1.Value;
+            player1.Equalizer.Band2 = (float)low_odt1.Value;
+            player1.Equalizer.Band3 = (float)low_odt1.Value;
+            player1.Equalizer.equalizer.Update();
         }
-
 
         private void high_odt2_ValueChanged(object sender, EventArgs e)
         {
-            Band7 = (float)low_odt2.Value;
-            Band8 = (float)low_odt2.Value;
-            Band9 = (float)low_odt2.Value;
+            player2.Equalizer.Band7 = (float)high_odt2.Value;
+            player2.Equalizer.Band9 = (float)high_odt2.Value;
+            player2.Equalizer.Band8 = (float)high_odt2.Value;
+            player2.Equalizer.equalizer.Update();
         }
 
         private void mid_odt2_ValueChanged(object sender, EventArgs e)
         {
-            Band4 = (float)mid_odt2.Value;
-            Band5 = (float)mid_odt2.Value;
-            Band6 = (float)mid_odt2.Value;
+            player2.Equalizer.Band4 = (float)mid_odt2.Value;
+            player2.Equalizer.Band5 = (float)mid_odt2.Value;
+            player2.Equalizer.Band6 = (float)mid_odt2.Value;
+            player2.Equalizer.equalizer.Update();
         }
 
         private void low_odt2_ValueChanged(object sender, EventArgs e)
         {
 
-            Band1 = (float)high_odt2.Value;
-            Band2 = (float)high_odt2.Value;
-            Band3 = (float)high_odt2.Value;
+            player2.Equalizer.Band1 = (float)low_odt2.Value;
+            player2.Equalizer.Band2 = (float)low_odt2.Value;
+            player2.Equalizer.Band3 = (float)low_odt2.Value;
+            player2.Equalizer.equalizer.Update();
         }
 
 
         #endregion
 
+        private void pan_odt1_PanChanged(object sender, EventArgs e)
+        {
+            if (player1.Equalizer.PanningProvider != null)
+            {
+                float panValue = (float)pan_odt1.Pan;
+                player1.Equalizer.PanningProvider.Pan = panValue;
+            }
+        }
+
+        private void pan_odt2_PanChanged(object sender, EventArgs e)
+        {
+            float panValue = (float)pan_odt2.Pan;
+            player2.Equalizer.PanningProvider.Pan = panValue;
+        }
     }
 }
