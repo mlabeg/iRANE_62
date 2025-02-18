@@ -124,11 +124,11 @@ namespace iRANE_62
             }
 
             //EQ
-            mixer.equalizer = new NAudio.Extras.Equalizer(sampleChannel, mixer.bands);
+            player.Eq.equalizer = new NAudio.Extras.Equalizer(sampleChannel, player.Eq.bands);
 
 
             //Post
-            var postVolumeMeter = new MeteringSampleProvider(mixer.equalizer);
+            var postVolumeMeter = new MeteringSampleProvider(player.Eq.equalizer);
             postVolumeMeter.StreamVolume += mixer.OnPostMainVolumeMeter;
 
             player.WavePlayer.Init(postVolumeMeter);
@@ -203,6 +203,16 @@ namespace iRANE_62
                 RenderWaveform(player);
                 Song song = new Song(player.FileName);
                 playlista.Items.Add(song);
+                UpadteTotalSongTime(player, song);
+            }
+        }
+        private void OpenSongFromPlaylist(Player player, Song song)
+        {//TODO scal to z funkcją Open
+            player.FileName = song.Path;
+            if (player.FileName != null)
+            {
+                LabelTrackUpdate(player);
+                RenderWaveform(player);
                 UpadteTotalSongTime(player, song);
             }
         }
@@ -289,16 +299,6 @@ namespace iRANE_62
 
         }
 
-        private void OpenSongFromPlaylist(Player player, Song song)
-        {//TODO scal to z funkcją Open
-            player.FileName = song.Path;
-            if (player.FileName != null)
-            {
-                LabelTrackUpdate(player);
-                RenderWaveform(player);
-                UpadteTotalSongTime(player, song);
-            }
-        }
 
         #endregion
 

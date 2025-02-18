@@ -1,4 +1,5 @@
-﻿using NAudio.Wave;
+﻿using NAudio.Extras;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +17,12 @@ namespace iRANE_62.Models
 
         public Action<float> SetVolumeDelegate;
 
+        public Eq Eq { get; set; }
+
         public Player(int id)
         {
             this.Id = id;
+            Eq = new Eq();
         }
     }
     
