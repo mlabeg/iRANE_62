@@ -63,7 +63,7 @@ namespace iRANE_62
             odt1_flexfx = new CheckBox();
             odt1_volume = new NAudio.Gui.VolumeMeter();
             odt2 = new Panel();
-            odt2_volume = new NAudio.Gui.VolumeMeter();
+            volumeMeter_ch2 = new NAudio.Gui.VolumeMeter();
             mainVolumeRight = new NAudio.Gui.VolumeMeter();
             mainVolumeLeft = new NAudio.Gui.VolumeMeter();
             loops1 = new Panel();
@@ -233,23 +233,25 @@ namespace iRANE_62
             // 
             high_odt2.Location = new Point(514, 118);
             high_odt2.Margin = new Padding(4, 5, 4, 5);
-            high_odt2.Maximum = 1D;
-            high_odt2.Minimum = 0D;
+            high_odt2.Maximum = 30D;
+            high_odt2.Minimum = -30D;
             high_odt2.Name = "high_odt2";
             high_odt2.Size = new Size(43, 55);
             high_odt2.TabIndex = 3;
-            high_odt2.Value = 0.5D;
+            high_odt2.Value = 0D;
+            high_odt2.ValueChanged += high_odt2_ValueChanged;
             // 
             // mid_odt2
             // 
             mid_odt2.Location = new Point(514, 194);
             mid_odt2.Margin = new Padding(4, 5, 4, 5);
-            mid_odt2.Maximum = 1D;
-            mid_odt2.Minimum = 0D;
+            mid_odt2.Maximum = 30D;
+            mid_odt2.Minimum = -30D;
             mid_odt2.Name = "mid_odt2";
             mid_odt2.Size = new Size(43, 55);
             mid_odt2.TabIndex = 3;
-            mid_odt2.Value = 0.5D;
+            mid_odt2.Value = 0D;
+            mid_odt2.ValueChanged += mid_odt2_ValueChanged;
             // 
             // filter_odt2
             // 
@@ -266,12 +268,13 @@ namespace iRANE_62
             // 
             low_odt2.Location = new Point(514, 273);
             low_odt2.Margin = new Padding(4, 5, 4, 5);
-            low_odt2.Maximum = 1D;
-            low_odt2.Minimum = 0D;
+            low_odt2.Maximum = 30D;
+            low_odt2.Minimum = -30D;
             low_odt2.Name = "low_odt2";
             low_odt2.Size = new Size(43, 55);
             low_odt2.TabIndex = 3;
-            low_odt2.Value = 0.5D;
+            low_odt2.Value = 0D;
+            low_odt2.ValueChanged += low_odt2_ValueChanged;
             // 
             // mic_level
             // 
@@ -434,9 +437,9 @@ namespace iRANE_62
             odt1_flexfx.Location = new Point(34, 243);
             odt1_flexfx.Margin = new Padding(2);
             odt1_flexfx.Name = "odt1_flexfx";
-            odt1_flexfx.Size = new Size(78, 24);
+            odt1_flexfx.Size = new Size(82, 24);
             odt1_flexfx.TabIndex = 5;
-            odt1_flexfx.Text = "FLEXFX";
+            odt1_flexfx.Text = "FLEX FX";
             odt1_flexfx.UseVisualStyleBackColor = true;
             // 
             // odt1_volume
@@ -453,24 +456,24 @@ namespace iRANE_62
             // 
             // odt2
             // 
-            odt2.Controls.Add(odt2_volume);
+            odt2.Controls.Add(volumeMeter_ch2);
             odt2.Location = new Point(496, 33);
             odt2.Margin = new Padding(2);
             odt2.Name = "odt2";
             odt2.Size = new Size(201, 319);
             odt2.TabIndex = 7;
             // 
-            // odt2_volume
+            // volumeMeter_ch2
             // 
-            odt2_volume.Amplitude = 0F;
-            odt2_volume.Location = new Point(78, 71);
-            odt2_volume.Margin = new Padding(2);
-            odt2_volume.MaxDb = 18F;
-            odt2_volume.MinDb = -60F;
-            odt2_volume.Name = "odt2_volume";
-            odt2_volume.Size = new Size(24, 217);
-            odt2_volume.TabIndex = 12;
-            odt2_volume.Text = "volumeMeter1";
+            volumeMeter_ch2.Amplitude = 0F;
+            volumeMeter_ch2.Location = new Point(78, 71);
+            volumeMeter_ch2.Margin = new Padding(2);
+            volumeMeter_ch2.MaxDb = 18F;
+            volumeMeter_ch2.MinDb = -60F;
+            volumeMeter_ch2.Name = "volumeMeter_ch2";
+            volumeMeter_ch2.Size = new Size(24, 217);
+            volumeMeter_ch2.TabIndex = 12;
+            volumeMeter_ch2.Text = "volumeMeter1";
             // 
             // mainVolumeRight
             // 
@@ -1364,7 +1367,7 @@ namespace iRANE_62
         private NAudio.Gui.VolumeMeter odt1_volume;
         private NAudio.Gui.VolumeMeter mainVolumeRight;
         private NAudio.Gui.VolumeMeter mainVolumeLeft;
-        private NAudio.Gui.VolumeMeter odt2_volume;
+        private NAudio.Gui.VolumeMeter volumeMeter_ch2;
         private NAudio.Gui.VolumeSlider odt2_upfader;
         public NAudio.Gui.VolumeSlider odt1_upfader;
         private CheckBox chBox_cue_samples;

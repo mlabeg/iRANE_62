@@ -114,7 +114,14 @@ namespace iRANE_62
             //Pre
             var sampleChannel = new SampleChannel(player.AudioFileReader, true);
             player.SetVolumeDelegate = vol => sampleChannel.Volume = vol;
-            sampleChannel.PreVolumeMeter += mixer.OnPostChanelVolumeMeter;
+            if (player.Id == 1)
+            {
+                sampleChannel.PreVolumeMeter += mixer.OnPostChanel1VolumeMeter;
+            }
+            else
+            {
+                sampleChannel.PreVolumeMeter += mixer.OnPostChanel2VolumeMeter;
+            }
 
             //EQ
             mixer.equalizer = new NAudio.Extras.Equalizer(sampleChannel, mixer.bands);

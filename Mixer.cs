@@ -246,7 +246,7 @@ namespace iRANE_62
             }
         }
 
-        
+
 
         private void level_odt1_ValueChanged(object sender, EventArgs e)
         {
@@ -270,17 +270,21 @@ namespace iRANE_62
             mainVolumeRight.Amplitude = e.MaxSampleValues[1];
         }
 
-        public void OnPostChanelVolumeMeter(object sender, StreamVolumeEventArgs e)
+        public void OnPostChanel1VolumeMeter(object sender, StreamVolumeEventArgs e)
         {
             volumeMeter_ch1.Amplitude = Math.Max(e.MaxSampleValues[0], e.MaxSampleValues[1]);
+        }
+        public void OnPostChanel2VolumeMeter(object sender, StreamVolumeEventArgs e)
+        {
+            volumeMeter_ch2.Amplitude = Math.Max(e.MaxSampleValues[0], e.MaxSampleValues[1]);
         }
 
         private void high_odt1_ValueChanged(object sender, EventArgs e)
         {
-            Band1 = (float)high_odt1.Value;
-            Band2 = (float)high_odt1.Value;
-            Band3 = (float)high_odt1.Value;
 
+            Band7 = (float)low_odt1.Value;
+            Band8 = (float)low_odt1.Value;
+            Band9 = (float)low_odt1.Value;
         }
 
         private void mid_odt1_ValueChanged(object sender, EventArgs e)
@@ -292,10 +296,37 @@ namespace iRANE_62
 
         private void low_odt1_ValueChanged(object sender, EventArgs e)
         {
-            Band7 = (float)low_odt1.Value;
-            Band8 = (float)low_odt1.Value;
-            Band9 = (float)low_odt1.Value;
+
+            Band1 = (float)high_odt1.Value;
+            Band2 = (float)high_odt1.Value;
+            Band3 = (float)high_odt1.Value;
         }
+
+
+        private void high_odt2_ValueChanged(object sender, EventArgs e)
+        {
+            Band7 = (float)low_odt2.Value;
+            Band8 = (float)low_odt2.Value;
+            Band9 = (float)low_odt2.Value;
+        }
+
+        private void mid_odt2_ValueChanged(object sender, EventArgs e)
+        {
+            Band4 = (float)mid_odt2.Value;
+            Band5 = (float)mid_odt2.Value;
+            Band6 = (float)mid_odt2.Value;
+        }
+
+        private void low_odt2_ValueChanged(object sender, EventArgs e)
+        {
+
+            Band1 = (float)high_odt2.Value;
+            Band2 = (float)high_odt2.Value;
+            Band3 = (float)high_odt2.Value;
+        }
+
+
         #endregion
+
     }
 }
