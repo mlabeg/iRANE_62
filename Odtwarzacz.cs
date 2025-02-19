@@ -122,8 +122,12 @@ namespace iRANE_62
                 sampleChannel.PreVolumeMeter += mixer.OnPostChanel2VolumeMeter;
             }
 
+            //High- Low- PassFilter
+            var filterProvider = new FilterSampleProvider(sampleChannel, player.AudioFileReader.WaveFormat.SampleRate);
+            player.Equalizer.FilterSampleProvider = filterProvider;
+
             //Pan
-            var panningProvider = new StereoPanningSampleProvider(sampleChannel);
+            var panningProvider = new StereoPanningSampleProvider(filterProvider);
             player.Equalizer.PanningProvider = panningProvider;
 
             //EQ

@@ -1,4 +1,5 @@
-﻿using NAudio.Extras;
+﻿using NAudio.Dsp;
+using NAudio.Extras;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using System;
@@ -16,10 +17,10 @@ namespace iRANE_62.Models
         public AudioFileReader AudioFileReader { get; set; }
         public string FileName { get; set; }
 
+
         public Action<float> SetVolumeDelegate;
 
         public Eq Equalizer { get; set; }
-
 
         public Player(int id)
         {
@@ -27,6 +28,7 @@ namespace iRANE_62.Models
             Equalizer = new Eq();
         }
 
+
     }
-    
+
 }

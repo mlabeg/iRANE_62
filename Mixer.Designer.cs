@@ -203,11 +203,12 @@ namespace iRANE_62
             filter_odt1.Location = new Point(272, 192);
             filter_odt1.Margin = new Padding(4, 5, 4, 5);
             filter_odt1.Maximum = 1D;
-            filter_odt1.Minimum = 0D;
+            filter_odt1.Minimum = -1D;
             filter_odt1.Name = "filter_odt1";
             filter_odt1.Size = new Size(43, 55);
             filter_odt1.TabIndex = 3;
-            filter_odt1.Value = 0.5D;
+            filter_odt1.Value = 0D;
+            filter_odt1.ValueChanged += filter_odt1_ValueChanged;
             // 
             // pan_odt2
             // 
@@ -260,11 +261,11 @@ namespace iRANE_62
             filter_odt2.Location = new Point(621, 192);
             filter_odt2.Margin = new Padding(4, 5, 4, 5);
             filter_odt2.Maximum = 1D;
-            filter_odt2.Minimum = 0D;
+            filter_odt2.Minimum = -1D;
             filter_odt2.Name = "filter_odt2";
             filter_odt2.Size = new Size(43, 55);
             filter_odt2.TabIndex = 3;
-            filter_odt2.Value = 0.5D;
+            filter_odt2.Value = 0D;
             // 
             // low_odt2
             // 

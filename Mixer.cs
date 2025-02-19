@@ -215,5 +215,14 @@ namespace iRANE_62
             float panValue = (float)pan_odt2.Pan;
             player2.Equalizer.PanningProvider.Pan = panValue;
         }
+
+        private void filter_odt1_ValueChanged(object sender, EventArgs e)
+        {
+            if (player1 != null)
+            {
+                float potValue = (float)filter_odt1.Value;
+                player1.Equalizer.FilterSampleProvider.FilterValue = potValue;
+            }
+        }
     }
 }

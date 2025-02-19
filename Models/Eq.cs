@@ -13,11 +13,14 @@ namespace iRANE_62.Models
     public class Eq
     {
         public Equalizer equalizer;
+
         public EqualizerBand[] bands { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public StereoPanningSampleProvider PanningProvider { get; set; }
+
+        public FilterSampleProvider FilterSampleProvider { get; set; }
 
         public Eq()
         {
