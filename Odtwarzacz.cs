@@ -29,8 +29,6 @@ namespace iRANE_62
         private readonly WaveFormRenderer waveFormRenderer;
         private readonly WaveFormRendererSettings standardSettings;
 
-
-
         public Odtwarzacz()
         {
             InitializeComponent();
@@ -217,16 +215,6 @@ namespace iRANE_62
         {
             OpenCommon(player, SelectInputFile());
         }
-        private void OpenSongFromPlaylist(Player player, Song song)
-        {//TODO scal to z funkcją Open
-            player.FileName = song.Path;
-            if (player.FileName != null)
-            {
-                LabelTrackUpdate(player);
-                RenderWaveform(player);
-                UpadteTotalSongTime(player, song);
-            }
-        }
 
         private void OpenSongFromPlaylist(Player player, Song song)
         {
@@ -314,44 +302,6 @@ namespace iRANE_62
                 }
             }
 
-        }
-
-       
-        {//TODO scal to z funkcją Open
-            player.FileName = song.Path;
-            if (player.FileName != null)
-            {
-                LabelTrackUpdate(player);
-                RenderWaveform(player);
-                UpadteTotalSongTime(player, song);
-            }
-        }
-        {//TODO scal to z funkcją Open
-            player.FileName = song.Path;
-            if (player.FileName != null)
-            {
-                LabelTrackUpdate(player);
-                RenderWaveform(player);
-                UpadteTotalSongTime(player, song);
-            }
-        }
-        {//TODO scal to z funkcją Open
-            player.FileName = song.Path;
-            if (player.FileName != null)
-            {
-                LabelTrackUpdate(player);
-                RenderWaveform(player);
-                UpadteTotalSongTime(player, song);
-            }
-        }
-        {//TODO scal to z funkcją Open
-            player.FileName = song.Path;
-            if (player.FileName != null)
-            {
-                LabelTrackUpdate(player);
-                RenderWaveform(player);
-                UpadteTotalSongTime(player, song);
-            }
         }
 
         #endregion
