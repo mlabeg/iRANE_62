@@ -148,28 +148,27 @@ namespace iRANE_62
         }
 
         private void high_odt1_ValueChanged(object sender, EventArgs e)
-        {
+        {//doda³em bardziej ³agodne przejœcie miêdzy bandami, na studyjnych nie s³ychaæ fuzej ró¿nicy, bêdzie móg³ usun¹æ jak oka¿e siê, ¿e program jest za wolny   
 
-            player1.Equalizer.Band7 = (float)high_odt1.Value;
-            player1.Equalizer.Band8 = (float)high_odt1.Value;
             player1.Equalizer.Band9 = (float)high_odt1.Value;
+            player1.Equalizer.Band8 = (float)high_odt1.Value;
+            player1.Equalizer.Band7 = (float)(high_odt1.Value + mid_odt1.Value) / 2;
             player1.Equalizer.equalizer.Update();
         }
 
         private void mid_odt1_ValueChanged(object sender, EventArgs e)
         {
-            player1.Equalizer.Band4 = (float)mid_odt1.Value;
+            player1.Equalizer.Band6 = (float)(mid_odt1.Value+high_odt1.Value) / 2;
             player1.Equalizer.Band5 = (float)mid_odt1.Value;
-            player1.Equalizer.Band6 = (float)mid_odt1.Value;
+            player1.Equalizer.Band4 = (float)(mid_odt1.Value + low_odt1.Value) / 2;
             player1.Equalizer.equalizer.Update();
         }
 
         private void low_odt1_ValueChanged(object sender, EventArgs e)
         {
-
-            player1.Equalizer.Band1 = (float)low_odt1.Value;
+            player1.Equalizer.Band3 = (float)(low_odt1.Value + mid_odt1.Value) / 2;
             player1.Equalizer.Band2 = (float)low_odt1.Value;
-            player1.Equalizer.Band3 = (float)low_odt1.Value;
+            player1.Equalizer.Band1 = (float)low_odt1.Value;
             player1.Equalizer.equalizer.Update();
         }
 
@@ -222,6 +221,15 @@ namespace iRANE_62
             {
                 float potValue = (float)filter_odt1.Value;
                 player1.Equalizer.FilterSampleProvider.FilterValue = potValue;
+            }
+        }
+
+        private void filter_odt2_ValueChanged(object sender, EventArgs e)
+        {
+            if (player2 != null)
+            {
+                float potValue = (float)filter_odt2.Value;
+                player2.Equalizer.FilterSampleProvider.FilterValue = potValue;
             }
         }
     }

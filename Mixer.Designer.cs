@@ -266,6 +266,7 @@ namespace iRANE_62
             filter_odt2.Size = new Size(43, 55);
             filter_odt2.TabIndex = 3;
             filter_odt2.Value = 0D;
+            filter_odt2.ValueChanged += filter_odt2_ValueChanged;
             // 
             // low_odt2
             // 

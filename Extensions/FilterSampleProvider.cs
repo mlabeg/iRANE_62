@@ -8,7 +8,8 @@ public class FilterSampleProvider : ISampleProvider
     private readonly ISampleProvider source;
     private readonly BiQuadFilter lowPassFilter;
     private readonly BiQuadFilter highPassFilter;
-    private float filterValue = 0.0f; 
+    private float filterValue = 0.0f;
+
 
     public FilterSampleProvider(ISampleProvider source, int sampleRate)
     {
@@ -18,8 +19,8 @@ public class FilterSampleProvider : ISampleProvider
             throw new ArgumentException("Źródło musi być stereo (2 kanały)");
         }
 
-        lowPassFilter = BiQuadFilter.LowPassFilter(sampleRate, 20000,1.0f); // Domyślnie 20 kHz (pełne pasmo)
-        highPassFilter = BiQuadFilter.HighPassFilter(sampleRate, 20,1.0f); // Domyślnie 20 Hz (pełne pasmo)
+        lowPassFilter = BiQuadFilter.LowPassFilter(sampleRate, 20000, 1.0f);
+        highPassFilter = BiQuadFilter.HighPassFilter(sampleRate, 20, 1.0f);
     }
 
     public float FilterValue
@@ -38,25 +39,28 @@ public class FilterSampleProvider : ISampleProvider
     {
         int sampleRate = source.WaveFormat.SampleRate;
 
-        if (filterValue < 0) // Dolnoprzepustowy (LPF)
+        if (filterValue < 0) 
         {
             float minFreq = 200f;
             float maxFreq = 20000f;
             float cutoff = (float)(minFreq * Math.Pow(maxFreq / minFreq, (1 + filterValue)));
-            lowPassFilter.SetLowPassFilter(sampleRate, cutoff,1.0f);
+            lowPassFilter.SetLowPassFilter(sampleRate, cutoff, 1.0f);
         }
-        else // Górnoprzepustowy (HPF)
+        else
         {
             float minFreq = 20f;
             float maxFreq = 5000f;
             float cutoff = (float)(minFreq * Math.Pow(maxFreq / minFreq, filterValue));
-            highPassFilter.SetHighPassFilter(sampleRate, cutoff,1.0f);
+            highPassFilter.SetHighPassFilter(sampleRate, cutoff, 1.0f);
         }
+
+
     }
 
     public int Read(float[] buffer, int offset, int count)
     {
         int samplesRead = source.Read(buffer, offset, count);
+
 
         for (int i = 0; i < samplesRead; i += 2)
         {
@@ -77,6 +81,7 @@ public class FilterSampleProvider : ISampleProvider
             buffer[offset + i] = left;
             buffer[offset + i + 1] = right;
         }
+
 
         return samplesRead;
     }
