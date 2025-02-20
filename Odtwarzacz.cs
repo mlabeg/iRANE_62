@@ -122,7 +122,8 @@ namespace iRANE_62
                 sampleChannel.PreVolumeMeter += mixer.OnPostChanel2VolumeMeter;
             }
 
-            //High- Low- PassFilter
+            #region EQ
+            //High- LowPassFilter
             var filterProvider = new FilterSampleProvider(sampleChannel, player.AudioFileReader.WaveFormat.SampleRate);
             player.Equalizer.FilterSampleProvider = filterProvider;
 
@@ -131,8 +132,9 @@ namespace iRANE_62
             player.Equalizer.PanningProvider = panningProvider;
 
             //EQ
-            player.Equalizer.equalizer = new NAudio.Extras.Equalizer(panningProvider, player.Equalizer.bands);
-
+            var eqProvider = new NAudio.Extras.Equalizer(panningProvider, player.Equalizer.bands);
+            player.Equalizer.equalizer = eqProvider;
+            #endregion
 
             //Post
             var postVolumeMeter = new MeteringSampleProvider(player.Equalizer.equalizer);

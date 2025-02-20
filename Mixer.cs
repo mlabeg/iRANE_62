@@ -12,8 +12,6 @@ namespace iRANE_62
         private Player player1;
         private Player player2;
 
-
-
         //public event PropertyChangedEventHandler PropertyChanged;
 
         public Mixer()
@@ -26,7 +24,6 @@ namespace iRANE_62
             this.player1 = player1;
             this.player2 = player2;
             InitializeComponent();
-
 
             //efx
             efx_echo.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
@@ -114,7 +111,6 @@ namespace iRANE_62
 
         */
 
-
         private void level_odt1_ValueChanged(object sender, EventArgs e)
         {
             if (player1.WavePlayer != null)
@@ -197,9 +193,6 @@ namespace iRANE_62
             player2.Equalizer.equalizer.Update();
         }
 
-
-        #endregion
-
         private void pan_odt1_PanChanged(object sender, EventArgs e)
         {
             if (player1.Equalizer.PanningProvider != null)
@@ -232,5 +225,6 @@ namespace iRANE_62
                 player2.Equalizer.FilterSampleProvider.FilterValue = potValue;
             }
         }
+        #endregion
     }
 }
