@@ -77,11 +77,11 @@ namespace iRANE_62
             if (player.FileName == null) player.FileName = SelectInputFile();
             if (player.FileName != null)
             {
-                BeginPlayback(ref player);
+                BeginPlayback(player);
             }
         }
 
-        private void BeginPlayback(ref Player player)
+        private void BeginPlayback(Player player)
         {
 
             if (player.WavePlayer != null)
@@ -146,6 +146,7 @@ namespace iRANE_62
 
             player.WavePlayer.Play();
             timer1.Enabled = true;
+
         }
 
         private void SetVolumeFromMixerLevel(Player player)
@@ -295,7 +296,7 @@ namespace iRANE_62
             {
                 if (player1.FileName != null)
                 {
-                    BeginPlayback(ref player1);
+                    BeginPlayback(player1);
                 }
             }
 
@@ -304,7 +305,7 @@ namespace iRANE_62
 
                 if (player2.FileName != null)
                 {
-                    BeginPlayback(ref player2);
+                    BeginPlayback(player2);
                 }
             }
 
@@ -455,10 +456,27 @@ namespace iRANE_62
             if (player1.AudioFileReader != null)
             {
                 labelNowTime_1.Text = FormatTimeSpan(player1.AudioFileReader.CurrentTime);
+
+                if (player1.Loop.LoopActive && player1.Loop.LoopOut!=TimeSpan.Zero && player1.Loop.LoopIn!=TimeSpan.Zero)
+                {
+                    if (player1.AudioFileReader.CurrentTime >= player1.Loop.LoopOut)
+                    {
+                        player1.AudioFileReader.CurrentTime = player1.Loop.LoopIn;
+                    }
+                }
             }
+
             if (player2.AudioFileReader != null)
             {
                 labelNowTime_2.Text = FormatTimeSpan(player2.AudioFileReader.CurrentTime);
+                
+                if (player2.Loop.LoopActive && player2.Loop.LoopOut != TimeSpan.Zero && player2.Loop.LoopIn != TimeSpan.Zero)
+                {
+                    if (player2.AudioFileReader.CurrentTime >= player2.Loop.LoopOut)
+                    {
+                        player2.AudioFileReader.CurrentTime = player2.Loop.LoopIn;
+                    }
+                }
             }
         }
 

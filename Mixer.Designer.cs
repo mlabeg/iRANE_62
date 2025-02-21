@@ -67,12 +67,12 @@ namespace iRANE_62
             mainVolumeRight = new NAudio.Gui.VolumeMeter();
             mainVolumeLeft = new NAudio.Gui.VolumeMeter();
             loops1 = new Panel();
+            checkBox1 = new CheckBox();
             button14 = new Button();
             hScrollBar5 = new HScrollBar();
-            button13 = new Button();
-            button12 = new Button();
-            button11 = new Button();
-            button10 = new Button();
+            exitLoop_ch1 = new Button();
+            loopOut_ch1 = new Button();
+            loopIn_ch1 = new Button();
             hScrollBar1 = new HScrollBar();
             main = new NAudio.Gui.Pot();
             session_out = new NAudio.Gui.Pot();
@@ -100,9 +100,9 @@ namespace iRANE_62
             hScrollBar2 = new HScrollBar();
             button15 = new Button();
             hScrollBar6 = new HScrollBar();
-            button16 = new Button();
-            button17 = new Button();
-            button18 = new Button();
+            exitLoop_ch2 = new Button();
+            loopOut_ch2 = new Button();
+            loopIn_ch2 = new Button();
             button19 = new Button();
             odt1_cue1 = new Button();
             odt1_cue2 = new Button();
@@ -160,7 +160,7 @@ namespace iRANE_62
             gain_ch1.Name = "gain_ch1";
             gain_ch1.Size = new Size(43, 55);
             gain_ch1.TabIndex = 3;
-            gain_ch1.Value = 0D;
+            gain_ch1.Value = 0.5D;
             gain_ch1.ValueChanged += level_odt1_ValueChanged;
             // 
             // high_odt1
@@ -229,7 +229,7 @@ namespace iRANE_62
             gain_ch2.Name = "gain_ch2";
             gain_ch2.Size = new Size(43, 55);
             gain_ch2.TabIndex = 3;
-            gain_ch2.Value = 0D;
+            gain_ch2.Value = 0.5D;
             gain_ch2.ValueChanged += level_odt2_ValueChanged;
             // 
             // high_odt2
@@ -505,17 +505,27 @@ namespace iRANE_62
             // 
             // loops1
             // 
+            loops1.Controls.Add(checkBox1);
             loops1.Controls.Add(button14);
             loops1.Controls.Add(hScrollBar5);
-            loops1.Controls.Add(button13);
-            loops1.Controls.Add(button12);
-            loops1.Controls.Add(button11);
-            loops1.Controls.Add(button10);
+            loops1.Controls.Add(exitLoop_ch1);
+            loops1.Controls.Add(loopOut_ch1);
+            loops1.Controls.Add(loopIn_ch1);
             loops1.Location = new Point(10, 171);
             loops1.Margin = new Padding(2);
             loops1.Name = "loops1";
             loops1.Size = new Size(70, 422);
             loops1.TabIndex = 7;
+            // 
+            // checkBox1
+            // 
+            checkBox1.AutoSize = true;
+            checkBox1.Location = new Point(10, 27);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new Size(101, 24);
+            checkBox1.TabIndex = 9;
+            checkBox1.Text = "checkBox1";
+            checkBox1.UseVisualStyleBackColor = true;
             // 
             // button14
             // 
@@ -534,45 +544,38 @@ namespace iRANE_62
             hScrollBar5.Size = new Size(43, 39);
             hScrollBar5.TabIndex = 8;
             // 
-            // button13
+            // exitLoop_ch1
             // 
-            button13.Location = new Point(10, 307);
-            button13.Margin = new Padding(2);
-            button13.Name = "button13";
-            button13.Size = new Size(43, 26);
-            button13.TabIndex = 4;
-            button13.Text = "button1";
-            button13.UseVisualStyleBackColor = true;
+            exitLoop_ch1.Location = new Point(10, 307);
+            exitLoop_ch1.Margin = new Padding(2);
+            exitLoop_ch1.Name = "exitLoop_ch1";
+            exitLoop_ch1.Size = new Size(43, 26);
+            exitLoop_ch1.TabIndex = 4;
+            exitLoop_ch1.Text = "Exit";
+            exitLoop_ch1.UseVisualStyleBackColor = true;
+            exitLoop_ch1.Click += exitLoop_ch1_Click;
             // 
-            // button12
+            // loopOut_ch1
             // 
-            button12.Location = new Point(10, 244);
-            button12.Margin = new Padding(2);
-            button12.Name = "button12";
-            button12.Size = new Size(43, 26);
-            button12.TabIndex = 4;
-            button12.Text = "button1";
-            button12.UseVisualStyleBackColor = true;
+            loopOut_ch1.Location = new Point(10, 244);
+            loopOut_ch1.Margin = new Padding(2);
+            loopOut_ch1.Name = "loopOut_ch1";
+            loopOut_ch1.Size = new Size(43, 26);
+            loopOut_ch1.TabIndex = 4;
+            loopOut_ch1.Text = "Out";
+            loopOut_ch1.UseVisualStyleBackColor = true;
+            loopOut_ch1.Click += loopOut_ch1_Click;
             // 
-            // button11
+            // loopIn_ch1
             // 
-            button11.Location = new Point(10, 173);
-            button11.Margin = new Padding(2);
-            button11.Name = "button11";
-            button11.Size = new Size(43, 26);
-            button11.TabIndex = 4;
-            button11.Text = "button1";
-            button11.UseVisualStyleBackColor = true;
-            // 
-            // button10
-            // 
-            button10.Location = new Point(10, 25);
-            button10.Margin = new Padding(2);
-            button10.Name = "button10";
-            button10.Size = new Size(58, 26);
-            button10.TabIndex = 4;
-            button10.Text = "A/M";
-            button10.UseVisualStyleBackColor = true;
+            loopIn_ch1.Location = new Point(10, 173);
+            loopIn_ch1.Margin = new Padding(2);
+            loopIn_ch1.Name = "loopIn_ch1";
+            loopIn_ch1.Size = new Size(43, 26);
+            loopIn_ch1.TabIndex = 4;
+            loopIn_ch1.Text = "In";
+            loopIn_ch1.UseVisualStyleBackColor = true;
+            loopIn_ch1.Click += loopIn_ch1_Click;
             // 
             // hScrollBar1
             // 
@@ -821,9 +824,9 @@ namespace iRANE_62
             loops2.Controls.Add(hScrollBar2);
             loops2.Controls.Add(button15);
             loops2.Controls.Add(hScrollBar6);
-            loops2.Controls.Add(button16);
-            loops2.Controls.Add(button17);
-            loops2.Controls.Add(button18);
+            loops2.Controls.Add(exitLoop_ch2);
+            loops2.Controls.Add(loopOut_ch2);
+            loops2.Controls.Add(loopIn_ch2);
             loops2.Controls.Add(button19);
             loops2.Location = new Point(918, 171);
             loops2.Margin = new Padding(2);
@@ -855,39 +858,42 @@ namespace iRANE_62
             hScrollBar6.Size = new Size(43, 39);
             hScrollBar6.TabIndex = 8;
             // 
-            // button16
+            // exitLoop_ch2
             // 
-            button16.Location = new Point(10, 307);
-            button16.Margin = new Padding(2);
-            button16.Name = "button16";
-            button16.Size = new Size(43, 26);
-            button16.TabIndex = 4;
-            button16.Text = "button1";
-            button16.UseVisualStyleBackColor = true;
+            exitLoop_ch2.Location = new Point(17, 307);
+            exitLoop_ch2.Margin = new Padding(2);
+            exitLoop_ch2.Name = "exitLoop_ch2";
+            exitLoop_ch2.Size = new Size(43, 26);
+            exitLoop_ch2.TabIndex = 4;
+            exitLoop_ch2.Text = "Exit";
+            exitLoop_ch2.UseVisualStyleBackColor = true;
+            exitLoop_ch2.Click += exitLoop_ch2_Click;
             // 
-            // button17
+            // loopOut_ch2
             // 
-            button17.Location = new Point(10, 244);
-            button17.Margin = new Padding(2);
-            button17.Name = "button17";
-            button17.Size = new Size(43, 26);
-            button17.TabIndex = 4;
-            button17.Text = "button1";
-            button17.UseVisualStyleBackColor = true;
+            loopOut_ch2.Location = new Point(17, 244);
+            loopOut_ch2.Margin = new Padding(2);
+            loopOut_ch2.Name = "loopOut_ch2";
+            loopOut_ch2.Size = new Size(43, 26);
+            loopOut_ch2.TabIndex = 4;
+            loopOut_ch2.Text = "Out";
+            loopOut_ch2.UseVisualStyleBackColor = true;
+            loopOut_ch2.Click += loopOut_ch2_Click;
             // 
-            // button18
+            // loopIn_ch2
             // 
-            button18.Location = new Point(10, 173);
-            button18.Margin = new Padding(2);
-            button18.Name = "button18";
-            button18.Size = new Size(43, 26);
-            button18.TabIndex = 4;
-            button18.Text = "button1";
-            button18.UseVisualStyleBackColor = true;
+            loopIn_ch2.Location = new Point(17, 173);
+            loopIn_ch2.Margin = new Padding(2);
+            loopIn_ch2.Name = "loopIn_ch2";
+            loopIn_ch2.Size = new Size(43, 26);
+            loopIn_ch2.TabIndex = 4;
+            loopIn_ch2.Text = "In";
+            loopIn_ch2.UseVisualStyleBackColor = true;
+            loopIn_ch2.Click += loopIn_ch2_Click;
             // 
             // button19
             // 
-            button19.Location = new Point(2, 25);
+            button19.Location = new Point(10, 25);
             button19.Margin = new Padding(2);
             button19.Name = "button19";
             button19.Size = new Size(58, 26);
@@ -1130,6 +1136,7 @@ namespace iRANE_62
             // 
             // mic
             // 
+            mic.BorderStyle = BorderStyle.FixedSingle;
             mic.Controls.Add(odt1_volume);
             mic.Controls.Add(mic_flexfx);
             mic.Location = new Point(84, 33);
@@ -1265,6 +1272,7 @@ namespace iRANE_62
             odt1.PerformLayout();
             odt2.ResumeLayout(false);
             loops1.ResumeLayout(false);
+            loops1.PerformLayout();
             efx.ResumeLayout(false);
             efx.PerformLayout();
             loops2.ResumeLayout(false);
@@ -1310,10 +1318,9 @@ namespace iRANE_62
         private NAudio.Gui.Pot booth;
         private Button button8;
         private Button deck1_back;
-        private Button button10;
-        private Button button11;
-        private Button button12;
-        private Button button13;
+        private Button loopIn_ch1;
+        private Button loopOut_ch1;
+        private Button exitLoop_ch1;
         private Button button14;
         private HScrollBar odt1_load;
         private HScrollBar hScrollBar5;
@@ -1335,9 +1342,9 @@ namespace iRANE_62
         private Panel loops2;
         private Button button15;
         private HScrollBar hScrollBar6;
-        private Button button16;
-        private Button button17;
-        private Button button18;
+        private Button exitLoop_ch2;
+        private Button loopOut_ch2;
+        private Button loopIn_ch2;
         private Button button19;
         private Button odt1_cue1;
         private Button odt1_cue2;
@@ -1380,5 +1387,6 @@ namespace iRANE_62
         internal NAudio.Gui.Pot gain_ch1;
         internal NAudio.Gui.Pot gain_ch2;
         private HScrollBar hScrollBar2;
+        private CheckBox checkBox1;
     }
 }

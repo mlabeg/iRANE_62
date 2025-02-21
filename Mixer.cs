@@ -7,17 +7,12 @@ using System.ComponentModel;
 
 namespace iRANE_62
 {
-    public partial class Mixer : Form//, INotifyPropertyChanged
+    public partial class Mixer : Form
     {
         private Player player1;
         private Player player2;
 
-        //public event PropertyChangedEventHandler PropertyChanged;
-
-        public Mixer()
-        {
-
-        }
+        public Mixer(){}
 
         public Mixer(ref Player player1, ref Player player2) : this()
         {
@@ -25,7 +20,13 @@ namespace iRANE_62
             this.player2 = player2;
             InitializeComponent();
 
-            //efx
+            efxCheckedChangedEventHandler();
+        }
+
+        #region FX
+
+        private void efxCheckedChangedEventHandler()
+        {
             efx_echo.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
             efx_ext_insert.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
             efx_flanger.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
@@ -35,9 +36,6 @@ namespace iRANE_62
             efx_robot.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
             efx_insert.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
         }
-
-        #region EFX
-        //EFX
 
         private void efx_flanger_CheckedChanged(object sender, EventArgs e)
         {
@@ -67,6 +65,7 @@ namespace iRANE_62
         private void efx_insert_CheckedChanged(object sender, EventArgs e)
         {
         }
+
         private void efx_filter_CheckedChanged(object sender, EventArgs e)
         {
 
@@ -88,8 +87,6 @@ namespace iRANE_62
                 }
             }
         }
-
-
 
         private void efx_time_Scroll(object sender, ScrollEventArgs e)
         {
@@ -154,7 +151,7 @@ namespace iRANE_62
 
         private void mid_odt1_ValueChanged(object sender, EventArgs e)
         {
-            player1.Equalizer.Band6 = (float)(mid_odt1.Value+high_odt1.Value) / 2;
+            player1.Equalizer.Band6 = (float)(mid_odt1.Value + high_odt1.Value) / 2;
             player1.Equalizer.Band5 = (float)mid_odt1.Value;
             player1.Equalizer.Band4 = (float)(mid_odt1.Value + low_odt1.Value) / 2;
             player1.Equalizer.equalizer.Update();
@@ -224,6 +221,56 @@ namespace iRANE_62
                 float potValue = (float)filter_odt2.Value;
                 player2.Equalizer.FilterSampleProvider.FilterValue = potValue;
             }
+        }
+        #endregion
+
+        #region Loop
+        private void loopOut_ch1_Click(object sender, EventArgs e)
+        {
+            if (player1.AudioFileReader != null)
+            {
+                player1.Loop.SetLoopOut(player1.AudioFileReader.CurrentTime);
+            }
+        }
+
+        private void loopIn_ch1_Click(object sender, EventArgs e)
+        {
+            if (player1.AudioFileReader != null)
+            {
+                player1.Loop.SetLoopIn(player1.AudioFileReader.CurrentTime);
+                player1.Loop.LoopActive = true;
+            }
+        }
+
+        private void exitLoop_ch1_Click(object sender, EventArgs e)
+        {
+            player1.Loop.LoopActive = false;
+            player1.Loop.LoopIn = TimeSpan.Zero;
+            player1.Loop.LoopOut = TimeSpan.Zero;
+        }
+
+        private void loopOut_ch2_Click(object sender, EventArgs e)
+        {
+            if (player2.AudioFileReader != null)
+            {
+                player2.Loop.SetLoopOut(player2.AudioFileReader.CurrentTime);
+            }
+        }
+
+        private void loopIn_ch2_Click(object sender, EventArgs e)
+        {
+            if (player2.AudioFileReader != null)
+            {
+                player2.Loop.SetLoopIn(player2.AudioFileReader.CurrentTime);
+                player2.Loop.LoopActive = true;
+            }
+        }
+
+        private void exitLoop_ch2_Click(object sender, EventArgs e)
+        {
+            player2.Loop.LoopActive = false;
+            player2.Loop.LoopIn = TimeSpan.Zero;
+            player2.Loop.LoopOut = TimeSpan.Zero;
         }
         #endregion
     }
