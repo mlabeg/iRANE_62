@@ -22,9 +22,22 @@ namespace iRANE_62.Models
 
         public FilterSampleProvider FilterSampleProvider { get; set; }
 
+
+
         public Eq()
         {
-            bands = new EqualizerBand[]
+            bands = CreateBands();
+
+        }
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private EqualizerBand[] CreateBands()
+        {
+            var bands = new EqualizerBand[]
                 {
                     new EqualizerBand { Frequency = 60, Gain = 0f, Bandwidth = 0.8f },   // Sub-bass
                     new EqualizerBand { Frequency = 120, Gain = 0f, Bandwidth = 0.8f },  // Bass
@@ -35,13 +48,26 @@ namespace iRANE_62.Models
                     new EqualizerBand { Frequency = 4000, Gain = 0f, Bandwidth = 0.8f }, // High-mid
                     new EqualizerBand { Frequency = 8000, Gain = 0f, Bandwidth = 0.8f }, // Treble
                     new EqualizerBand { Frequency = 16000, Gain = 0f, Bandwidth = 0.8f } // Air
-
                 };
-        }
 
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            return bands;
+        }
+        private EqualizerBand[] CreateBands2()
+        {//nie wiem jak sterowane powinny być te ustawioenia od strony GUI, CreateBands lepiej działa i reaguje na zmiany
+            var bands = new EqualizerBand[]
+                {
+                    new EqualizerBand {Bandwidth =0.4f, Frequency = 100, Gain = -20},
+                    new EqualizerBand {Bandwidth =0.4f, Frequency = 200, Gain = -10},
+                    new EqualizerBand {Bandwidth =0.4f, Frequency = 400, Gain = -10},
+                    new EqualizerBand {Bandwidth =0.4f, Frequency = 800, Gain = 10},
+                    new EqualizerBand {Bandwidth =0.4f, Frequency = 1200, Gain = 10},
+                    new EqualizerBand {Bandwidth =0.4f, Frequency = 2400, Gain = 10},
+                    new EqualizerBand {Bandwidth =0.4f, Frequency = 4800, Gain = -25},
+                    new EqualizerBand {Bandwidth =0.4f, Frequency = 9600, Gain = -30},
+                    new EqualizerBand { Frequency = 16000, Gain = -30f, Bandwidth = 0.4f } // Air
+                };
+
+            return bands;
         }
 
         #region Bands
