@@ -43,21 +43,21 @@
             labelTotalTime_1 = new Label();
             labelNowTime_2 = new Label();
             labelTotalTime_2 = new Label();
-            pictureBox1 = new PictureBox();
+            waveform_ch1 = new PictureBox();
             labelRendering1 = new Label();
-            pictureBox2 = new PictureBox();
+            waveform_ch2 = new PictureBox();
             labelRendering2 = new Label();
             timer2 = new System.Windows.Forms.Timer(components);
             labelTrack1 = new Label();
             labelTrack2 = new Label();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)waveform_ch1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)waveform_ch2).BeginInit();
             SuspendLayout();
             // 
             // btnOpen_1
             // 
             btnOpen_1.Location = new Point(25, 58);
-            btnOpen_1.Margin = new Padding(2, 2, 2, 2);
+            btnOpen_1.Margin = new Padding(2);
             btnOpen_1.Name = "btnOpen_1";
             btnOpen_1.Size = new Size(68, 27);
             btnOpen_1.TabIndex = 1;
@@ -69,7 +69,7 @@
             // btnPlay_1
             // 
             btnPlay_1.Location = new Point(98, 58);
-            btnPlay_1.Margin = new Padding(2, 2, 2, 2);
+            btnPlay_1.Margin = new Padding(2);
             btnPlay_1.Name = "btnPlay_1";
             btnPlay_1.Size = new Size(61, 27);
             btnPlay_1.TabIndex = 1;
@@ -81,7 +81,7 @@
             // btnPause_1
             // 
             btnPause_1.Location = new Point(163, 58);
-            btnPause_1.Margin = new Padding(2, 2, 2, 2);
+            btnPause_1.Margin = new Padding(2);
             btnPause_1.Name = "btnPause_1";
             btnPause_1.Size = new Size(63, 27);
             btnPause_1.TabIndex = 1;
@@ -92,7 +92,7 @@
             // btnStop_1
             // 
             btnStop_1.Location = new Point(231, 58);
-            btnStop_1.Margin = new Padding(2, 2, 2, 2);
+            btnStop_1.Margin = new Padding(2);
             btnStop_1.Name = "btnStop_1";
             btnStop_1.Size = new Size(66, 27);
             btnStop_1.TabIndex = 1;
@@ -103,7 +103,7 @@
             // btnOpen_2
             // 
             btnOpen_2.Location = new Point(588, 58);
-            btnOpen_2.Margin = new Padding(2, 2, 2, 2);
+            btnOpen_2.Margin = new Padding(2);
             btnOpen_2.Name = "btnOpen_2";
             btnOpen_2.Size = new Size(55, 27);
             btnOpen_2.TabIndex = 1;
@@ -115,7 +115,7 @@
             // btnPlay_2
             // 
             btnPlay_2.Location = new Point(648, 58);
-            btnPlay_2.Margin = new Padding(2, 2, 2, 2);
+            btnPlay_2.Margin = new Padding(2);
             btnPlay_2.Name = "btnPlay_2";
             btnPlay_2.Size = new Size(58, 27);
             btnPlay_2.TabIndex = 1;
@@ -127,7 +127,7 @@
             // btnPause_2
             // 
             btnPause_2.Location = new Point(710, 58);
-            btnPause_2.Margin = new Padding(2, 2, 2, 2);
+            btnPause_2.Margin = new Padding(2);
             btnPause_2.Name = "btnPause_2";
             btnPause_2.Size = new Size(62, 27);
             btnPause_2.TabIndex = 1;
@@ -138,7 +138,7 @@
             // btnStop_2
             // 
             btnStop_2.Location = new Point(778, 58);
-            btnStop_2.Margin = new Padding(2, 2, 2, 2);
+            btnStop_2.Margin = new Padding(2);
             btnStop_2.Name = "btnStop_2";
             btnStop_2.Size = new Size(60, 27);
             btnStop_2.TabIndex = 1;
@@ -151,7 +151,7 @@
             playlista.AllowDrop = true;
             playlista.FormattingEnabled = true;
             playlista.Location = new Point(18, 226);
-            playlista.Margin = new Padding(2, 2, 2, 2);
+            playlista.Margin = new Padding(2);
             playlista.Name = "playlista";
             playlista.Size = new Size(1076, 244);
             playlista.TabIndex = 2;
@@ -199,14 +199,15 @@
             labelTotalTime_2.TabIndex = 3;
             labelTotalTime_2.Text = "00:00";
             // 
-            // pictureBox1
+            // waveform_ch1
             // 
-            pictureBox1.Location = new Point(18, 101);
-            pictureBox1.Margin = new Padding(2, 2, 2, 2);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(524, 100);
-            pictureBox1.TabIndex = 4;
-            pictureBox1.TabStop = false;
+            waveform_ch1.Location = new Point(18, 101);
+            waveform_ch1.Margin = new Padding(2);
+            waveform_ch1.Name = "waveform_ch1";
+            waveform_ch1.Size = new Size(524, 100);
+            waveform_ch1.TabIndex = 4;
+            waveform_ch1.TabStop = false;
+            waveform_ch1.Paint += waveform_ch1_Paint;
             // 
             // labelRendering1
             // 
@@ -219,14 +220,15 @@
             labelRendering1.TabIndex = 5;
             labelRendering1.Text = "Ładowanie...";
             // 
-            // pictureBox2
+            // waveform_ch2
             // 
-            pictureBox2.Location = new Point(569, 101);
-            pictureBox2.Margin = new Padding(2, 2, 2, 2);
-            pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(524, 100);
-            pictureBox2.TabIndex = 4;
-            pictureBox2.TabStop = false;
+            waveform_ch2.Location = new Point(569, 101);
+            waveform_ch2.Margin = new Padding(2);
+            waveform_ch2.Name = "waveform_ch2";
+            waveform_ch2.Size = new Size(524, 100);
+            waveform_ch2.TabIndex = 4;
+            waveform_ch2.TabStop = false;
+            waveform_ch2.Paint += waveform_ch2_Paint;
             // 
             // labelRendering2
             // 
@@ -269,7 +271,7 @@
             Controls.Add(labelTrack1);
             Controls.Add(labelRendering2);
             Controls.Add(labelRendering1);
-            Controls.Add(pictureBox2);
+            Controls.Add(waveform_ch2);
             Controls.Add(labelTotalTime_2);
             Controls.Add(labelTotalTime_1);
             Controls.Add(labelNowTime_2);
@@ -283,14 +285,14 @@
             Controls.Add(btnPlay_1);
             Controls.Add(btnOpen_2);
             Controls.Add(btnOpen_1);
-            Controls.Add(pictureBox1);
-            Margin = new Padding(2, 2, 2, 2);
+            Controls.Add(waveform_ch1);
+            Margin = new Padding(2);
             Name = "Odtwarzacz";
             Text = "Odtwarzacz";
             Load += Odtwarzacz_Load;
             KeyDown += Odtwarzacz_KeyDown;
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)waveform_ch1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)waveform_ch2).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -311,9 +313,9 @@
         private Label labelTotalTime_1;
         private Label labelNowTime_2;
         private Label labelTotalTime_2;
-        private PictureBox pictureBox1;
+        private PictureBox waveform_ch1;
         private Label labelRendering1;
-        private PictureBox pictureBox2;
+        private PictureBox waveform_ch2;
         private Label labelRendering2;
         private System.Windows.Forms.Timer timer2;
         private Label labelTrack1;

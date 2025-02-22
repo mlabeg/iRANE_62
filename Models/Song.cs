@@ -7,7 +7,7 @@ using NAudio.Wave;
 
 namespace iRANE_62.Models
 {
-    public class Song
+    public class Song : IEquatable<Song>
     {
         public string Path { get; set; }
         public string Name { get; set; }
@@ -27,7 +27,7 @@ namespace iRANE_62.Models
         {
             Path = path;
             Name = Path.Split('\\').Last().ToString();
-            SongSpan=GetAudioDuration(path);
+            SongSpan = GetAudioDuration(path);
 
             InitializeCuePoints();
         }
@@ -47,6 +47,20 @@ namespace iRANE_62.Models
                 return reader.TotalTime;
             }
         }
-       
+
+        public override bool Equals(object? obj) => Equals(obj as Song);    
+        /*{
+            if (obj is Song song)
+            {
+                return Equals(song);
+            }
+            else return false;
+        }*/
+
+        public bool Equals(Song? other)
+        {
+            if (other == null) return false;
+            return Name == other.Name;
+        }
     }
 }

@@ -205,27 +205,48 @@ namespace iRANE_62
 
         #region Open button
 
-      
         private void LoadTrack(Player player, string fileName)
         {
             player.FileName = fileName;
 
-            if (player.FileName != null)
-            {
-                LabelTrackUpdate(player);
-                RenderWaveform(player);
-                Song song = new Song(player.FileName);
-                playlista.Items.Add(song);
-                UpadteTotalSongTime(player, song);
-                player.Song = song;
+            LabelTrackUpdate(player);
+            RenderWaveform(player);
 
-                mixer.PlayerReady(player.Id);
+            Song song = new Song(player.FileName);
+            player.Song = song;
+
+            UpadteTotalSongTime(player, song);
+
+            mixer.PlayerReady(player.Id);
+
+            player.currentPlaybackPosition = 0;
+            if (player.Id == 1)
+            {
+                waveform_ch1.Invalidate();
+            }
+            else
+            {
+                waveform_ch2.Invalidate();
+            }
+
+        }
+
+        private void AddToPlaylist(Song song)
+        {
+            if (!playlista.Items.Contains(song))
+            {
+                playlista.Items.Add(song);
             }
         }
 
         private void OpenButton(Player player)
         {
-            LoadTrack(player, SelectInputFile());
+            var fileName = SelectInputFile();
+            if (fileName != String.Empty)
+            {
+                LoadTrack(player, fileName);
+                AddToPlaylist(player.Song);
+            }
         }
 
         private void LoadSongFromPlaylist(Player player, Song song)
@@ -275,7 +296,9 @@ namespace iRANE_62
 
         }
 
-        #region GUI
+        #endregion
+
+        #region GUI + keyboard shortcuts
 
         private void btnOpen_1_Click(object sender, EventArgs e)
         {
@@ -349,7 +372,7 @@ namespace iRANE_62
                 foreach (string file in files)
                 {
                     Song song = new Song(file);
-                    playlista.Items.Add(song);
+                    AddToPlaylist(song);
                 }
             }
         }
@@ -381,7 +404,6 @@ namespace iRANE_62
                 e.Effect = DragDropEffects.None;
             }
         }
-        #endregion
         #endregion
 
         #region Stop button
@@ -451,11 +473,11 @@ namespace iRANE_62
 
             if (player.Id == 1)
             {
-                pictureBox1.Image = null;
+                waveform_ch1.Image = null;
             }
             else
             {
-                pictureBox2.Image = null;
+                waveform_ch2.Image = null;
             }
 
             Enabled = false; //nie wiem czy to nie będzie blokować obu odtwarzaczy na raz
@@ -488,15 +510,31 @@ namespace iRANE_62
             {
 
                 labelRendering1.Visible = false;
-                pictureBox1.Image = image;
+                waveform_ch1.Image = image;
                 Enabled = true;
             }
             else
             {
                 labelRendering2.Visible = false;
-                pictureBox2.Image = image;
+                waveform_ch2.Image = image;
                 Enabled = true;
 
+            }
+        }
+
+        private void waveform_ch1_Paint(object sender, PaintEventArgs e)
+        {
+            using (Pen pen = new Pen(Color.Red, 2))
+            {
+                e.Graphics.DrawLine(pen, player1.currentPlaybackPosition, 0, player1.currentPlaybackPosition, waveform_ch1.Height);
+            }
+        }
+
+        private void waveform_ch2_Paint(object sender, PaintEventArgs e)
+        {
+            using (Pen pen = new Pen(Color.Red, 2))
+            {
+                e.Graphics.DrawLine(pen, player2.currentPlaybackPosition, 0, player2.currentPlaybackPosition, waveform_ch2.Height);
             }
         }
 
@@ -528,19 +566,23 @@ namespace iRANE_62
             {
                 labelNowTime_1.Text = FormatTimeSpan(player1.AudioFileReader.CurrentTime);
 
-                if (player1.Loop.LoopActive && player1.Loop.LoopOut!=TimeSpan.Zero && player1.Loop.LoopIn!=TimeSpan.Zero)
+                if (player1.Loop.LoopActive && player1.Loop.LoopOut != TimeSpan.Zero && player1.Loop.LoopIn != TimeSpan.Zero)
                 {
                     if (player1.AudioFileReader.CurrentTime >= player1.Loop.LoopOut)
                     {
                         player1.AudioFileReader.CurrentTime = player1.Loop.LoopIn;
                     }
                 }
+
+                double progress = player1.AudioFileReader.CurrentTime.TotalSeconds / player1.AudioFileReader.TotalTime.TotalSeconds;
+                player1.currentPlaybackPosition = (int)(waveform_ch1.Width * progress);
+                waveform_ch1.Invalidate();
             }
 
             if (player2.AudioFileReader != null)
             {
                 labelNowTime_2.Text = FormatTimeSpan(player2.AudioFileReader.CurrentTime);
-                
+
                 if (player2.Loop.LoopActive && player2.Loop.LoopOut != TimeSpan.Zero && player2.Loop.LoopIn != TimeSpan.Zero)
                 {
                     if (player2.AudioFileReader.CurrentTime >= player2.Loop.LoopOut)
@@ -548,6 +590,10 @@ namespace iRANE_62
                         player2.AudioFileReader.CurrentTime = player2.Loop.LoopIn;
                     }
                 }
+
+                double progress = player2.AudioFileReader.CurrentTime.TotalSeconds / player2.AudioFileReader.TotalTime.TotalSeconds;
+                player2.currentPlaybackPosition = (int)(waveform_ch1.Width * progress);
+                waveform_ch2.Invalidate();
             }
         }
 
@@ -555,8 +601,6 @@ namespace iRANE_62
         {
             return string.Format("{0:D2}:{1:D2}", (int)ts.TotalMinutes, ts.Seconds);
         }
-
-      
 
 
     }

@@ -22,14 +22,14 @@ namespace iRANE_62.Models
         public Eq Equalizer { get; set; }
         public Loop Loop { get; set; }
 
+        public int currentPlaybackPosition = 0; 
+
         public Player(int id)
         {
             this.Id = id;
             Equalizer = new Eq();
             Loop = new Loop();
         }
-
-
     }
 
 }
