@@ -161,6 +161,30 @@ namespace iRANE_62
             }
         }
 
+        private void Odtwarzacz_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Space)
+            {
+                PressedSpacebarOrEnter(ref player1);
+            }
+
+            if (e.KeyCode == Keys.Enter)
+            {
+                PressedSpacebarOrEnter(ref player2);
+            }
+        }
+
+        private void PressedSpacebarOrEnter(ref Player player)
+        {
+            if (player.WavePlayer == null) return;
+
+            if (player.WavePlayer.PlaybackState == PlaybackState.Playing)
+            {
+                player.WavePlayer.Pause();
+            }
+            player.WavePlayer.Play();
+        }
+
 
         // ten kawałek kodu może być potrzebny później przy dodaniu obsługi słuchawek
         /* private IWavePlayer CreateWavePlayer()//możesz to dodać jako menu rozwijane z paska u góry
@@ -179,32 +203,10 @@ namespace iRANE_62
 
         #endregion
 
-        #region Open
+        #region Open button
 
-        private void btnOpen_1_Click(object sender, EventArgs e)
-        {
-            Open(player1);
-        }
-
-        private void btnOpen_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.O && e.Shift)
-            {
-                Open(player2);
-            }
-
-            if (e.KeyCode == Keys.O)
-            {
-                Open(player1);
-            }
-        }
-
-        private void btnOpen_2_Click(object sender, EventArgs e)
-        {
-            Open(player2);
-        }
-
-        private void OpenCommon(Player player, string fileName)
+      
+        private void LoadTrack(Player player, string fileName)
         {
             player.FileName = fileName;
 
@@ -215,19 +217,21 @@ namespace iRANE_62
                 Song song = new Song(player.FileName);
                 playlista.Items.Add(song);
                 UpadteTotalSongTime(player, song);
+                player.Song = song;
+
+                mixer.PlayerReady(player.Id);
             }
         }
 
-        private void Open(Player player)
+        private void OpenButton(Player player)
         {
-            OpenCommon(player, SelectInputFile());
+            LoadTrack(player, SelectInputFile());
         }
 
-        private void OpenSongFromPlaylist(Player player, Song song)
+        private void LoadSongFromPlaylist(Player player, Song song)
         {
-            OpenCommon(player, song.Path);
+            LoadTrack(player, song.Path);
         }
-
 
         private void UpadteTotalSongTime(Player player, Song song)
         {
@@ -271,6 +275,31 @@ namespace iRANE_62
 
         }
 
+        #region GUI
+
+        private void btnOpen_1_Click(object sender, EventArgs e)
+        {
+            OpenButton(player1);
+        }
+
+        private void btnOpen_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.O && e.Shift)
+            {
+                OpenButton(player2);
+            }
+
+            if (e.KeyCode == Keys.O)
+            {
+                OpenButton(player1);
+            }
+        }
+
+        private void btnOpen_2_Click(object sender, EventArgs e)
+        {
+            OpenButton(player2);
+        }
+
         private void listBox1_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Left && e.Shift)
@@ -278,7 +307,7 @@ namespace iRANE_62
                 if (playlista.SelectedItem != null)
                 {
                     Song song = (Song)playlista.SelectedItem;
-                    OpenSongFromPlaylist(player1, song);
+                    LoadSongFromPlaylist(player1, song);
                 }
             }
 
@@ -288,7 +317,7 @@ namespace iRANE_62
                 if (playlista.SelectedItem != null)
                 {
                     Song song = (Song)playlista.SelectedItem;
-                    OpenSongFromPlaylist(player2, song);
+                    LoadSongFromPlaylist(player2, song);
                 }
             }
 
@@ -311,6 +340,48 @@ namespace iRANE_62
 
         }
 
+        private void listBox1_DragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                foreach (string file in files)
+                {
+                    Song song = new Song(file);
+                    playlista.Items.Add(song);
+                }
+            }
+        }
+
+        private void listBox1_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                bool allValid = files.All(file =>
+                    file.EndsWith(".wav", StringComparison.OrdinalIgnoreCase) ||
+                    file.EndsWith(".mp3", StringComparison.OrdinalIgnoreCase) ||
+                    file.EndsWith(".aiff", StringComparison.OrdinalIgnoreCase) ||
+                    file.EndsWith(".wma", StringComparison.OrdinalIgnoreCase));
+
+
+                if (allValid)
+                {
+                    e.Effect = DragDropEffects.Copy;
+                }
+                else
+                {
+                    e.Effect = DragDropEffects.None;
+                }
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+        #endregion
         #endregion
 
         #region Stop button
@@ -485,72 +556,7 @@ namespace iRANE_62
             return string.Format("{0:D2}:{1:D2}", (int)ts.TotalMinutes, ts.Seconds);
         }
 
-
-        private void Odtwarzacz_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Space)
-            {
-                PressedSpacebarOrEnter(ref player1);
-            }
-
-            if (e.KeyCode == Keys.Enter)
-            {
-                PressedSpacebarOrEnter(ref player2);
-            }
-        }
-
-        private void PressedSpacebarOrEnter(ref Player player)
-        {
-            if (player.WavePlayer == null) return;
-
-            if (player.WavePlayer.PlaybackState == PlaybackState.Playing)
-            {
-                player.WavePlayer.Pause();
-            }
-            player.WavePlayer.Play();
-        }
-
-        private void listBox1_DragDrop(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-
-                foreach (string file in files)
-                {
-                    Song song = new Song(file);
-                    playlista.Items.Add(song);
-                }
-            }
-        }
-
-        private void listBox1_DragEnter(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-
-                bool allValid = files.All(file =>
-                    file.EndsWith(".wav", StringComparison.OrdinalIgnoreCase) ||
-                    file.EndsWith(".mp3", StringComparison.OrdinalIgnoreCase) ||
-                    file.EndsWith(".aiff", StringComparison.OrdinalIgnoreCase) ||
-                    file.EndsWith(".wma", StringComparison.OrdinalIgnoreCase));
-
-
-                if (allValid)
-                {
-                    e.Effect = DragDropEffects.Copy;
-                }
-                else
-                {
-                    e.Effect = DragDropEffects.None;
-                }
-            }
-            else
-            {
-                e.Effect = DragDropEffects.None;
-            }
-        }
+      
 
 
     }

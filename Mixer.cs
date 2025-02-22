@@ -4,6 +4,7 @@ using NAudio.Gui;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using System.ComponentModel;
+using System.Numerics;
 
 namespace iRANE_62
 {
@@ -12,7 +13,7 @@ namespace iRANE_62
         private Player player1;
         private Player player2;
 
-        public Mixer(){}
+        public Mixer() { }
 
         public Mixer(ref Player player1, ref Player player2) : this()
         {
@@ -21,6 +22,7 @@ namespace iRANE_62
             InitializeComponent();
 
             efxCheckedChangedEventHandler();
+            blockCueButtons();
         }
 
         #region FX
@@ -273,5 +275,131 @@ namespace iRANE_62
             player2.Loop.LoopOut = TimeSpan.Zero;
         }
         #endregion
+
+        #region CuePointy
+
+        private void blockCueButtons()
+        {
+            cue1_ch1.Enabled = false;
+            cue2_ch1.Enabled = false;
+            cue3_ch1.Enabled = false;
+            cue4_ch1.Enabled = false;
+            cue5_ch1.Enabled = false;
+
+            cue1_ch2.Enabled = false;
+            cue2_ch2.Enabled = false;
+            cue3_ch2.Enabled = false;
+            cue4_ch2.Enabled = false;
+            cue5_ch2.Enabled = false;
+
+        }
+
+        public void PlayerReady(int playerId)
+        {
+            if (playerId == 1)
+            {
+                cue1_ch1.Enabled = true;
+                cue2_ch1.Enabled = true;
+                cue3_ch1.Enabled = true;
+                cue4_ch1.Enabled = true;
+                cue5_ch1.Enabled = true;
+            }
+            else
+            {
+                cue1_ch2.Enabled = true;
+                cue2_ch2.Enabled = true;
+                cue3_ch2.Enabled = true;
+                cue4_ch2.Enabled = true;
+                cue5_ch2.Enabled = true;
+            }
+        }
+
+        private void cue1_ch1_Click(object sender, EventArgs e)
+        {
+
+            TimeSpan currentTime = player1.AudioFileReader.CurrentTime;
+
+            CueClick1(player1, 0, currentTime);
+        }
+
+        private void cue2_ch1_Click(object sender, EventArgs e)
+        {
+            TimeSpan currentTime = player1.AudioFileReader.CurrentTime;
+
+            CueClick1(player1, 1, currentTime);
+        }
+        private void cue3_ch1_Click(object sender, EventArgs e)
+        {
+            TimeSpan currentTime = player1.AudioFileReader.CurrentTime;
+
+            CueClick1(player1, 2, currentTime);
+        }
+        private void cue4_ch1_Click(object sender, EventArgs e)
+        {
+            CueClick(player1, 3);
+        }
+        private void cue5_ch1_Click(object sender, EventArgs e)
+        {
+            CueClick(player1, 4);
+        }
+        private void cue1_ch2_Click(object sender, EventArgs e)
+        {
+            CueClick(player2, 0);
+        }
+        private void cue2_ch2_Click(object sender, EventArgs e)
+        {
+            CueClick(player2, 1);
+        }
+        private void cue3_ch2_Click(object sender, EventArgs e)
+        {
+            CueClick(player2, 2);
+        }
+        private void cue4_ch2_Click(object sender, EventArgs e)
+        {
+            CueClick(player2, 3);
+        }
+        private void cue5_ch2_Click(object sender, EventArgs e)
+        {
+            CueClick(player2, 4);
+        }
+
+        private void CueClick(Player player, int cue)
+        {
+            if (player.Song == null)
+            {
+                return;
+            }
+            TimeSpan currentTime = player.AudioFileReader.CurrentTime;
+
+            if (player.Song.CuePoints[cue].Ticks > 0)
+            {
+                player.AudioFileReader.CurrentTime = player.Song.CuePoints[cue];
+            }
+            else
+            {
+                player.Song.CuePoints[cue] = currentTime;
+            }
+        }
+
+
+
+        private void CueClick1(Player player, int cue, TimeSpan currentTime)
+        {
+            if (player.Song == null)
+            {
+                return;
+            }
+
+            if (player.Song.CuePoints[cue].Ticks > 0)
+            {
+                player.AudioFileReader.CurrentTime = player.Song.CuePoints[cue];
+            }
+            else
+            {
+                player.Song.CuePoints[cue] = currentTime;
+            }
+        }
+        #endregion
+
     }
 }

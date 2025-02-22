@@ -8,7 +8,13 @@ namespace iRANE_62.Models
 {
     public class CuePoint
     {
-        public int Id { get; set; }
-        public TimeOnly Time { get; set; } 
+        public TimeSpan StartTime { get; set; }
+
+        public CuePoint()
+        {
+            StartTime = new TimeSpan(1).Negate();
+        }
+
+        
     }
 }

@@ -104,16 +104,16 @@ namespace iRANE_62
             loopOut_ch2 = new Button();
             loopIn_ch2 = new Button();
             button19 = new Button();
-            odt1_cue1 = new Button();
-            odt1_cue2 = new Button();
-            odt1_cue3 = new Button();
-            odt1_cue4 = new Button();
-            odt1_cue5 = new Button();
-            odt2_cue1 = new Button();
-            odt2_cue3 = new Button();
-            odt2_cue2 = new Button();
-            odt2_cue4 = new Button();
-            odt2_cue5 = new Button();
+            cue1_ch1 = new Button();
+            cue2_ch1 = new Button();
+            cue3_ch1 = new Button();
+            cue4_ch1 = new Button();
+            cue5_ch1 = new Button();
+            cue1_ch2 = new Button();
+            cue3_ch2 = new Button();
+            cue2_ch2 = new Button();
+            cue4_ch2 = new Button();
+            cue5_ch2 = new Button();
             cue = new Panel();
             chBox_cue_samples = new CheckBox();
             odt1_cue_pgm1 = new CheckBox();
@@ -901,110 +901,120 @@ namespace iRANE_62
             button19.Text = "A/M";
             button19.UseVisualStyleBackColor = true;
             // 
-            // odt1_cue1
+            // cue1_ch1
             // 
-            odt1_cue1.Location = new Point(116, 594);
-            odt1_cue1.Margin = new Padding(2);
-            odt1_cue1.Name = "odt1_cue1";
-            odt1_cue1.Size = new Size(57, 26);
-            odt1_cue1.TabIndex = 4;
-            odt1_cue1.Text = "CUE1";
-            odt1_cue1.UseVisualStyleBackColor = true;
+            cue1_ch1.Location = new Point(116, 594);
+            cue1_ch1.Margin = new Padding(2);
+            cue1_ch1.Name = "cue1_ch1";
+            cue1_ch1.Size = new Size(57, 26);
+            cue1_ch1.TabIndex = 4;
+            cue1_ch1.Text = "CUE1";
+            cue1_ch1.UseVisualStyleBackColor = true;
+            cue1_ch1.Click += cue1_ch1_Click;
             // 
-            // odt1_cue2
+            // cue2_ch1
             // 
-            odt1_cue2.Location = new Point(178, 594);
-            odt1_cue2.Margin = new Padding(2);
-            odt1_cue2.Name = "odt1_cue2";
-            odt1_cue2.Size = new Size(56, 26);
-            odt1_cue2.TabIndex = 4;
-            odt1_cue2.Text = "CUE2";
-            odt1_cue2.UseVisualStyleBackColor = true;
+            cue2_ch1.Location = new Point(178, 594);
+            cue2_ch1.Margin = new Padding(2);
+            cue2_ch1.Name = "cue2_ch1";
+            cue2_ch1.Size = new Size(56, 26);
+            cue2_ch1.TabIndex = 4;
+            cue2_ch1.Text = "CUE2";
+            cue2_ch1.UseVisualStyleBackColor = true;
+            cue2_ch1.Click += cue2_ch1_Click;
             // 
-            // odt1_cue3
+            // cue3_ch1
             // 
-            odt1_cue3.Location = new Point(238, 594);
-            odt1_cue3.Margin = new Padding(2);
-            odt1_cue3.Name = "odt1_cue3";
-            odt1_cue3.Size = new Size(57, 26);
-            odt1_cue3.TabIndex = 4;
-            odt1_cue3.Text = "CUE3";
-            odt1_cue3.UseVisualStyleBackColor = true;
+            cue3_ch1.Location = new Point(238, 594);
+            cue3_ch1.Margin = new Padding(2);
+            cue3_ch1.Name = "cue3_ch1";
+            cue3_ch1.Size = new Size(57, 26);
+            cue3_ch1.TabIndex = 4;
+            cue3_ch1.Text = "CUE3";
+            cue3_ch1.UseVisualStyleBackColor = true;
+            cue3_ch1.Click += cue3_ch1_Click;
             // 
-            // odt1_cue4
+            // cue4_ch1
             // 
-            odt1_cue4.Location = new Point(300, 594);
-            odt1_cue4.Margin = new Padding(2);
-            odt1_cue4.Name = "odt1_cue4";
-            odt1_cue4.Size = new Size(50, 26);
-            odt1_cue4.TabIndex = 4;
-            odt1_cue4.Text = "CUE4";
-            odt1_cue4.UseVisualStyleBackColor = true;
+            cue4_ch1.Location = new Point(300, 594);
+            cue4_ch1.Margin = new Padding(2);
+            cue4_ch1.Name = "cue4_ch1";
+            cue4_ch1.Size = new Size(50, 26);
+            cue4_ch1.TabIndex = 4;
+            cue4_ch1.Text = "CUE4";
+            cue4_ch1.UseVisualStyleBackColor = true;
+            cue4_ch1.Click += cue4_ch1_Click;
             // 
-            // odt1_cue5
+            // cue5_ch1
             // 
-            odt1_cue5.Location = new Point(271, 25);
-            odt1_cue5.Margin = new Padding(2);
-            odt1_cue5.Name = "odt1_cue5";
-            odt1_cue5.Size = new Size(54, 26);
-            odt1_cue5.TabIndex = 4;
-            odt1_cue5.Text = "CUE5";
-            odt1_cue5.UseVisualStyleBackColor = true;
+            cue5_ch1.Location = new Point(271, 25);
+            cue5_ch1.Margin = new Padding(2);
+            cue5_ch1.Name = "cue5_ch1";
+            cue5_ch1.Size = new Size(54, 26);
+            cue5_ch1.TabIndex = 4;
+            cue5_ch1.Text = "CUE5";
+            cue5_ch1.UseVisualStyleBackColor = true;
+            cue5_ch1.Click += cue5_ch1_Click;
             // 
-            // odt2_cue1
+            // cue1_ch2
             // 
-            odt2_cue1.Location = new Point(565, 594);
-            odt2_cue1.Margin = new Padding(2);
-            odt2_cue1.Name = "odt2_cue1";
-            odt2_cue1.Size = new Size(57, 26);
-            odt2_cue1.TabIndex = 4;
-            odt2_cue1.Text = "CUE1";
-            odt2_cue1.UseVisualStyleBackColor = true;
+            cue1_ch2.Location = new Point(565, 594);
+            cue1_ch2.Margin = new Padding(2);
+            cue1_ch2.Name = "cue1_ch2";
+            cue1_ch2.Size = new Size(57, 26);
+            cue1_ch2.TabIndex = 4;
+            cue1_ch2.Text = "CUE1";
+            cue1_ch2.UseVisualStyleBackColor = true;
+            cue1_ch2.Click += cue1_ch2_Click;
             // 
-            // odt2_cue3
+            // cue3_ch2
             // 
-            odt2_cue3.Location = new Point(687, 594);
-            odt2_cue3.Margin = new Padding(2);
-            odt2_cue3.Name = "odt2_cue3";
-            odt2_cue3.Size = new Size(57, 26);
-            odt2_cue3.TabIndex = 4;
-            odt2_cue3.Text = "CUE3";
-            odt2_cue3.UseVisualStyleBackColor = true;
+            cue3_ch2.Location = new Point(687, 594);
+            cue3_ch2.Margin = new Padding(2);
+            cue3_ch2.Name = "cue3_ch2";
+            cue3_ch2.Size = new Size(57, 26);
+            cue3_ch2.TabIndex = 4;
+            cue3_ch2.Text = "CUE3";
+            cue3_ch2.UseVisualStyleBackColor = true;
+            cue3_ch2.Click += cue3_ch2_Click;
             // 
-            // odt2_cue2
+            // cue2_ch2
             // 
-            odt2_cue2.Location = new Point(626, 594);
-            odt2_cue2.Margin = new Padding(2);
-            odt2_cue2.Name = "odt2_cue2";
-            odt2_cue2.Size = new Size(56, 26);
-            odt2_cue2.TabIndex = 4;
-            odt2_cue2.Text = "CUE2";
-            odt2_cue2.UseVisualStyleBackColor = true;
+            cue2_ch2.Location = new Point(626, 594);
+            cue2_ch2.Margin = new Padding(2);
+            cue2_ch2.Name = "cue2_ch2";
+            cue2_ch2.Size = new Size(56, 26);
+            cue2_ch2.TabIndex = 4;
+            cue2_ch2.Text = "CUE2";
+            cue2_ch2.UseVisualStyleBackColor = true;
+            cue2_ch2.Click += cue2_ch2_Click;
             // 
-            // odt2_cue4
+            // cue4_ch2
             // 
-            odt2_cue4.Location = new Point(749, 594);
-            odt2_cue4.Margin = new Padding(2);
-            odt2_cue4.Name = "odt2_cue4";
-            odt2_cue4.Size = new Size(50, 26);
-            odt2_cue4.TabIndex = 4;
-            odt2_cue4.Text = "CUE4";
-            odt2_cue4.UseVisualStyleBackColor = true;
+            cue4_ch2.Location = new Point(749, 594);
+            cue4_ch2.Margin = new Padding(2);
+            cue4_ch2.Name = "cue4_ch2";
+            cue4_ch2.Size = new Size(50, 26);
+            cue4_ch2.TabIndex = 4;
+            cue4_ch2.Text = "CUE4";
+            cue4_ch2.UseVisualStyleBackColor = true;
+            cue4_ch2.Click += cue4_ch2_Click;
             // 
-            // odt2_cue5
+            // cue5_ch2
             // 
-            odt2_cue5.Location = new Point(813, 594);
-            odt2_cue5.Margin = new Padding(2);
-            odt2_cue5.Name = "odt2_cue5";
-            odt2_cue5.Size = new Size(54, 26);
-            odt2_cue5.TabIndex = 4;
-            odt2_cue5.Text = "CUE5";
-            odt2_cue5.UseVisualStyleBackColor = true;
+            cue5_ch2.Location = new Point(813, 594);
+            cue5_ch2.Margin = new Padding(2);
+            cue5_ch2.Name = "cue5_ch2";
+            cue5_ch2.Size = new Size(54, 26);
+            cue5_ch2.TabIndex = 4;
+            cue5_ch2.Text = "CUE5";
+            cue5_ch2.UseVisualStyleBackColor = true;
+            cue5_ch2.Click += cue5_ch2_Click;
             // 
             // cue
             // 
             cue.Controls.Add(chBox_cue_samples);
-            cue.Controls.Add(odt1_cue5);
+            cue.Controls.Add(cue5_ch1);
             cue.Location = new Point(84, 570);
             cue.Margin = new Padding(2);
             cue.Name = "cue";
@@ -1223,15 +1233,15 @@ namespace iRANE_62
             Controls.Add(button8);
             Controls.Add(button2);
             Controls.Add(button1);
-            Controls.Add(odt2_cue5);
-            Controls.Add(odt2_cue4);
-            Controls.Add(odt1_cue4);
-            Controls.Add(odt2_cue2);
-            Controls.Add(odt1_cue2);
-            Controls.Add(odt2_cue3);
-            Controls.Add(odt1_cue3);
-            Controls.Add(odt2_cue1);
-            Controls.Add(odt1_cue1);
+            Controls.Add(cue5_ch2);
+            Controls.Add(cue4_ch2);
+            Controls.Add(cue4_ch1);
+            Controls.Add(cue2_ch2);
+            Controls.Add(cue2_ch1);
+            Controls.Add(cue3_ch2);
+            Controls.Add(cue3_ch1);
+            Controls.Add(cue1_ch2);
+            Controls.Add(cue1_ch1);
             Controls.Add(mic_over);
             Controls.Add(mic_on);
             Controls.Add(booth);
@@ -1346,16 +1356,16 @@ namespace iRANE_62
         private Button loopOut_ch2;
         private Button loopIn_ch2;
         private Button button19;
-        private Button odt1_cue1;
-        private Button odt1_cue2;
-        private Button odt1_cue3;
-        private Button odt1_cue4;
-        private Button odt1_cue5;
-        private Button odt2_cue1;
-        private Button odt2_cue3;
-        private Button odt2_cue2;
-        private Button odt2_cue4;
-        private Button odt2_cue5;
+        private Button cue1_ch1;
+        private Button cue2_ch1;
+        private Button cue3_ch1;
+        private Button cue4_ch1;
+        private Button cue5_ch1;
+        private Button cue1_ch2;
+        private Button cue3_ch2;
+        private Button cue2_ch2;
+        private Button cue4_ch2;
+        private Button cue5_ch2;
         private Panel cue;
         private CheckBox odt1_cue_pgm1;
         private CheckBox btn_cue_usb_aux;

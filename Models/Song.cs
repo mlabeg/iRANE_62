@@ -14,7 +14,8 @@ namespace iRANE_62.Models
         public string? Title { get; set; }
         public string? Author { get; set; }
         public string? Album { get; set; }
-        public List<CuePoint>?  CuePoints { get; set; } = new List<CuePoint>();
+
+        public TimeSpan[] CuePoints = new TimeSpan[5];
         public TimeSpan SongSpan { get; set; }
 
         public override string ToString()
@@ -27,6 +28,16 @@ namespace iRANE_62.Models
             Path = path;
             Name = Path.Split('\\').Last().ToString();
             SongSpan=GetAudioDuration(path);
+
+            InitializeCuePoints();
+        }
+
+        private void InitializeCuePoints()
+        {
+            for (int i = 0; i < CuePoints.Length; i++)
+            {
+                CuePoints[i] = new TimeSpan(1).Negate();
+            }
         }
 
         public TimeSpan GetAudioDuration(string filePath)
