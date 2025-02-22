@@ -294,7 +294,7 @@ namespace iRANE_62
 
         }
 
-        public void PlayerReady(int playerId)
+        public void EnableCuePoints(int playerId)
         {
             if (playerId == 1)
             {

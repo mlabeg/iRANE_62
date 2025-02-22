@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            btnOpen_1 = new Button();
-            btnPlay_1 = new Button();
-            btnPause_1 = new Button();
-            btnStop_1 = new Button();
-            btnOpen_2 = new Button();
-            btnPlay_2 = new Button();
-            btnPause_2 = new Button();
-            btnStop_2 = new Button();
+            btnOpen_ch1 = new Button();
+            btnPlay_ch1 = new Button();
+            btnPause_ch1 = new Button();
+            btnStop_ch1 = new Button();
+            btnOpen_ch2 = new Button();
+            btnPlay_ch2 = new Button();
+            btnPause_ch2 = new Button();
+            btnStop_ch2 = new Button();
             playlista = new ListBox();
             timer1 = new System.Windows.Forms.Timer(components);
             labelNowTime_1 = new Label();
@@ -54,97 +54,98 @@
             ((System.ComponentModel.ISupportInitialize)waveform_ch2).BeginInit();
             SuspendLayout();
             // 
-            // btnOpen_1
+            // btnOpen_ch1
             // 
-            btnOpen_1.Location = new Point(25, 58);
-            btnOpen_1.Margin = new Padding(2);
-            btnOpen_1.Name = "btnOpen_1";
-            btnOpen_1.Size = new Size(68, 27);
-            btnOpen_1.TabIndex = 1;
-            btnOpen_1.Text = "Open";
-            btnOpen_1.UseVisualStyleBackColor = true;
-            btnOpen_1.Click += btnOpen_1_Click;
-            btnOpen_1.KeyDown += btnOpen_KeyDown;
+            btnOpen_ch1.Enabled = false;
+            btnOpen_ch1.Location = new Point(25, 58);
+            btnOpen_ch1.Margin = new Padding(2);
+            btnOpen_ch1.Name = "btnOpen_ch1";
+            btnOpen_ch1.Size = new Size(68, 27);
+            btnOpen_ch1.TabIndex = 1;
+            btnOpen_ch1.Text = "Open";
+            btnOpen_ch1.UseVisualStyleBackColor = true;
+            btnOpen_ch1.Click += btnOpen_1_Click;
+            btnOpen_ch1.KeyDown += btnOpen_KeyDown;
             // 
-            // btnPlay_1
+            // btnPlay_ch1
             // 
-            btnPlay_1.Location = new Point(98, 58);
-            btnPlay_1.Margin = new Padding(2);
-            btnPlay_1.Name = "btnPlay_1";
-            btnPlay_1.Size = new Size(61, 27);
-            btnPlay_1.TabIndex = 1;
-            btnPlay_1.Text = "Play";
-            btnPlay_1.UseVisualStyleBackColor = true;
-            btnPlay_1.Click += btnPlay1_Click;
-            btnPlay_1.KeyDown += Odtwarzacz_KeyDown;
+            btnPlay_ch1.Location = new Point(98, 58);
+            btnPlay_ch1.Margin = new Padding(2);
+            btnPlay_ch1.Name = "btnPlay_ch1";
+            btnPlay_ch1.Size = new Size(61, 27);
+            btnPlay_ch1.TabIndex = 1;
+            btnPlay_ch1.Text = "Play";
+            btnPlay_ch1.UseVisualStyleBackColor = true;
+            btnPlay_ch1.Click += btnPlay1_Click;
+            btnPlay_ch1.KeyDown += Odtwarzacz_KeyDown;
             // 
-            // btnPause_1
+            // btnPause_ch1
             // 
-            btnPause_1.Location = new Point(163, 58);
-            btnPause_1.Margin = new Padding(2);
-            btnPause_1.Name = "btnPause_1";
-            btnPause_1.Size = new Size(63, 27);
-            btnPause_1.TabIndex = 1;
-            btnPause_1.Text = "Pause";
-            btnPause_1.UseVisualStyleBackColor = true;
-            btnPause_1.Click += btnPause_1_Click;
+            btnPause_ch1.Location = new Point(163, 58);
+            btnPause_ch1.Margin = new Padding(2);
+            btnPause_ch1.Name = "btnPause_ch1";
+            btnPause_ch1.Size = new Size(63, 27);
+            btnPause_ch1.TabIndex = 1;
+            btnPause_ch1.Text = "Pause";
+            btnPause_ch1.UseVisualStyleBackColor = true;
+            btnPause_ch1.Click += btnPause_1_Click;
             // 
-            // btnStop_1
+            // btnStop_ch1
             // 
-            btnStop_1.Location = new Point(231, 58);
-            btnStop_1.Margin = new Padding(2);
-            btnStop_1.Name = "btnStop_1";
-            btnStop_1.Size = new Size(66, 27);
-            btnStop_1.TabIndex = 1;
-            btnStop_1.Text = "Stop";
-            btnStop_1.UseVisualStyleBackColor = true;
-            btnStop_1.Click += btnStop_1_Click;
+            btnStop_ch1.Location = new Point(231, 58);
+            btnStop_ch1.Margin = new Padding(2);
+            btnStop_ch1.Name = "btnStop_ch1";
+            btnStop_ch1.Size = new Size(66, 27);
+            btnStop_ch1.TabIndex = 1;
+            btnStop_ch1.Text = "Stop";
+            btnStop_ch1.UseVisualStyleBackColor = true;
+            btnStop_ch1.Click += btnStop_1_Click;
             // 
-            // btnOpen_2
+            // btnOpen_ch2
             // 
-            btnOpen_2.Location = new Point(588, 58);
-            btnOpen_2.Margin = new Padding(2);
-            btnOpen_2.Name = "btnOpen_2";
-            btnOpen_2.Size = new Size(55, 27);
-            btnOpen_2.TabIndex = 1;
-            btnOpen_2.Text = "Open";
-            btnOpen_2.UseVisualStyleBackColor = true;
-            btnOpen_2.Click += btnOpen_2_Click;
-            btnOpen_2.KeyDown += btnOpen_KeyDown;
+            btnOpen_ch2.Location = new Point(588, 58);
+            btnOpen_ch2.Margin = new Padding(2);
+            btnOpen_ch2.Name = "btnOpen_ch2";
+            btnOpen_ch2.Size = new Size(55, 27);
+            btnOpen_ch2.TabIndex = 1;
+            btnOpen_ch2.Text = "Open";
+            btnOpen_ch2.UseVisualStyleBackColor = true;
+            btnOpen_ch2.Click += btnOpen_2_Click;
+            btnOpen_ch2.KeyDown += btnOpen_KeyDown;
             // 
-            // btnPlay_2
+            // btnPlay_ch2
             // 
-            btnPlay_2.Location = new Point(648, 58);
-            btnPlay_2.Margin = new Padding(2);
-            btnPlay_2.Name = "btnPlay_2";
-            btnPlay_2.Size = new Size(58, 27);
-            btnPlay_2.TabIndex = 1;
-            btnPlay_2.Text = "Play";
-            btnPlay_2.UseVisualStyleBackColor = true;
-            btnPlay_2.Click += btnPlay_2_Click;
-            btnPlay_2.KeyDown += Odtwarzacz_KeyDown;
+            btnPlay_ch2.Location = new Point(648, 58);
+            btnPlay_ch2.Margin = new Padding(2);
+            btnPlay_ch2.Name = "btnPlay_ch2";
+            btnPlay_ch2.Size = new Size(58, 27);
+            btnPlay_ch2.TabIndex = 1;
+            btnPlay_ch2.Text = "Play";
+            btnPlay_ch2.UseVisualStyleBackColor = true;
+            btnPlay_ch2.Click += btnPlay_2_Click;
+            btnPlay_ch2.KeyDown += Odtwarzacz_KeyDown;
             // 
-            // btnPause_2
+            // btnPause_ch2
             // 
-            btnPause_2.Location = new Point(710, 58);
-            btnPause_2.Margin = new Padding(2);
-            btnPause_2.Name = "btnPause_2";
-            btnPause_2.Size = new Size(62, 27);
-            btnPause_2.TabIndex = 1;
-            btnPause_2.Text = "Pause";
-            btnPause_2.UseVisualStyleBackColor = true;
-            btnPause_2.Click += btnPause_2_Click;
+            btnPause_ch2.Location = new Point(710, 58);
+            btnPause_ch2.Margin = new Padding(2);
+            btnPause_ch2.Name = "btnPause_ch2";
+            btnPause_ch2.Size = new Size(62, 27);
+            btnPause_ch2.TabIndex = 1;
+            btnPause_ch2.Text = "Pause";
+            btnPause_ch2.UseVisualStyleBackColor = true;
+            btnPause_ch2.Click += btnPause_2_Click;
             // 
-            // btnStop_2
+            // btnStop_ch2
             // 
-            btnStop_2.Location = new Point(778, 58);
-            btnStop_2.Margin = new Padding(2);
-            btnStop_2.Name = "btnStop_2";
-            btnStop_2.Size = new Size(60, 27);
-            btnStop_2.TabIndex = 1;
-            btnStop_2.Text = "Stop";
-            btnStop_2.UseVisualStyleBackColor = true;
-            btnStop_2.Click += btnStop_2_Click;
+            btnStop_ch2.Location = new Point(778, 58);
+            btnStop_ch2.Margin = new Padding(2);
+            btnStop_ch2.Name = "btnStop_ch2";
+            btnStop_ch2.Size = new Size(60, 27);
+            btnStop_ch2.TabIndex = 1;
+            btnStop_ch2.Text = "Stop";
+            btnStop_ch2.UseVisualStyleBackColor = true;
+            btnStop_ch2.Click += btnStop_2_Click;
             // 
             // playlista
             // 
@@ -201,6 +202,7 @@
             // 
             // waveform_ch1
             // 
+            waveform_ch1.Enabled = false;
             waveform_ch1.Location = new Point(18, 101);
             waveform_ch1.Margin = new Padding(2);
             waveform_ch1.Name = "waveform_ch1";
@@ -208,6 +210,7 @@
             waveform_ch1.TabIndex = 4;
             waveform_ch1.TabStop = false;
             waveform_ch1.Paint += waveform_ch1_Paint;
+            waveform_ch1.MouseClick += waveform_ch1_MouseClick;
             // 
             // labelRendering1
             // 
@@ -222,6 +225,7 @@
             // 
             // waveform_ch2
             // 
+            waveform_ch2.Enabled = false;
             waveform_ch2.Location = new Point(569, 101);
             waveform_ch2.Margin = new Padding(2);
             waveform_ch2.Name = "waveform_ch2";
@@ -229,6 +233,7 @@
             waveform_ch2.TabIndex = 4;
             waveform_ch2.TabStop = false;
             waveform_ch2.Paint += waveform_ch2_Paint;
+            waveform_ch2.MouseClick += waveform_ch2_MouseClick;
             // 
             // labelRendering2
             // 
@@ -277,14 +282,14 @@
             Controls.Add(labelNowTime_2);
             Controls.Add(labelNowTime_1);
             Controls.Add(playlista);
-            Controls.Add(btnStop_2);
-            Controls.Add(btnStop_1);
-            Controls.Add(btnPause_2);
-            Controls.Add(btnPause_1);
-            Controls.Add(btnPlay_2);
-            Controls.Add(btnPlay_1);
-            Controls.Add(btnOpen_2);
-            Controls.Add(btnOpen_1);
+            Controls.Add(btnStop_ch2);
+            Controls.Add(btnStop_ch1);
+            Controls.Add(btnPause_ch2);
+            Controls.Add(btnPause_ch1);
+            Controls.Add(btnPlay_ch2);
+            Controls.Add(btnPlay_ch1);
+            Controls.Add(btnOpen_ch2);
+            Controls.Add(btnOpen_ch1);
             Controls.Add(waveform_ch1);
             Margin = new Padding(2);
             Name = "Odtwarzacz";
@@ -299,14 +304,14 @@
 
         #endregion
         private NAudio.Gui.WaveViewer waveViewer_2;
-        private Button btnOpen_1;
-        private Button btnPlay_1;
-        private Button btnPause_1;
-        private Button btnStop_1;
-        private Button btnOpen_2;
-        private Button btnPlay_2;
-        private Button btnPause_2;
-        private Button btnStop_2;
+        private Button btnOpen_ch1;
+        private Button btnPlay_ch1;
+        private Button btnPause_ch1;
+        private Button btnStop_ch1;
+        private Button btnOpen_ch2;
+        private Button btnPlay_ch2;
+        private Button btnPause_ch2;
+        private Button btnStop_ch2;
         private ListBox playlista;
         private System.Windows.Forms.Timer timer1;
         private Label labelNowTime_1;

@@ -1,6 +1,8 @@
 ﻿using iRANE_62.Extensions;
 using iRANE_62.Models;
 using Microsoft.VisualBasic;
+using NAudio.Dmo.Effect;
+using NAudio.Extras;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using NAudio.WaveFormRenderer;
@@ -63,14 +65,6 @@ namespace iRANE_62
 
 
         #region Play button
-        private void btnPlay1_Click(object sender, EventArgs e)
-        {
-            Play(player1);
-        }
-        private void btnPlay_2_Click(object sender, EventArgs e)
-        {
-            Play(player2);
-        }
 
         private void Play(Player player)
         {
@@ -107,12 +101,11 @@ namespace iRANE_62
 
             player.WavePlayer = new WaveOutEvent();
 
-            player.AudioFileReader = new AudioFileReader(player.FileName);
-
 
             //Pre
             var sampleChannel = new SampleChannel(player.AudioFileReader, true);
             player.SetVolumeDelegate = vol => sampleChannel.Volume = vol;
+
             if (player.Id == 1)
             {
                 sampleChannel.PreVolumeMeter += mixer.OnPostChanel1VolumeMeter;
@@ -161,31 +154,6 @@ namespace iRANE_62
             }
         }
 
-        private void Odtwarzacz_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Space)
-            {
-                PressedSpacebarOrEnter(ref player1);
-            }
-
-            if (e.KeyCode == Keys.Enter)
-            {
-                PressedSpacebarOrEnter(ref player2);
-            }
-        }
-
-        private void PressedSpacebarOrEnter(ref Player player)
-        {
-            if (player.WavePlayer == null) return;
-
-            if (player.WavePlayer.PlaybackState == PlaybackState.Playing)
-            {
-                player.WavePlayer.Pause();
-            }
-            player.WavePlayer.Play();
-        }
-
-
         // ten kawałek kodu może być potrzebny później przy dodaniu obsługi słuchawek
         /* private IWavePlayer CreateWavePlayer()//możesz to dodać jako menu rozwijane z paska u góry
          {
@@ -200,7 +168,6 @@ namespace iRANE_62
              }
          }*/
 
-
         #endregion
 
         #region Open button
@@ -208,6 +175,7 @@ namespace iRANE_62
         private void LoadTrack(Player player, string fileName)
         {
             player.FileName = fileName;
+            player.AudioFileReader = new AudioFileReader(player.FileName);
 
             LabelTrackUpdate(player);
             RenderWaveform(player);
@@ -216,18 +184,7 @@ namespace iRANE_62
             player.Song = song;
 
             UpadteTotalSongTime(player, song);
-
-            mixer.PlayerReady(player.Id);
-
-            player.currentPlaybackPosition = 0;
-            if (player.Id == 1)
-            {
-                waveform_ch1.Invalidate();
-            }
-            else
-            {
-                waveform_ch2.Invalidate();
-            }
+            EnableGuiOnChanel(player.Id);
 
         }
 
@@ -299,6 +256,80 @@ namespace iRANE_62
         #endregion
 
         #region GUI + keyboard shortcuts
+
+        private void btnPlay1_Click(object sender, EventArgs e)
+        {
+            Play(player1);
+        }
+        private void btnPlay_2_Click(object sender, EventArgs e)
+        {
+            Play(player2);
+        }
+
+        private void Odtwarzacz_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Space)
+            {
+                PressedSpacebarOrEnter(ref player1);
+            }
+
+            if (e.KeyCode == Keys.Enter)
+            {
+                PressedSpacebarOrEnter(ref player2);
+            }
+        }
+
+        private void PressedSpacebarOrEnter(ref Player player)
+        {
+            if (player.WavePlayer == null) return;
+
+            if (player.WavePlayer.PlaybackState == PlaybackState.Playing)
+            {
+                player.WavePlayer.Pause();
+            }
+            player.WavePlayer.Play();
+        }
+
+        private void EnableGuiOnChanel(int playerId)
+        {
+            EnableWaveformOnChanel(playerId);
+            mixer.EnableCuePoints(playerId);
+            EnableButtonsOnChanel(playerId);
+        }
+
+        private void EnableButtonsOnChanel(int playerId)
+        {
+            if (playerId == 1)
+            {
+                btnOpen_ch1.Enabled = true;
+                btnPlay_ch1.Enabled = true;
+                btnPause_ch1.Enabled = true;
+                btnStop_ch1.Enabled = true;
+            }
+            else
+            {
+                btnOpen_ch2.Enabled = true;
+                btnPlay_ch2.Enabled = true;
+                btnPause_ch2.Enabled = true;
+                btnStop_ch2.Enabled = true;
+            }
+        }
+
+        private void EnableWaveformOnChanel(int playerId)
+        {
+            if (playerId == 1)
+            {
+                player1.currentPlaybackPosition = 0;
+                waveform_ch1.Enabled = true;
+                waveform_ch1.Invalidate();
+            }
+            else
+            {
+                player2.currentPlaybackPosition = 0;
+                waveform_ch2.Enabled = true;
+                waveform_ch2.Invalidate();
+            }
+        }
 
         private void btnOpen_1_Click(object sender, EventArgs e)
         {
@@ -574,6 +605,7 @@ namespace iRANE_62
                     }
                 }
 
+                //wyświetlanie linii na waveform
                 double progress = player1.AudioFileReader.CurrentTime.TotalSeconds / player1.AudioFileReader.TotalTime.TotalSeconds;
                 player1.currentPlaybackPosition = (int)(waveform_ch1.Width * progress);
                 waveform_ch1.Invalidate();
@@ -591,6 +623,7 @@ namespace iRANE_62
                     }
                 }
 
+                //wyświetlanie linii na waveform
                 double progress = player2.AudioFileReader.CurrentTime.TotalSeconds / player2.AudioFileReader.TotalTime.TotalSeconds;
                 player2.currentPlaybackPosition = (int)(waveform_ch1.Width * progress);
                 waveform_ch2.Invalidate();
@@ -602,6 +635,27 @@ namespace iRANE_62
             return string.Format("{0:D2}:{1:D2}", (int)ts.TotalMinutes, ts.Seconds);
         }
 
+        private void waveform_ch1_MouseClick(object sender, MouseEventArgs e)
+        {
+            double clickPositionRatio = (double)e.X / waveform_ch1.Width;
+            TimeSpan newTime = TimeSpan.FromSeconds(player1.AudioFileReader.TotalTime.TotalSeconds * clickPositionRatio);
+
+            player1.AudioFileReader.CurrentTime = newTime;
+
+            player1.currentPlaybackPosition = e.X;
+            waveform_ch1.Invalidate();
+        }
+
+        private void waveform_ch2_MouseClick(object sender, MouseEventArgs e)
+        {
+            double clickPositionRatio = (double)e.X / waveform_ch2.Width;
+            TimeSpan newTime = TimeSpan.FromSeconds(player2.AudioFileReader.TotalTime.TotalSeconds * clickPositionRatio);
+
+            player2.AudioFileReader.CurrentTime = newTime;
+
+            player2.currentPlaybackPosition = e.X;
+            waveform_ch2.Invalidate();
+        }
 
     }
 

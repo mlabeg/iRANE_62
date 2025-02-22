@@ -49,13 +49,6 @@ namespace iRANE_62.Models
         }
 
         public override bool Equals(object? obj) => Equals(obj as Song);    
-        /*{
-            if (obj is Song song)
-            {
-                return Equals(song);
-            }
-            else return false;
-        }*/
 
         public bool Equals(Song? other)
         {
