@@ -402,6 +402,7 @@ namespace iRANE_62
             // 
             // odt1
             // 
+            odt1.BorderStyle = BorderStyle.FixedSingle;
             odt1.Controls.Add(volumeMeter_ch1);
             odt1.Controls.Add(low_odt1);
             odt1.Controls.Add(odt1_flexfx);
@@ -460,6 +461,7 @@ namespace iRANE_62
             // 
             // odt2
             // 
+            odt2.BorderStyle = BorderStyle.FixedSingle;
             odt2.Controls.Add(volumeMeter_ch2);
             odt2.Location = new Point(496, 33);
             odt2.Margin = new Padding(2);
@@ -505,6 +507,7 @@ namespace iRANE_62
             // 
             // loops1
             // 
+            loops1.BorderStyle = BorderStyle.FixedSingle;
             loops1.Controls.Add(checkBox1);
             loops1.Controls.Add(button14);
             loops1.Controls.Add(hScrollBar5);
@@ -807,6 +810,7 @@ namespace iRANE_62
             // 
             // efx
             // 
+            efx.BorderStyle = BorderStyle.FixedSingle;
             efx.Controls.Add(efx_tap);
             efx.Controls.Add(efx_time);
             efx.Controls.Add(efx_beat);
@@ -821,6 +825,7 @@ namespace iRANE_62
             // 
             // loops2
             // 
+            loops2.BorderStyle = BorderStyle.FixedSingle;
             loops2.Controls.Add(hScrollBar2);
             loops2.Controls.Add(button15);
             loops2.Controls.Add(hScrollBar6);
@@ -903,7 +908,8 @@ namespace iRANE_62
             // 
             // cue1_ch1
             // 
-            cue1_ch1.Location = new Point(116, 594);
+            cue1_ch1.FlatStyle = FlatStyle.Flat;
+            cue1_ch1.Location = new Point(17, 23);
             cue1_ch1.Margin = new Padding(2);
             cue1_ch1.Name = "cue1_ch1";
             cue1_ch1.Size = new Size(57, 26);
@@ -914,7 +920,8 @@ namespace iRANE_62
             // 
             // cue2_ch1
             // 
-            cue2_ch1.Location = new Point(178, 594);
+            cue2_ch1.FlatStyle = FlatStyle.Flat;
+            cue2_ch1.Location = new Point(78, 23);
             cue2_ch1.Margin = new Padding(2);
             cue2_ch1.Name = "cue2_ch1";
             cue2_ch1.Size = new Size(56, 26);
@@ -925,7 +932,8 @@ namespace iRANE_62
             // 
             // cue3_ch1
             // 
-            cue3_ch1.Location = new Point(238, 594);
+            cue3_ch1.FlatStyle = FlatStyle.Flat;
+            cue3_ch1.Location = new Point(138, 23);
             cue3_ch1.Margin = new Padding(2);
             cue3_ch1.Name = "cue3_ch1";
             cue3_ch1.Size = new Size(57, 26);
@@ -936,7 +944,8 @@ namespace iRANE_62
             // 
             // cue4_ch1
             // 
-            cue4_ch1.Location = new Point(300, 594);
+            cue4_ch1.FlatStyle = FlatStyle.Flat;
+            cue4_ch1.Location = new Point(199, 23);
             cue4_ch1.Margin = new Padding(2);
             cue4_ch1.Name = "cue4_ch1";
             cue4_ch1.Size = new Size(50, 26);
@@ -947,7 +956,8 @@ namespace iRANE_62
             // 
             // cue5_ch1
             // 
-            cue5_ch1.Location = new Point(271, 25);
+            cue5_ch1.FlatStyle = FlatStyle.Flat;
+            cue5_ch1.Location = new Point(253, 23);
             cue5_ch1.Margin = new Padding(2);
             cue5_ch1.Name = "cue5_ch1";
             cue5_ch1.Size = new Size(54, 26);
@@ -958,7 +968,8 @@ namespace iRANE_62
             // 
             // cue1_ch2
             // 
-            cue1_ch2.Location = new Point(565, 594);
+            cue1_ch2.FlatStyle = FlatStyle.Flat;
+            cue1_ch2.Location = new Point(511, 23);
             cue1_ch2.Margin = new Padding(2);
             cue1_ch2.Name = "cue1_ch2";
             cue1_ch2.Size = new Size(57, 26);
@@ -969,7 +980,8 @@ namespace iRANE_62
             // 
             // cue3_ch2
             // 
-            cue3_ch2.Location = new Point(687, 594);
+            cue3_ch2.FlatStyle = FlatStyle.Flat;
+            cue3_ch2.Location = new Point(632, 23);
             cue3_ch2.Margin = new Padding(2);
             cue3_ch2.Name = "cue3_ch2";
             cue3_ch2.Size = new Size(57, 26);
@@ -980,7 +992,8 @@ namespace iRANE_62
             // 
             // cue2_ch2
             // 
-            cue2_ch2.Location = new Point(626, 594);
+            cue2_ch2.FlatStyle = FlatStyle.Flat;
+            cue2_ch2.Location = new Point(572, 23);
             cue2_ch2.Margin = new Padding(2);
             cue2_ch2.Name = "cue2_ch2";
             cue2_ch2.Size = new Size(56, 26);
@@ -991,7 +1004,8 @@ namespace iRANE_62
             // 
             // cue4_ch2
             // 
-            cue4_ch2.Location = new Point(749, 594);
+            cue4_ch2.FlatStyle = FlatStyle.Flat;
+            cue4_ch2.Location = new Point(693, 23);
             cue4_ch2.Margin = new Padding(2);
             cue4_ch2.Name = "cue4_ch2";
             cue4_ch2.Size = new Size(50, 26);
@@ -1002,7 +1016,8 @@ namespace iRANE_62
             // 
             // cue5_ch2
             // 
-            cue5_ch2.Location = new Point(813, 594);
+            cue5_ch2.FlatStyle = FlatStyle.Flat;
+            cue5_ch2.Location = new Point(747, 23);
             cue5_ch2.Margin = new Padding(2);
             cue5_ch2.Name = "cue5_ch2";
             cue5_ch2.Size = new Size(54, 26);
@@ -1013,8 +1028,18 @@ namespace iRANE_62
             // 
             // cue
             // 
+            cue.BorderStyle = BorderStyle.FixedSingle;
             cue.Controls.Add(chBox_cue_samples);
             cue.Controls.Add(cue5_ch1);
+            cue.Controls.Add(cue5_ch2);
+            cue.Controls.Add(cue4_ch2);
+            cue.Controls.Add(cue3_ch2);
+            cue.Controls.Add(cue2_ch2);
+            cue.Controls.Add(cue1_ch2);
+            cue.Controls.Add(cue1_ch1);
+            cue.Controls.Add(cue2_ch1);
+            cue.Controls.Add(cue3_ch1);
+            cue.Controls.Add(cue4_ch1);
             cue.Location = new Point(84, 570);
             cue.Margin = new Padding(2);
             cue.Name = "cue";
@@ -1024,7 +1049,7 @@ namespace iRANE_62
             // chBox_cue_samples
             // 
             chBox_cue_samples.AutoSize = true;
-            chBox_cue_samples.Location = new Point(356, 28);
+            chBox_cue_samples.Location = new Point(355, 25);
             chBox_cue_samples.Margin = new Padding(2);
             chBox_cue_samples.Name = "chBox_cue_samples";
             chBox_cue_samples.Size = new Size(101, 24);
@@ -1089,6 +1114,7 @@ namespace iRANE_62
             // 
             // panel_aux
             // 
+            panel_aux.BorderStyle = BorderStyle.FixedSingle;
             panel_aux.Location = new Point(10, 626);
             panel_aux.Margin = new Padding(2);
             panel_aux.Name = "panel_aux";
@@ -1097,6 +1123,7 @@ namespace iRANE_62
             // 
             // panel_phones
             // 
+            panel_phones.BorderStyle = BorderStyle.FixedSingle;
             panel_phones.Location = new Point(918, 626);
             panel_phones.Margin = new Padding(2);
             panel_phones.Name = "panel_phones";
@@ -1138,6 +1165,7 @@ namespace iRANE_62
             // 
             // mix
             // 
+            mix.BorderStyle = BorderStyle.FixedSingle;
             mix.Location = new Point(780, 33);
             mix.Margin = new Padding(2);
             mix.Name = "mix";
@@ -1169,10 +1197,10 @@ namespace iRANE_62
             // odt2_upfader
             // 
             odt2_upfader.ImeMode = ImeMode.NoControl;
-            odt2_upfader.Location = new Point(711, 834);
+            odt2_upfader.Location = new Point(718, 834);
             odt2_upfader.Margin = new Padding(2);
             odt2_upfader.Name = "odt2_upfader";
-            odt2_upfader.Size = new Size(54, 306);
+            odt2_upfader.Size = new Size(76, 306);
             odt2_upfader.TabIndex = 13;
             // 
             // odt1_upfader
@@ -1187,6 +1215,7 @@ namespace iRANE_62
             // 
             // fader1
             // 
+            fader1.BackColor = SystemColors.ActiveCaption;
             fader1.Location = new Point(289, 1128);
             fader1.Margin = new Padding(2);
             fader1.Maximum = 0;
@@ -1233,15 +1262,6 @@ namespace iRANE_62
             Controls.Add(button8);
             Controls.Add(button2);
             Controls.Add(button1);
-            Controls.Add(cue5_ch2);
-            Controls.Add(cue4_ch2);
-            Controls.Add(cue4_ch1);
-            Controls.Add(cue2_ch2);
-            Controls.Add(cue2_ch1);
-            Controls.Add(cue3_ch2);
-            Controls.Add(cue3_ch1);
-            Controls.Add(cue1_ch2);
-            Controls.Add(cue1_ch1);
             Controls.Add(mic_over);
             Controls.Add(mic_on);
             Controls.Add(booth);

@@ -97,18 +97,6 @@ namespace iRANE_62
         #endregion
 
         #region EQ
-        /*
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
-        {
-             equalizer?.Update();
-        }
-
-        */
 
         private void level_odt1_ValueChanged(object sender, EventArgs e)
         {
@@ -276,7 +264,7 @@ namespace iRANE_62
         }
         #endregion
 
-        #region CuePointy
+        #region CuePoint
 
         private void blockCueButtons()
         {
@@ -319,78 +307,90 @@ namespace iRANE_62
 
             TimeSpan currentTime = player1.AudioFileReader.CurrentTime;
 
-            CueClick1(player1, 0, currentTime);
+            CueClick(player1, 0, currentTime);
+            cue1_ch1.BackColor = Color.Bisque;
         }
-
         private void cue2_ch1_Click(object sender, EventArgs e)
         {
             TimeSpan currentTime = player1.AudioFileReader.CurrentTime;
 
-            CueClick1(player1, 1, currentTime);
+            CueClick(player1, 1, currentTime);
+            cue2_ch1.BackColor = Color.CadetBlue;
+
         }
         private void cue3_ch1_Click(object sender, EventArgs e)
         {
             TimeSpan currentTime = player1.AudioFileReader.CurrentTime;
 
-            CueClick1(player1, 2, currentTime);
+            CueClick(player1, 2, currentTime);
+            cue3_ch1.BackColor = Color.Thistle;
         }
         private void cue4_ch1_Click(object sender, EventArgs e)
         {
-            CueClick(player1, 3);
+            TimeSpan currentTime = player1.AudioFileReader.CurrentTime;
+            CueClick(player1, 3, currentTime);
+            cue4_ch1.BackColor = Color.Khaki;
         }
         private void cue5_ch1_Click(object sender, EventArgs e)
         {
-            CueClick(player1, 4);
+            TimeSpan currentTime = player1.AudioFileReader.CurrentTime;
+            CueClick(player1, 4, currentTime);
+            cue5_ch1.BackColor=Color.Fuchsia;
         }
         private void cue1_ch2_Click(object sender, EventArgs e)
         {
-            CueClick(player2, 0);
+            TimeSpan currentTime = player2.AudioFileReader.CurrentTime;
+            CueClick(player2, 0, currentTime);
+            cue1_ch2.BackColor = Color.Bisque;
         }
         private void cue2_ch2_Click(object sender, EventArgs e)
         {
-            CueClick(player2, 1);
+            TimeSpan currentTime = player2.AudioFileReader.CurrentTime;
+            CueClick(player2, 1, currentTime);
+            cue2_ch2.BackColor = Color.CadetBlue;
         }
         private void cue3_ch2_Click(object sender, EventArgs e)
         {
-            CueClick(player2, 2);
+            TimeSpan currentTime = player2.AudioFileReader.CurrentTime;
+            CueClick(player2, 2, currentTime);
+            cue2_ch2.BackColor = Color.Khaki;
         }
         private void cue4_ch2_Click(object sender, EventArgs e)
         {
-            CueClick(player2, 3);
+            TimeSpan currentTime = player2.AudioFileReader.CurrentTime;
+            CueClick(player2, 3, currentTime);
+            cue4_ch2.BackColor = Color.Khaki;
         }
         private void cue5_ch2_Click(object sender, EventArgs e)
         {
-            CueClick(player2, 4);
+            TimeSpan currentTime = player2.AudioFileReader.CurrentTime;
+            CueClick(player2, 4, currentTime);
+            cue5_ch2.BackColor = Color.Fuchsia;
         }
 
-        private void CueClick(Player player, int cue)
+        public void CueColorClear(int playerId)
         {
-            if (player.Song == null)
+            if (playerId == 1)
             {
-                return;
-            }
-            TimeSpan currentTime = player.AudioFileReader.CurrentTime;
-
-            if (player.Song.CuePoints[cue].Ticks > 0)
-            {
-                player.AudioFileReader.CurrentTime = player.Song.CuePoints[cue];
+                cue1_ch1.BackColor = Color.White;
+                cue2_ch1.BackColor = Color.White;
+                cue3_ch1.BackColor = Color.White;
+                cue4_ch1.BackColor = Color.White;
+                cue5_ch1.BackColor = Color.White;
             }
             else
             {
-                player.Song.CuePoints[cue] = currentTime;
+
+                cue1_ch2.BackColor = Color.White;
+                cue2_ch2.BackColor = Color.White;
+                cue3_ch2.BackColor = Color.White;
+                cue4_ch2.BackColor = Color.White;
+                cue5_ch2.BackColor = Color.White;
             }
         }
-
-
-
-        private void CueClick1(Player player, int cue, TimeSpan currentTime)
+        private void CueClick(Player player, int cue, TimeSpan currentTime)
         {
-            if (player.Song == null)
-            {
-                return;
-            }
-
-            if (player.Song.CuePoints[cue].Ticks > 0)
+            if (player.Song.CuePoints[cue].Ticks >= 0)
             {
                 player.AudioFileReader.CurrentTime = player.Song.CuePoints[cue];
             }

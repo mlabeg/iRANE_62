@@ -185,6 +185,7 @@ namespace iRANE_62
 
             UpadteTotalSongTime(player, song);
             EnableGuiOnChanel(player.Id);
+            mixer.CueColorClear(player.Id);//TODO zmienić to na sprawdzanie czy dany utwór ma zapisane CuePointy
 
         }
 
@@ -196,7 +197,7 @@ namespace iRANE_62
             }
         }
 
-        private void OpenButton(Player player)
+        private void OpenFromButton(Player player)
         {
             var fileName = SelectInputFile();
             if (fileName != String.Empty)
@@ -261,6 +262,7 @@ namespace iRANE_62
         {
             Play(player1);
         }
+
         private void btnPlay_2_Click(object sender, EventArgs e)
         {
             Play(player2);
@@ -333,25 +335,25 @@ namespace iRANE_62
 
         private void btnOpen_1_Click(object sender, EventArgs e)
         {
-            OpenButton(player1);
+            OpenFromButton(player1);
         }
 
         private void btnOpen_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.O && e.Shift)
             {
-                OpenButton(player2);
+                OpenFromButton(player2);
             }
 
             if (e.KeyCode == Keys.O)
             {
-                OpenButton(player1);
+                OpenFromButton(player1);
             }
         }
 
         private void btnOpen_2_Click(object sender, EventArgs e)
         {
-            OpenButton(player2);
+            OpenFromButton(player2);
         }
 
         private void listBox1_KeyDown(object sender, KeyEventArgs e)
@@ -435,6 +437,29 @@ namespace iRANE_62
                 e.Effect = DragDropEffects.None;
             }
         }
+
+        private void waveform_ch1_MouseClick(object sender, MouseEventArgs e)
+        {
+            double clickPositionRatio = (double)e.X / waveform_ch1.Width;
+            TimeSpan newTime = TimeSpan.FromSeconds(player1.AudioFileReader.TotalTime.TotalSeconds * clickPositionRatio);
+
+            player1.AudioFileReader.CurrentTime = newTime;
+
+            player1.currentPlaybackPosition = e.X;
+            waveform_ch1.Invalidate();
+        }
+
+        private void waveform_ch2_MouseClick(object sender, MouseEventArgs e)
+        {
+            double clickPositionRatio = (double)e.X / waveform_ch2.Width;
+            TimeSpan newTime = TimeSpan.FromSeconds(player2.AudioFileReader.TotalTime.TotalSeconds * clickPositionRatio);
+
+            player2.AudioFileReader.CurrentTime = newTime;
+
+            player2.currentPlaybackPosition = e.X;
+            waveform_ch2.Invalidate();
+        }
+
         #endregion
 
         #region Stop button
@@ -633,28 +658,6 @@ namespace iRANE_62
         private static string FormatTimeSpan(TimeSpan ts)
         {
             return string.Format("{0:D2}:{1:D2}", (int)ts.TotalMinutes, ts.Seconds);
-        }
-
-        private void waveform_ch1_MouseClick(object sender, MouseEventArgs e)
-        {
-            double clickPositionRatio = (double)e.X / waveform_ch1.Width;
-            TimeSpan newTime = TimeSpan.FromSeconds(player1.AudioFileReader.TotalTime.TotalSeconds * clickPositionRatio);
-
-            player1.AudioFileReader.CurrentTime = newTime;
-
-            player1.currentPlaybackPosition = e.X;
-            waveform_ch1.Invalidate();
-        }
-
-        private void waveform_ch2_MouseClick(object sender, MouseEventArgs e)
-        {
-            double clickPositionRatio = (double)e.X / waveform_ch2.Width;
-            TimeSpan newTime = TimeSpan.FromSeconds(player2.AudioFileReader.TotalTime.TotalSeconds * clickPositionRatio);
-
-            player2.AudioFileReader.CurrentTime = newTime;
-
-            player2.currentPlaybackPosition = e.X;
-            waveform_ch2.Invalidate();
         }
 
     }
