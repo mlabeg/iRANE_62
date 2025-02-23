@@ -461,12 +461,12 @@ namespace iRANE_62
         }
 
         private void playlista_Click(object sender, EventArgs e)
-        {
+        {/*
             var fileName = SelectInputFile();
             if (fileName != String.Empty)
             {
                 AddToPlaylist(new Song(fileName));
-            }
+            }*/
         }
 
         #endregion
@@ -603,6 +603,8 @@ namespace iRANE_62
             }
         }
 
+    
+
         #endregion
 
         void PlaybackPanel_Disposed(object sender, EventArgs e)
@@ -631,6 +633,7 @@ namespace iRANE_62
             {
                 labelNowTime_1.Text = FormatTimeSpan(player1.AudioFileReader.CurrentTime);
 
+                //Loop logic
                 if (player1.Loop.LoopActive && player1.Loop.LoopOut != TimeSpan.Zero && player1.Loop.LoopIn != TimeSpan.Zero)
                 {
                     if (player1.AudioFileReader.CurrentTime >= player1.Loop.LoopOut)
@@ -649,6 +652,7 @@ namespace iRANE_62
             {
                 labelNowTime_2.Text = FormatTimeSpan(player2.AudioFileReader.CurrentTime);
 
+                //Loop logic
                 if (player2.Loop.LoopActive && player2.Loop.LoopOut != TimeSpan.Zero && player2.Loop.LoopIn != TimeSpan.Zero)
                 {
                     if (player2.AudioFileReader.CurrentTime >= player2.Loop.LoopOut)
