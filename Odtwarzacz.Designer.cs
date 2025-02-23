@@ -156,6 +156,7 @@
             playlista.Name = "playlista";
             playlista.Size = new Size(1076, 244);
             playlista.TabIndex = 2;
+            playlista.Click += playlista_Click;
             playlista.DragDrop += listBox1_DragDrop;
             playlista.DragEnter += listBox1_DragEnter;
             playlista.KeyDown += listBox1_KeyDown;
@@ -202,6 +203,7 @@
             // 
             // waveform_ch1
             // 
+            waveform_ch1.BorderStyle = BorderStyle.FixedSingle;
             waveform_ch1.Enabled = false;
             waveform_ch1.Location = new Point(18, 101);
             waveform_ch1.Margin = new Padding(2);
@@ -225,6 +227,7 @@
             // 
             // waveform_ch2
             // 
+            waveform_ch2.BorderStyle = BorderStyle.FixedSingle;
             waveform_ch2.Enabled = false;
             waveform_ch2.Location = new Point(569, 101);
             waveform_ch2.Margin = new Padding(2);

@@ -185,7 +185,7 @@ namespace iRANE_62
 
             UpadteTotalSongTime(player, song);
             EnableGuiOnChanel(player.Id);
-            mixer.CueColorClear(player.Id);//TODO zmienić to na sprawdzanie czy dany utwór ma zapisane CuePointy
+            mixer.CueColorClear(player.Id);//TODO2 zmienić to na sprawdzanie czy dany utwór ma zapisane CuePointy
 
         }
 
@@ -321,13 +321,13 @@ namespace iRANE_62
         {
             if (playerId == 1)
             {
-                player1.currentPlaybackPosition = 0;
+                player1.CurrentPlaybackPosition = 0;
                 waveform_ch1.Enabled = true;
                 waveform_ch1.Invalidate();
             }
             else
             {
-                player2.currentPlaybackPosition = 0;
+                player2.CurrentPlaybackPosition = 0;
                 waveform_ch2.Enabled = true;
                 waveform_ch2.Invalidate();
             }
@@ -445,7 +445,7 @@ namespace iRANE_62
 
             player1.AudioFileReader.CurrentTime = newTime;
 
-            player1.currentPlaybackPosition = e.X;
+            player1.CurrentPlaybackPosition = e.X;
             waveform_ch1.Invalidate();
         }
 
@@ -456,8 +456,17 @@ namespace iRANE_62
 
             player2.AudioFileReader.CurrentTime = newTime;
 
-            player2.currentPlaybackPosition = e.X;
+            player2.CurrentPlaybackPosition = e.X;
             waveform_ch2.Invalidate();
+        }
+
+        private void playlista_Click(object sender, EventArgs e)
+        {
+            var fileName = SelectInputFile();
+            if (fileName != String.Empty)
+            {
+                AddToPlaylist(new Song(fileName));
+            }
         }
 
         #endregion
@@ -582,7 +591,7 @@ namespace iRANE_62
         {
             using (Pen pen = new Pen(Color.Red, 2))
             {
-                e.Graphics.DrawLine(pen, player1.currentPlaybackPosition, 0, player1.currentPlaybackPosition, waveform_ch1.Height);
+                e.Graphics.DrawLine(pen, player1.CurrentPlaybackPosition, 0, player1.CurrentPlaybackPosition, waveform_ch1.Height);
             }
         }
 
@@ -590,7 +599,7 @@ namespace iRANE_62
         {
             using (Pen pen = new Pen(Color.Red, 2))
             {
-                e.Graphics.DrawLine(pen, player2.currentPlaybackPosition, 0, player2.currentPlaybackPosition, waveform_ch2.Height);
+                e.Graphics.DrawLine(pen, player2.CurrentPlaybackPosition, 0, player2.CurrentPlaybackPosition, waveform_ch2.Height);
             }
         }
 
@@ -632,7 +641,7 @@ namespace iRANE_62
 
                 //wyświetlanie linii na waveform
                 double progress = player1.AudioFileReader.CurrentTime.TotalSeconds / player1.AudioFileReader.TotalTime.TotalSeconds;
-                player1.currentPlaybackPosition = (int)(waveform_ch1.Width * progress);
+                player1.CurrentPlaybackPosition = (int)(waveform_ch1.Width * progress);
                 waveform_ch1.Invalidate();
             }
 
@@ -650,7 +659,7 @@ namespace iRANE_62
 
                 //wyświetlanie linii na waveform
                 double progress = player2.AudioFileReader.CurrentTime.TotalSeconds / player2.AudioFileReader.TotalTime.TotalSeconds;
-                player2.currentPlaybackPosition = (int)(waveform_ch1.Width * progress);
+                player2.CurrentPlaybackPosition = (int)(waveform_ch1.Width * progress);
                 waveform_ch2.Invalidate();
             }
         }
@@ -660,6 +669,7 @@ namespace iRANE_62
             return string.Format("{0:D2}:{1:D2}", (int)ts.TotalMinutes, ts.Seconds);
         }
 
+        
     }
 
 }

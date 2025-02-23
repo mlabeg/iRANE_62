@@ -22,7 +22,7 @@ namespace iRANE_62.Models
         public Eq Equalizer { get; set; }
         public Loop Loop { get; set; }
 
-        public int currentPlaybackPosition = 0; 
+        public int CurrentPlaybackPosition = 0; 
 
         public Player(int id)
         {
