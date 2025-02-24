@@ -269,7 +269,7 @@
             labelTrack2.TabIndex = 6;
             labelTrack2.Text = "Ładowanie...";
             // 
-            // Odtwarzacz
+            // Player
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -295,8 +295,8 @@
             Controls.Add(btnOpen_ch1);
             Controls.Add(waveform_ch1);
             Margin = new Padding(2);
-            Name = "Odtwarzacz";
-            Text = "Odtwarzacz";
+            Name = "Player";
+            Text = "Player";
             Load += PlayerLoad;
             KeyDown += Odtwarzacz_KeyDown;
             ((System.ComponentModel.ISupportInitialize)waveform_ch1).EndInit();
