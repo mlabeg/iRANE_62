@@ -12,7 +12,7 @@ namespace iRANE_62
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Form odtwarzacz = new Odtwarzacz();
+            Form odtwarzacz = new Player();
 
             Application.Run(odtwarzacz);
 

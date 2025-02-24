@@ -1,6 +1,6 @@
 ﻿namespace iRANE_62
 {
-    partial class Odtwarzacz
+    partial class Player
     {
         /// <summary>
         /// Required designer variable.
@@ -297,7 +297,7 @@
             Margin = new Padding(2);
             Name = "Odtwarzacz";
             Text = "Odtwarzacz";
-            Load += Odtwarzacz_Load;
+            Load += PlayerLoad;
             KeyDown += Odtwarzacz_KeyDown;
             ((System.ComponentModel.ISupportInitialize)waveform_ch1).EndInit();
             ((System.ComponentModel.ISupportInitialize)waveform_ch2).EndInit();

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace iRANE_62.Models
 {
-    public class Player
+    public class AudioSource
     {
         public int Id { get; set; }
         public IWavePlayer WavePlayer { get; set; }
@@ -24,7 +24,7 @@ namespace iRANE_62.Models
 
         public int CurrentPlaybackPosition = 0; 
 
-        public Player(int id)
+        public AudioSource(int id)
         {
             this.Id = id;
             Equalizer = new Eq();

@@ -10,12 +10,12 @@ namespace iRANE_62
 {
     public partial class Mixer : Form
     {
-        private Player player1;
-        private Player player2;
+        private AudioSource player1;
+        private AudioSource player2;
 
         public Mixer() { }
 
-        public Mixer(ref Player player1, ref Player player2) : this()
+        public Mixer(ref AudioSource player1, ref AudioSource player2) : this()
         {
             this.player1 = player1;
             this.player2 = player2;
@@ -388,7 +388,7 @@ namespace iRANE_62
                 cue5_ch2.BackColor = Color.White;
             }
         }
-        private void CueClick(Player player, int cue, TimeSpan currentTime)
+        private void CueClick(AudioSource player, int cue, TimeSpan currentTime)
         {
             if (player.Song.CuePoints[cue].Ticks >= 0)
             {

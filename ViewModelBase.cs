@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace iRANE_62
-{
+{/*
     class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -15,5 +15,5 @@ namespace iRANE_62
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-    }
+    }*/
 }
