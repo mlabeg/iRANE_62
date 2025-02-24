@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,9 +43,17 @@ namespace iRANE_62.Models
 
         public TimeSpan GetAudioDuration(string filePath)
         {
-            using (var reader = new MediaFoundationReader(filePath))
+            try
             {
-                return reader.TotalTime;
+                using (var reader = new MediaFoundationReader(filePath))
+                {
+                    return reader.TotalTime;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Błąd odczytu pliku: {ex.Message}");
+                return TimeSpan.Zero;
             }
         }
 
