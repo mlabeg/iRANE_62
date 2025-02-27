@@ -73,7 +73,7 @@ namespace iRANE_62
 
         #region Play button
 
-        private void Play(AudioSource audioSource)//zmienić na audioPlayer
+        private void Play(AudioSource audioSource)
         {
             if (audioSource.FileName == null)
             {
@@ -86,38 +86,38 @@ namespace iRANE_62
             }
         }
 
-        private void BeginPlayback(AudioSource player)//rozbić na drobniejsze!
+        private void BeginPlayback(AudioSource audioSource)//rozbić na drobniejsze!
 
         {
-            if (player.WavePlayer != null)
+            if (audioSource.WavePlayer != null)
             {
-                if (player.WavePlayer.PlaybackState == PlaybackState.Playing)
+                if (audioSource.WavePlayer.PlaybackState == PlaybackState.Playing)
                 {
-                    player.WavePlayer.Pause();
+                    audioSource.WavePlayer.Pause();
                     return;
                 }
 
-                if (player.WavePlayer.PlaybackState == PlaybackState.Paused)
+                if (audioSource.WavePlayer.PlaybackState == PlaybackState.Paused)
                 {
-                    SetVolumeFromMixerLevel(player);
-                    player.WavePlayer.Play();
+                    SetVolumeFromMixerLevel(audioSource);
+                    audioSource.WavePlayer.Play();
                     return;
                 }
 
-                player.WavePlayer.Stop();
-                player.WavePlayer.Dispose();
+                audioSource.WavePlayer.Stop();
+                audioSource.WavePlayer.Dispose();
             }
 
-            if (player.FileName == String.Empty) return;
+            if (audioSource.FileName == String.Empty) return;
 
-            player.WavePlayer = new WaveOutEvent();
+            audioSource.WavePlayer = new WaveOutEvent();
 
 
             //Pre
-            var sampleChannel = new SampleChannel(player.AudioFileReader, true);
-            player.SetVolumeDelegate = vol => sampleChannel.Volume = vol;
+            var sampleChannel = new SampleChannel(audioSource.AudioFileReader, true);
+            audioSource.SetVolumeDelegate = vol => sampleChannel.Volume = vol;
 
-            if (player.Id == 1)
+            if (audioSource.Id == 1)
             {
                 sampleChannel.PreVolumeMeter += mixer.OnPostChanel1VolumeMeter;
             }
@@ -128,26 +128,26 @@ namespace iRANE_62
 
             #region Sekcja EQ
             //High- LowPassFilter -
-            player.Equalizer.FilterSampleProvider = new FilterSampleProvider(sampleChannel, player.AudioFileReader.WaveFormat.SampleRate);
+            audioSource.Equalizer.FilterSampleProvider = new FilterSampleProvider(sampleChannel, audioSource.AudioFileReader.WaveFormat.SampleRate);
 
             //Pan
-            player.Equalizer.PanningProvider = new StereoPanningSampleProvider(player.Equalizer.FilterSampleProvider);
+            audioSource.Equalizer.PanningProvider = new StereoPanningSampleProvider(audioSource.Equalizer.FilterSampleProvider);
 
             //EQ
-            player.Equalizer.equalizer = new Equalizer(player.Equalizer.PanningProvider, player.Equalizer.bands);
+            audioSource.Equalizer.equalizer = new Equalizer(audioSource.Equalizer.PanningProvider, audioSource.Equalizer.bands);
             #endregion
 
 
             //Post
-            var postVolumeMeter = new MeteringSampleProvider(player.Equalizer.equalizer);
+            var postVolumeMeter = new MeteringSampleProvider(audioSource.Equalizer.equalizer);
             postVolumeMeter.StreamVolume += mixer.OnPostMainVolumeMeter;
             //zronić z tego funkcję??
 
-            player.WavePlayer.Init(postVolumeMeter);
+            audioSource.WavePlayer.Init(postVolumeMeter);
 
-            SetVolumeFromMixerLevel(player);
+            SetVolumeFromMixerLevel(audioSource);
 
-            player.WavePlayer.Play();
+            audioSource.WavePlayer.Play();
             timer1.Enabled = true;
 
         }
