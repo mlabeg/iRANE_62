@@ -29,7 +29,7 @@ namespace iRANE_62
 
         private string? imageFile;
         private readonly WaveFormRenderer waveFormRenderer;
-        private readonly WaveFormRendererSettings standardSettings;
+        private readonly WaveFormRendererSettings waveformSettings;
 
         public Player()
         {
@@ -41,7 +41,13 @@ namespace iRANE_62
             chanel1 = new AudioSource(1);
             chanel2 = new AudioSource(2);
 
-            standardSettings = new StandardWaveFormRendererSettings() { Name = "Standard" };
+            waveformSettings = new StandardWaveFormRendererSettings()
+            {
+                BackgroundColor = Color.Black,
+                TopPeakPen = new Pen(Color.White),
+                BottomPeakPen = new Pen(Color.White),
+            };
+
             waveFormRenderer = new WaveFormRenderer();
         }
 
@@ -67,12 +73,16 @@ namespace iRANE_62
 
         #region Play button
 
-        private void Play(AudioSource player)
+        private void Play(AudioSource audioSource)//zmienić na audioPlayer
         {
-            if (player.FileName == null) player.FileName = SelectInputFile();
-            if (player.FileName != null)
+            if (audioSource.FileName == null)
             {
-                BeginPlayback(player);
+                OpenFromButton(audioSource);
+            }
+
+            if (audioSource.FileName != null)
+            {
+                BeginPlayback(audioSource);
             }
         }
 
@@ -529,7 +539,7 @@ namespace iRANE_62
         {
             if (player.FileName == null) return;
 
-            var settings = standardSettings;//TODO zmień na jednolity "ładny" kolor waveforma
+            var settings = waveformSettings;//TODO zmień na jednolity "ładny" kolor waveforma
 
             if (imageFile != null)
             {
@@ -621,7 +631,7 @@ namespace iRANE_62
                     // Obliczamy pozycję X na waveformie
                     int xPos = (int)(waveform.Width * (cuePoint.TotalSeconds / player.AudioFileReader.TotalTime.TotalSeconds));
 
-                    using (Pen pen = new Pen(color, 2))
+                    using (Pen pen = new Pen(color, 3))
                     {
                         g.DrawLine(pen, xPos, 0, xPos, waveform.Height);
                     }
@@ -700,7 +710,7 @@ namespace iRANE_62
             return string.Format("{0:D2}:{1:D2}", (int)ts.TotalMinutes, ts.Seconds);
         }
 
-        
+
     }
 
 }
