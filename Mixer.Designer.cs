@@ -55,7 +55,7 @@ namespace iRANE_62
             volumeMeter_ch1 = new NAudio.Gui.VolumeMeter();
             low_odt1 = new NAudio.Gui.Pot();
             odt1_flexfx = new CheckBox();
-            odt1_volume = new NAudio.Gui.VolumeMeter();
+            mic_volume = new NAudio.Gui.VolumeMeter();
             odt2 = new Panel();
             volumeMeter_ch2 = new NAudio.Gui.VolumeMeter();
             mainVolumeRight = new NAudio.Gui.VolumeMeter();
@@ -97,9 +97,9 @@ namespace iRANE_62
             btn_cue_usb_aux = new CheckBox();
             odt2_cue_pgm2 = new CheckBox();
             panel_phones = new Panel();
+            phones_split_sue = new CheckBox();
             phones_level = new NAudio.Gui.Pot();
             phones_pan = new NAudio.Gui.Pot();
-            phones_split_sue = new CheckBox();
             mic = new Panel();
             mic_flexfx = new CheckBox();
             odt2_upfader = new NAudio.Gui.VolumeSlider();
@@ -255,6 +255,7 @@ namespace iRANE_62
             mic_level.Size = new Size(43, 55);
             mic_level.TabIndex = 3;
             mic_level.Value = 0.5D;
+            mic_level.ValueChanged += mic_level_ValueChanged;
             // 
             // mic_high
             // 
@@ -365,17 +366,17 @@ namespace iRANE_62
             odt1_flexfx.Text = "FLEX FX";
             odt1_flexfx.UseVisualStyleBackColor = true;
             // 
-            // odt1_volume
+            // mic_volume
             // 
-            odt1_volume.Amplitude = 0F;
-            odt1_volume.Location = new Point(94, 58);
-            odt1_volume.Margin = new Padding(2);
-            odt1_volume.MaxDb = 18F;
-            odt1_volume.MinDb = -60F;
-            odt1_volume.Name = "odt1_volume";
-            odt1_volume.Size = new Size(24, 217);
-            odt1_volume.TabIndex = 12;
-            odt1_volume.Text = "volumeMeter1";
+            mic_volume.Amplitude = 0F;
+            mic_volume.Location = new Point(94, 58);
+            mic_volume.Margin = new Padding(2);
+            mic_volume.MaxDb = 18F;
+            mic_volume.MinDb = -60F;
+            mic_volume.Name = "mic_volume";
+            mic_volume.Size = new Size(24, 217);
+            mic_volume.TabIndex = 12;
+            mic_volume.Text = "volumeMeter1";
             // 
             // odt2
             // 
@@ -860,6 +861,17 @@ namespace iRANE_62
             panel_phones.Size = new Size(70, 215);
             panel_phones.TabIndex = 10;
             // 
+            // phones_split_sue
+            // 
+            phones_split_sue.AutoSize = true;
+            phones_split_sue.Location = new Point(15, 171);
+            phones_split_sue.Margin = new Padding(2);
+            phones_split_sue.Name = "phones_split_sue";
+            phones_split_sue.Size = new Size(97, 24);
+            phones_split_sue.TabIndex = 5;
+            phones_split_sue.Text = "SPLIT CUE";
+            phones_split_sue.UseVisualStyleBackColor = true;
+            // 
             // phones_level
             // 
             phones_level.Location = new Point(11, 23);
@@ -882,21 +894,10 @@ namespace iRANE_62
             phones_pan.TabIndex = 3;
             phones_pan.Value = 0.5D;
             // 
-            // phones_split_sue
-            // 
-            phones_split_sue.AutoSize = true;
-            phones_split_sue.Location = new Point(15, 171);
-            phones_split_sue.Margin = new Padding(2);
-            phones_split_sue.Name = "phones_split_sue";
-            phones_split_sue.Size = new Size(97, 24);
-            phones_split_sue.TabIndex = 5;
-            phones_split_sue.Text = "SPLIT CUE";
-            phones_split_sue.UseVisualStyleBackColor = true;
-            // 
             // mic
             // 
             mic.BorderStyle = BorderStyle.FixedSingle;
-            mic.Controls.Add(odt1_volume);
+            mic.Controls.Add(mic_volume);
             mic.Controls.Add(mic_flexfx);
             mic.Controls.Add(btn_micOver);
             mic.Controls.Add(btn_micOnOff);
@@ -1087,7 +1088,7 @@ namespace iRANE_62
         private CheckBox odt1_flexfx;
         private Panel mic;
         private CheckBox mic_flexfx;
-        private NAudio.Gui.VolumeMeter odt1_volume;
+        private NAudio.Gui.VolumeMeter mic_volume;
         private NAudio.Gui.VolumeMeter mainVolumeRight;
         private NAudio.Gui.VolumeMeter mainVolumeLeft;
         private NAudio.Gui.VolumeMeter volumeMeter_ch2;

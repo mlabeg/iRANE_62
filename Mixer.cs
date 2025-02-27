@@ -4,6 +4,7 @@ using NAudio.Gui;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using System.ComponentModel;
+using System.Drawing;
 using System.Numerics;
 
 namespace iRANE_62
@@ -13,6 +14,8 @@ namespace iRANE_62
         private AudioSource audioSource1;
         private AudioSource audioSource2;
 
+        private MicrophoneHandler microphoneHandler;
+
         public event Action<AudioSource, TimeSpan, Color> CuePointAdded;
 
         public Mixer() { }
@@ -21,10 +24,12 @@ namespace iRANE_62
         {
             this.audioSource1 = player1;
             this.audioSource2 = player2;
+            microphoneHandler = new MicrophoneHandler();
             InitializeComponent();
 
             efxCheckedChangedEventHandler();
             blockCueButtons();
+            SetupMicrophoneControls();
         }
 
         #region FX
@@ -32,13 +37,11 @@ namespace iRANE_62
         private void efxCheckedChangedEventHandler()
         {
             efx_echo.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
-            efx_ext_insert.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
             efx_flanger.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
             efx_filter.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
             efx_phaser.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
             efx_reverb.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
             efx_robot.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
-            efx_insert.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
         }
 
         private void efx_flanger_CheckedChanged(object sender, EventArgs e)
@@ -409,9 +412,37 @@ namespace iRANE_62
 
         #endregion
 
+
+        #region Microphone
+
+        private void SetupMicrophoneControls()
+        {
+            microphoneHandler.VolumeIndicator+= OnMicrophoneVolumeMeter;  // Subscribe to volume events
+            microphoneHandler.Volume = (float)mic_level.Value;
+        }
+
         private void mic_on_Click(object sender, EventArgs e)
         {
-
+            microphoneHandler.IsActive = !microphoneHandler.IsActive;
+            btn_micOnOff.BackColor = microphoneHandler.IsActive ? Color.Green : SystemColors.Control;
         }
+
+        private void mic_level_ValueChanged(object sender, EventArgs e)
+        {
+            microphoneHandler.Volume = (float)mic_level.Value;
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            base.OnFormClosing(e);
+            microphoneHandler?.Dispose();
+        }
+
+        private void OnMicrophoneVolumeMeter(object sender, StreamVolumeEventArgs e)
+        {
+            mic_volume.Amplitude = Math.Max(e.MaxSampleValues[0], e.MaxSampleValues[1]);
+        }
+        #endregion
+
     }
 }
