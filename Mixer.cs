@@ -394,9 +394,9 @@ namespace iRANE_62
         {
             var cuePoint = player.Song.CuePoints[cue];
 
-            if (cuePoint.StartTime.Ticks >= 0)
+            if (cuePoint.StartTime.HasValue)
             {
-                player.AudioFileReader.CurrentTime = cuePoint.StartTime;
+                player.AudioFileReader.CurrentTime = (TimeSpan)cuePoint.StartTime;
             }
             else
             {

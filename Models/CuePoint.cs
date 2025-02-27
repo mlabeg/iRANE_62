@@ -10,12 +10,12 @@ namespace iRANE_62.Models
 {
     public class CuePoint
     {
-        public TimeSpan StartTime { get; set; }
+        public TimeSpan? StartTime { get; set; }
         public Color Color { get; set; }
 
         public CuePoint()
         {
-            StartTime = new TimeSpan(1).Negate();
+            StartTime = null;
         }
 
         public CuePoint(Color color):this()
