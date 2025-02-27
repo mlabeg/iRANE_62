@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using NAudio.Wave;
@@ -16,7 +17,8 @@ namespace iRANE_62.Models
         public string? Author { get; set; }
         public string? Album { get; set; }
 
-        public TimeSpan[] CuePoints = new TimeSpan[5];
+        public CuePoint[] CuePoints = new CuePoint[5];
+
         public TimeSpan SongSpan { get; set; }
 
         public override string ToString()
@@ -32,12 +34,12 @@ namespace iRANE_62.Models
 
             InitializeCuePoints();
         }
-
+        
         private void InitializeCuePoints()
         {
             for (int i = 0; i < CuePoints.Length; i++)
             {
-                CuePoints[i] = new TimeSpan(1).Negate();
+                CuePoints[i] = new CuePoint(CuePointsColors.Colors[i]);
             }
         }
 
@@ -64,5 +66,6 @@ namespace iRANE_62.Models
             if (other == null) return false;
             return Name == other.Name;
         }
+
     }
 }

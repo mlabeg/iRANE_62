@@ -61,6 +61,7 @@ namespace iRANE_62
             {
                 mixer.Focus();
             }
+            mixer.CuePointAdded += DrawCuePoint;
         }
 
 
@@ -602,7 +603,34 @@ namespace iRANE_62
             }
         }
 
-    
+
+        public void DrawCuePoint(AudioSource player, TimeSpan cuePoint, Color color)
+        {
+            if (player.Song == null || player.AudioFileReader == null)
+                return;
+
+            PictureBox waveform = (player.Id == 1) ? waveform_ch1 : waveform_ch2;
+
+            if (waveform.Image == null)
+                return;
+
+            using (Graphics g = Graphics.FromImage(waveform.Image))
+            {
+                if (cuePoint.TotalSeconds >= 0 && cuePoint < player.AudioFileReader.TotalTime)
+                {
+                    // Obliczamy pozycję X na waveformie
+                    int xPos = (int)(waveform.Width * (cuePoint.TotalSeconds / player.AudioFileReader.TotalTime.TotalSeconds));
+
+                    using (Pen pen = new Pen(color, 2))
+                    {
+                        g.DrawLine(pen, xPos, 0, xPos, waveform.Height);
+                    }
+                }
+            }
+
+            waveform.Invalidate(); // Odświeżenie kontrolki, aby wyświetlić nową linię
+        }
+
 
         #endregion
 

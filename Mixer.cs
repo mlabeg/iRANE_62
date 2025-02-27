@@ -10,15 +10,17 @@ namespace iRANE_62
 {
     public partial class Mixer : Form
     {
-        private AudioSource player1;
-        private AudioSource player2;
+        private AudioSource audioSource1;
+        private AudioSource audioSource2;
+
+        public event Action<AudioSource, TimeSpan, Color> CuePointAdded;
 
         public Mixer() { }
 
         public Mixer(ref AudioSource player1, ref AudioSource player2) : this()
         {
-            this.player1 = player1;
-            this.player2 = player2;
+            this.audioSource1 = player1;
+            this.audioSource2 = player2;
             InitializeComponent();
 
             efxCheckedChangedEventHandler();
@@ -100,17 +102,17 @@ namespace iRANE_62
 
         private void level_odt1_ValueChanged(object sender, EventArgs e)
         {
-            if (player1.WavePlayer != null)
+            if (audioSource1.WavePlayer != null)
             {
-                player1.SetVolumeDelegate((float)gain_ch1.Value);
+                audioSource1.SetVolumeDelegate((float)gain_ch1.Value);
             }
         }
 
         private void level_odt2_ValueChanged(object sender, EventArgs e)
         {
-            if (player2.WavePlayer != null)
+            if (audioSource2.WavePlayer != null)
             {
-                player2.SetVolumeDelegate((float)gain_ch2.Value);
+                audioSource2.SetVolumeDelegate((float)gain_ch2.Value);
             }
         }
 
@@ -133,83 +135,83 @@ namespace iRANE_62
         private void high_odt1_ValueChanged(object sender, EventArgs e)
         {//doda³em bardziej ³agodne przejœcie miêdzy bandami, na studyjnych nie s³ychaæ fuzej ró¿nicy, bêdzie móg³ usun¹æ jak oka¿e siê, ¿e program jest za wolny   
 
-            player1.Equalizer.Band9 = (float)high_odt1.Value;
-            player1.Equalizer.Band8 = (float)high_odt1.Value;
-            player1.Equalizer.Band7 = (float)(high_odt1.Value + mid_odt1.Value) / 2;
-            player1.Equalizer.equalizer.Update();
+            audioSource1.Equalizer.Band9 = (float)high_odt1.Value;
+            audioSource1.Equalizer.Band8 = (float)high_odt1.Value;
+            audioSource1.Equalizer.Band7 = (float)(high_odt1.Value + mid_odt1.Value) / 2;
+            audioSource1.Equalizer.equalizer.Update();
         }
 
         private void mid_odt1_ValueChanged(object sender, EventArgs e)
         {
-            player1.Equalizer.Band6 = (float)(mid_odt1.Value + high_odt1.Value) / 2;
-            player1.Equalizer.Band5 = (float)mid_odt1.Value;
-            player1.Equalizer.Band4 = (float)(mid_odt1.Value + low_odt1.Value) / 2;
-            player1.Equalizer.equalizer.Update();
+            audioSource1.Equalizer.Band6 = (float)(mid_odt1.Value + high_odt1.Value) / 2;
+            audioSource1.Equalizer.Band5 = (float)mid_odt1.Value;
+            audioSource1.Equalizer.Band4 = (float)(mid_odt1.Value + low_odt1.Value) / 2;
+            audioSource1.Equalizer.equalizer.Update();
         }
 
         private void low_odt1_ValueChanged(object sender, EventArgs e)
         {
-            player1.Equalizer.Band3 = (float)(low_odt1.Value + mid_odt1.Value) / 2;
-            player1.Equalizer.Band2 = (float)low_odt1.Value;
-            player1.Equalizer.Band1 = (float)low_odt1.Value;
-            player1.Equalizer.equalizer.Update();
+            audioSource1.Equalizer.Band3 = (float)(low_odt1.Value + mid_odt1.Value) / 2;
+            audioSource1.Equalizer.Band2 = (float)low_odt1.Value;
+            audioSource1.Equalizer.Band1 = (float)low_odt1.Value;
+            audioSource1.Equalizer.equalizer.Update();
         }
 
         private void high_odt2_ValueChanged(object sender, EventArgs e)
         {
-            player2.Equalizer.Band7 = (float)high_odt2.Value;
-            player2.Equalizer.Band9 = (float)high_odt2.Value;
-            player2.Equalizer.Band8 = (float)high_odt2.Value;
-            player2.Equalizer.equalizer.Update();
+            audioSource2.Equalizer.Band7 = (float)high_odt2.Value;
+            audioSource2.Equalizer.Band9 = (float)high_odt2.Value;
+            audioSource2.Equalizer.Band8 = (float)high_odt2.Value;
+            audioSource2.Equalizer.equalizer.Update();
         }
 
         private void mid_odt2_ValueChanged(object sender, EventArgs e)
         {
-            player2.Equalizer.Band4 = (float)mid_odt2.Value;
-            player2.Equalizer.Band5 = (float)mid_odt2.Value;
-            player2.Equalizer.Band6 = (float)mid_odt2.Value;
-            player2.Equalizer.equalizer.Update();
+            audioSource2.Equalizer.Band4 = (float)mid_odt2.Value;
+            audioSource2.Equalizer.Band5 = (float)mid_odt2.Value;
+            audioSource2.Equalizer.Band6 = (float)mid_odt2.Value;
+            audioSource2.Equalizer.equalizer.Update();
         }
 
         private void low_odt2_ValueChanged(object sender, EventArgs e)
         {
 
-            player2.Equalizer.Band1 = (float)low_odt2.Value;
-            player2.Equalizer.Band2 = (float)low_odt2.Value;
-            player2.Equalizer.Band3 = (float)low_odt2.Value;
-            player2.Equalizer.equalizer.Update();
+            audioSource2.Equalizer.Band1 = (float)low_odt2.Value;
+            audioSource2.Equalizer.Band2 = (float)low_odt2.Value;
+            audioSource2.Equalizer.Band3 = (float)low_odt2.Value;
+            audioSource2.Equalizer.equalizer.Update();
         }
 
         private void pan_odt1_PanChanged(object sender, EventArgs e)
         {
-            if (player1.Equalizer.PanningProvider != null)
+            if (audioSource1.Equalizer.PanningProvider != null)
             {
                 float panValue = (float)pan_odt1.Pan;
-                player1.Equalizer.PanningProvider.Pan = panValue;
+                audioSource1.Equalizer.PanningProvider.Pan = panValue;
             }
         }
 
         private void pan_odt2_PanChanged(object sender, EventArgs e)
         {
             float panValue = (float)pan_odt2.Pan;
-            player2.Equalizer.PanningProvider.Pan = panValue;
+            audioSource2.Equalizer.PanningProvider.Pan = panValue;
         }
 
         private void filter_odt1_ValueChanged(object sender, EventArgs e)
         {
-            if (player1 != null)
+            if (audioSource1 != null)
             {
                 float potValue = (float)filter_odt1.Value;
-                player1.Equalizer.FilterSampleProvider.FilterValue = potValue;
+                audioSource1.Equalizer.FilterSampleProvider.FilterValue = potValue;
             }
         }
 
         private void filter_odt2_ValueChanged(object sender, EventArgs e)
         {
-            if (player2 != null)
+            if (audioSource2 != null)
             {
                 float potValue = (float)filter_odt2.Value;
-                player2.Equalizer.FilterSampleProvider.FilterValue = potValue;
+                audioSource2.Equalizer.FilterSampleProvider.FilterValue = potValue;
             }
         }
         #endregion
@@ -217,50 +219,50 @@ namespace iRANE_62
         #region Loop
         private void loopOut_ch1_Click(object sender, EventArgs e)
         {
-            if (player1.AudioFileReader != null)
+            if (audioSource1.AudioFileReader != null)
             {
-                player1.Loop.SetLoopOut(player1.AudioFileReader.CurrentTime);
+                audioSource1.Loop.SetLoopOut(audioSource1.AudioFileReader.CurrentTime);
             }
         }
 
         private void loopIn_ch1_Click(object sender, EventArgs e)
         {
-            if (player1.AudioFileReader != null)
+            if (audioSource1.AudioFileReader != null)
             {
-                player1.Loop.SetLoopIn(player1.AudioFileReader.CurrentTime);
-                player1.Loop.LoopActive = true;
+                audioSource1.Loop.SetLoopIn(audioSource1.AudioFileReader.CurrentTime);
+                audioSource1.Loop.LoopActive = true;
             }
         }
 
         private void exitLoop_ch1_Click(object sender, EventArgs e)
         {
-            player1.Loop.LoopActive = false;
-            player1.Loop.LoopIn = TimeSpan.Zero;
-            player1.Loop.LoopOut = TimeSpan.Zero;
+            audioSource1.Loop.LoopActive = false;
+            audioSource1.Loop.LoopIn = TimeSpan.Zero;
+            audioSource1.Loop.LoopOut = TimeSpan.Zero;
         }
 
         private void loopOut_ch2_Click(object sender, EventArgs e)
         {
-            if (player2.AudioFileReader != null)
+            if (audioSource2.AudioFileReader != null)
             {
-                player2.Loop.SetLoopOut(player2.AudioFileReader.CurrentTime);
+                audioSource2.Loop.SetLoopOut(audioSource2.AudioFileReader.CurrentTime);
             }
         }
 
         private void loopIn_ch2_Click(object sender, EventArgs e)
         {
-            if (player2.AudioFileReader != null)
+            if (audioSource2.AudioFileReader != null)
             {
-                player2.Loop.SetLoopIn(player2.AudioFileReader.CurrentTime);
-                player2.Loop.LoopActive = true;
+                audioSource2.Loop.SetLoopIn(audioSource2.AudioFileReader.CurrentTime);
+                audioSource2.Loop.LoopActive = true;
             }
         }
 
         private void exitLoop_ch2_Click(object sender, EventArgs e)
         {
-            player2.Loop.LoopActive = false;
-            player2.Loop.LoopIn = TimeSpan.Zero;
-            player2.Loop.LoopOut = TimeSpan.Zero;
+            audioSource2.Loop.LoopActive = false;
+            audioSource2.Loop.LoopIn = TimeSpan.Zero;
+            audioSource2.Loop.LoopOut = TimeSpan.Zero;
         }
         #endregion
 
@@ -305,67 +307,67 @@ namespace iRANE_62
         private void cue1_ch1_Click(object sender, EventArgs e)
         {
 
-            TimeSpan currentTime = player1.AudioFileReader.CurrentTime;
+            TimeSpan currentTime = audioSource1.AudioFileReader.CurrentTime;
 
-            CueClick(player1, 0, currentTime);
-            cue1_ch1.BackColor = Color.Bisque;
+            CueButtonClick(audioSource1, 0, currentTime);
+            cue1_ch1.BackColor = CuePointsColors.Colors[0];
         }
         private void cue2_ch1_Click(object sender, EventArgs e)
         {
-            TimeSpan currentTime = player1.AudioFileReader.CurrentTime;
+            TimeSpan currentTime = audioSource1.AudioFileReader.CurrentTime;
 
-            CueClick(player1, 1, currentTime);
-            cue2_ch1.BackColor = Color.CadetBlue;
+            CueButtonClick(audioSource1, 1, currentTime);
+            cue2_ch1.BackColor = CuePointsColors.Colors[1];
 
         }
         private void cue3_ch1_Click(object sender, EventArgs e)
         {
-            TimeSpan currentTime = player1.AudioFileReader.CurrentTime;
+            TimeSpan currentTime = audioSource1.AudioFileReader.CurrentTime;
 
-            CueClick(player1, 2, currentTime);
-            cue3_ch1.BackColor = Color.Thistle;
+            CueButtonClick(audioSource1, 2, currentTime);
+            cue3_ch1.BackColor = CuePointsColors.Colors[2];
         }
         private void cue4_ch1_Click(object sender, EventArgs e)
         {
-            TimeSpan currentTime = player1.AudioFileReader.CurrentTime;
-            CueClick(player1, 3, currentTime);
-            cue4_ch1.BackColor = Color.Khaki;
+            TimeSpan currentTime = audioSource1.AudioFileReader.CurrentTime;
+            CueButtonClick(audioSource1, 3, currentTime);
+            cue4_ch1.BackColor = CuePointsColors.Colors[3];
         }
         private void cue5_ch1_Click(object sender, EventArgs e)
         {
-            TimeSpan currentTime = player1.AudioFileReader.CurrentTime;
-            CueClick(player1, 4, currentTime);
-            cue5_ch1.BackColor=Color.Fuchsia;
+            TimeSpan currentTime = audioSource1.AudioFileReader.CurrentTime;
+            CueButtonClick(audioSource1, 4, currentTime);
+            cue5_ch1.BackColor = CuePointsColors.Colors[4];
         }
         private void cue1_ch2_Click(object sender, EventArgs e)
         {
-            TimeSpan currentTime = player2.AudioFileReader.CurrentTime;
-            CueClick(player2, 0, currentTime);
-            cue1_ch2.BackColor = Color.Bisque;
+            TimeSpan currentTime = audioSource2.AudioFileReader.CurrentTime;
+            CueButtonClick(audioSource2, 0, currentTime);
+            cue1_ch2.BackColor = CuePointsColors.Colors[0];
         }
         private void cue2_ch2_Click(object sender, EventArgs e)
         {
-            TimeSpan currentTime = player2.AudioFileReader.CurrentTime;
-            CueClick(player2, 1, currentTime);
-            cue2_ch2.BackColor = Color.CadetBlue;
+            TimeSpan currentTime = audioSource2.AudioFileReader.CurrentTime;
+            CueButtonClick(audioSource2, 1, currentTime);
+            cue2_ch2.BackColor = CuePointsColors.Colors[1];
         }
         private void cue3_ch2_Click(object sender, EventArgs e)
         {
-            TimeSpan currentTime = player2.AudioFileReader.CurrentTime;
-            CueClick(player2, 2, currentTime);
-            cue2_ch2.BackColor = Color.Khaki;
+            TimeSpan currentTime = audioSource2.AudioFileReader.CurrentTime;
+            CueButtonClick(audioSource2, 2, currentTime);
+            cue3_ch2.BackColor = CuePointsColors.Colors[2];
         }
         private void cue4_ch2_Click(object sender, EventArgs e)
         {
-            TimeSpan currentTime = player2.AudioFileReader.CurrentTime;
-            CueClick(player2, 3, currentTime);
-            cue4_ch2.BackColor = Color.Khaki;
+            TimeSpan currentTime = audioSource2.AudioFileReader.CurrentTime;
+            CueButtonClick(audioSource2, 3, currentTime);
+            cue4_ch2.BackColor = CuePointsColors.Colors[3];
         }
         private void cue5_ch2_Click(object sender, EventArgs e)
         {
-            TimeSpan currentTime = player2.AudioFileReader.CurrentTime;
-            CueClick(player2, 4, currentTime);
-            cue5_ch2.BackColor = Color.Fuchsia;
+            TimeSpan currentTime = audioSource2.AudioFileReader.CurrentTime;
+            CueButtonClick(audioSource2, 4, currentTime);
+            cue5_ch2.BackColor = CuePointsColors.Colors[4];
         }
 
         public void CueColorClear(int playerId)
@@ -388,17 +390,23 @@ namespace iRANE_62
                 cue5_ch2.BackColor = Color.White;
             }
         }
-        private void CueClick(AudioSource player, int cue, TimeSpan currentTime)
+        private void CueButtonClick(AudioSource player, int cue, TimeSpan currentTime)
         {
-            if (player.Song.CuePoints[cue].Ticks >= 0)
+            var cuePoint = player.Song.CuePoints[cue];
+
+            if (cuePoint.StartTime.Ticks >= 0)
             {
-                player.AudioFileReader.CurrentTime = player.Song.CuePoints[cue];
+                player.AudioFileReader.CurrentTime = cuePoint.StartTime;
             }
             else
             {
-                player.Song.CuePoints[cue] = currentTime;
+                cuePoint.StartTime = currentTime;
+
+                CuePointAdded?.Invoke(player, currentTime, cuePoint.Color);
             }
+
         }
+
         #endregion
 
     }
