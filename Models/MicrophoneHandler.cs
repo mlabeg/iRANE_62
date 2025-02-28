@@ -11,7 +11,11 @@ namespace iRANE_62.Models
         private WaveOutEvent micOutput;
         private MixingSampleProvider mixerProvider;
         private MeteringSampleProvider meteringProvider;
+        private VolumeSampleProvider volumeProvider;
         private bool isActive;
+
+        private float micLeftLevel;
+        private float micRightLevel;
 
         public event EventHandler<StreamVolumeEventArgs> VolumeIndicator;
 
@@ -22,8 +26,6 @@ namespace iRANE_62.Models
 
         private void InitializeAudio()
         {
-            Volume = 0.5f;
-
             mixerProvider = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2))
             {
                 ReadFully = true
@@ -47,7 +49,33 @@ namespace iRANE_62.Models
             }
         }
 
-        public float Volume { get; set; } 
+        public float MicLeftLevel
+        {
+            get => micLeftLevel;
+            set => micLeftLevel=value;
+        }
+
+        public float MicRightLevel
+        {
+            get => micRightLevel;
+            set => micRightLevel = value;
+        }
+
+
+        private float volume { get; set; } = 0.5f;
+
+        public float Volume
+        {
+            get => volume;
+            set
+            {
+                volume = value;
+                if (volumeProvider != null)
+                {
+                    volumeProvider.Volume = volume;
+                }
+            }
+        }
 
         private void ToggleMicrophone(bool enable)
         {
@@ -67,7 +95,7 @@ namespace iRANE_62.Models
                     };
 
                     var sampleProvider = new WaveInProvider(microphoneInput);
-                    var volumeProvider = new VolumeSampleProvider(sampleProvider.ToSampleProvider())
+                    volumeProvider = new VolumeSampleProvider(sampleProvider.ToSampleProvider())
                     {
                         Volume = Volume
                     };
@@ -88,6 +116,7 @@ namespace iRANE_62.Models
                     microphoneInput.Dispose();
                     microphoneInput = null;
                     micBuffer = null;
+                    meteringProvider = null;
                     mixerProvider.RemoveAllMixerInputs();
                 }
             }
