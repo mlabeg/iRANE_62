@@ -15,6 +15,7 @@ namespace iRANE_62
         private AudioSource audioSource2;
 
         private MicrophoneHandler microphoneHandler;
+        
 
         public event Action<AudioSource, TimeSpan, Color> CuePointAdded;
 
@@ -411,13 +412,12 @@ namespace iRANE_62
         }
 
         #endregion
-
-
+        
         #region Microphone
 
         private void SetupMicrophoneControls()
         {
-            microphoneHandler.VolumeIndicator+= OnMicrophoneVolumeMeter;  // Subscribe to volume events
+            microphoneHandler.VolumeIndicator+= OnMicrophoneVolumeMeter;
             microphoneHandler.Volume = (float)mic_level.Value;
         }
 
@@ -425,6 +425,19 @@ namespace iRANE_62
         {
             microphoneHandler.IsActive = !microphoneHandler.IsActive;
             btn_micOnOff.BackColor = microphoneHandler.IsActive ? Color.Green : SystemColors.Control;
+
+            if (!microphoneHandler.IsActive)
+            {
+                microphoneHandler.MicLeftLevel = 0f;
+                microphoneHandler.MicRightLevel = 0f;
+                UpdateMainVolumeMeters();
+            }
+
+        }
+        private void UpdateMainVolumeMeters()
+        {
+            mainVolumeLeft.Amplitude = microphoneHandler.MicLeftLevel;
+            mainVolumeRight.Amplitude = microphoneHandler.MicRightLevel;
         }
 
         private void mic_level_ValueChanged(object sender, EventArgs e)
@@ -440,7 +453,10 @@ namespace iRANE_62
 
         private void OnMicrophoneVolumeMeter(object sender, StreamVolumeEventArgs e)
         {
-            mic_volume.Amplitude = Math.Max(e.MaxSampleValues[0], e.MaxSampleValues[1]);
+            microphoneHandler.MicLeftLevel = e.MaxSampleValues[0];
+            microphoneHandler.MicRightLevel = e.MaxSampleValues[1];
+            mic_volume.Amplitude = Math.Max(microphoneHandler.MicLeftLevel, microphoneHandler.MicRightLevel); 
+            UpdateMainVolumeMeters();
         }
         #endregion
 
