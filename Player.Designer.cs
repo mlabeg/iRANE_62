@@ -156,7 +156,6 @@
             playlista.Name = "playlista";
             playlista.Size = new Size(1076, 244);
             playlista.TabIndex = 2;
-            playlista.Click += playlista_Click;
             playlista.DragDrop += listBox1_DragDrop;
             playlista.DragEnter += listBox1_DragEnter;
             playlista.KeyDown += listBox1_KeyDown;
@@ -297,7 +296,6 @@
             Margin = new Padding(2);
             Name = "Player";
             Text = "Player";
-            Load += PlayerLoad;
             KeyDown += Odtwarzacz_KeyDown;
             ((System.ComponentModel.ISupportInitialize)waveform_ch1).EndInit();
             ((System.ComponentModel.ISupportInitialize)waveform_ch2).EndInit();

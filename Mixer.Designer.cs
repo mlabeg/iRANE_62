@@ -33,17 +33,17 @@ namespace iRANE_62
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            pan_odt1 = new NAudio.Gui.PanSlider();
+            pan_ch1 = new NAudio.Gui.PanSlider();
             gain_ch1 = new NAudio.Gui.Pot();
-            high_odt1 = new NAudio.Gui.Pot();
-            mid_odt1 = new NAudio.Gui.Pot();
-            filter_odt1 = new NAudio.Gui.Pot();
-            pan_odt2 = new NAudio.Gui.PanSlider();
+            high_ch1 = new NAudio.Gui.Pot();
+            mid_ch1 = new NAudio.Gui.Pot();
+            filter_ch1 = new NAudio.Gui.Pot();
+            pan_ch2 = new NAudio.Gui.PanSlider();
             gain_ch2 = new NAudio.Gui.Pot();
-            high_odt2 = new NAudio.Gui.Pot();
-            mid_odt2 = new NAudio.Gui.Pot();
-            filter_odt2 = new NAudio.Gui.Pot();
-            low_odt2 = new NAudio.Gui.Pot();
+            high_ch2 = new NAudio.Gui.Pot();
+            mid_ch2 = new NAudio.Gui.Pot();
+            filter_ch2 = new NAudio.Gui.Pot();
+            low_ch2 = new NAudio.Gui.Pot();
             mic_level = new NAudio.Gui.Pot();
             mic_high = new NAudio.Gui.Pot();
             mic_low = new NAudio.Gui.Pot();
@@ -51,20 +51,20 @@ namespace iRANE_62
             btn_micOver = new Button();
             imageList1 = new ImageList(components);
             odt2_flexfx = new CheckBox();
-            odt1 = new Panel();
+            chanel1 = new Panel();
             volumeMeter_ch1 = new NAudio.Gui.VolumeMeter();
-            low_odt1 = new NAudio.Gui.Pot();
-            odt1_flexfx = new CheckBox();
+            pot_low_ch1 = new NAudio.Gui.Pot();
+            flexfx_ch1 = new CheckBox();
             mic_volume = new NAudio.Gui.VolumeMeter();
-            odt2 = new Panel();
+            chanel2 = new Panel();
             volumeMeter_ch2 = new NAudio.Gui.VolumeMeter();
-            mainVolumeRight = new NAudio.Gui.VolumeMeter();
-            mainVolumeLeft = new NAudio.Gui.VolumeMeter();
+            volumeMeter_mainRight = new NAudio.Gui.VolumeMeter();
+            volumeMeter_mainLeft = new NAudio.Gui.VolumeMeter();
             loops1 = new Panel();
             exitLoop_ch1 = new Button();
             loopOut_ch1 = new Button();
             loopIn_ch1 = new Button();
-            main = new NAudio.Gui.Pot();
+            pot_mainVolume = new NAudio.Gui.Pot();
             efx_filter = new CheckBox();
             efx_flanger = new CheckBox();
             efx_phaser = new CheckBox();
@@ -94,7 +94,6 @@ namespace iRANE_62
             cue = new Panel();
             chBox_cue_samples = new CheckBox();
             odt1_cue_pgm1 = new CheckBox();
-            btn_cue_usb_aux = new CheckBox();
             odt2_cue_pgm2 = new CheckBox();
             panel_phones = new Panel();
             phones_split_sue = new CheckBox();
@@ -102,30 +101,30 @@ namespace iRANE_62
             phones_pan = new NAudio.Gui.Pot();
             mic = new Panel();
             mic_flexfx = new CheckBox();
-            odt2_upfader = new NAudio.Gui.VolumeSlider();
-            odt1_upfader = new NAudio.Gui.VolumeSlider();
-            fader1 = new NAudio.Gui.Fader();
-            panel1 = new Panel();
-            odt1.SuspendLayout();
-            odt2.SuspendLayout();
+            upfader_ch2 = new NAudio.Gui.VolumeSlider();
+            upfader_ch1 = new NAudio.Gui.VolumeSlider();
+            crossfader = new NAudio.Gui.Fader();
+            panel_volume = new Panel();
+            chanel1.SuspendLayout();
+            chanel2.SuspendLayout();
             loops1.SuspendLayout();
             efx.SuspendLayout();
             loops2.SuspendLayout();
             cue.SuspendLayout();
             panel_phones.SuspendLayout();
             mic.SuspendLayout();
-            panel1.SuspendLayout();
+            panel_volume.SuspendLayout();
             SuspendLayout();
             // 
-            // pan_odt1
+            // pan_ch1
             // 
-            pan_odt1.Location = new Point(24, 58);
-            pan_odt1.Margin = new Padding(2);
-            pan_odt1.Name = "pan_odt1";
-            pan_odt1.Pan = 0F;
-            pan_odt1.Size = new Size(66, 32);
-            pan_odt1.TabIndex = 1;
-            pan_odt1.PanChanged += pan_odt1_PanChanged;
+            pan_ch1.Location = new Point(24, 58);
+            pan_ch1.Margin = new Padding(2);
+            pan_ch1.Name = "pan_ch1";
+            pan_ch1.Pan = 0F;
+            pan_ch1.Size = new Size(66, 32);
+            pan_ch1.TabIndex = 1;
+            pan_ch1.PanChanged += pan_odt1_PanChanged;
             // 
             // gain_ch1
             // 
@@ -139,51 +138,51 @@ namespace iRANE_62
             gain_ch1.Value = 0.5D;
             gain_ch1.ValueChanged += level_odt1_ValueChanged;
             // 
-            // high_odt1
+            // high_ch1
             // 
-            high_odt1.Location = new Point(409, 118);
-            high_odt1.Margin = new Padding(4, 5, 4, 5);
-            high_odt1.Maximum = 30D;
-            high_odt1.Minimum = -30D;
-            high_odt1.Name = "high_odt1";
-            high_odt1.Size = new Size(43, 55);
-            high_odt1.TabIndex = 3;
-            high_odt1.Value = 0D;
-            high_odt1.ValueChanged += high_odt1_ValueChanged;
+            high_ch1.Location = new Point(409, 118);
+            high_ch1.Margin = new Padding(4, 5, 4, 5);
+            high_ch1.Maximum = 30D;
+            high_ch1.Minimum = -30D;
+            high_ch1.Name = "high_ch1";
+            high_ch1.Size = new Size(43, 55);
+            high_ch1.TabIndex = 3;
+            high_ch1.Value = 0D;
+            high_ch1.ValueChanged += high_odt1_ValueChanged;
             // 
-            // mid_odt1
+            // mid_ch1
             // 
-            mid_odt1.Location = new Point(409, 194);
-            mid_odt1.Margin = new Padding(4, 5, 4, 5);
-            mid_odt1.Maximum = 30D;
-            mid_odt1.Minimum = -30D;
-            mid_odt1.Name = "mid_odt1";
-            mid_odt1.Size = new Size(43, 55);
-            mid_odt1.TabIndex = 3;
-            mid_odt1.Value = 0D;
-            mid_odt1.ValueChanged += mid_odt1_ValueChanged;
+            mid_ch1.Location = new Point(409, 194);
+            mid_ch1.Margin = new Padding(4, 5, 4, 5);
+            mid_ch1.Maximum = 30D;
+            mid_ch1.Minimum = -30D;
+            mid_ch1.Name = "mid_ch1";
+            mid_ch1.Size = new Size(43, 55);
+            mid_ch1.TabIndex = 3;
+            mid_ch1.Value = 0D;
+            mid_ch1.ValueChanged += mid_odt1_ValueChanged;
             // 
-            // filter_odt1
+            // filter_ch1
             // 
-            filter_odt1.Location = new Point(30, 133);
-            filter_odt1.Margin = new Padding(4, 5, 4, 5);
-            filter_odt1.Maximum = 1D;
-            filter_odt1.Minimum = -1D;
-            filter_odt1.Name = "filter_odt1";
-            filter_odt1.Size = new Size(43, 55);
-            filter_odt1.TabIndex = 3;
-            filter_odt1.Value = 0D;
-            filter_odt1.ValueChanged += filter_odt1_ValueChanged;
+            filter_ch1.Location = new Point(30, 133);
+            filter_ch1.Margin = new Padding(4, 5, 4, 5);
+            filter_ch1.Maximum = 1D;
+            filter_ch1.Minimum = -1D;
+            filter_ch1.Name = "filter_ch1";
+            filter_ch1.Size = new Size(43, 55);
+            filter_ch1.TabIndex = 3;
+            filter_ch1.Value = 0D;
+            filter_ch1.ValueChanged += filter_odt1_ValueChanged;
             // 
-            // pan_odt2
+            // pan_ch2
             // 
-            pan_odt2.Location = new Point(110, 58);
-            pan_odt2.Margin = new Padding(2);
-            pan_odt2.Name = "pan_odt2";
-            pan_odt2.Pan = 0F;
-            pan_odt2.Size = new Size(66, 32);
-            pan_odt2.TabIndex = 1;
-            pan_odt2.PanChanged += pan_odt2_PanChanged;
+            pan_ch2.Location = new Point(110, 58);
+            pan_ch2.Margin = new Padding(2);
+            pan_ch2.Name = "pan_ch2";
+            pan_ch2.Pan = 0F;
+            pan_ch2.Size = new Size(66, 32);
+            pan_ch2.TabIndex = 1;
+            pan_ch2.PanChanged += pan_odt2_PanChanged;
             // 
             // gain_ch2
             // 
@@ -197,53 +196,53 @@ namespace iRANE_62
             gain_ch2.Value = 0.5D;
             gain_ch2.ValueChanged += level_odt2_ValueChanged;
             // 
-            // high_odt2
+            // high_ch2
             // 
-            high_odt2.Location = new Point(540, 118);
-            high_odt2.Margin = new Padding(4, 5, 4, 5);
-            high_odt2.Maximum = 30D;
-            high_odt2.Minimum = -30D;
-            high_odt2.Name = "high_odt2";
-            high_odt2.Size = new Size(43, 55);
-            high_odt2.TabIndex = 3;
-            high_odt2.Value = 0D;
-            high_odt2.ValueChanged += high_odt2_ValueChanged;
+            high_ch2.Location = new Point(540, 118);
+            high_ch2.Margin = new Padding(4, 5, 4, 5);
+            high_ch2.Maximum = 30D;
+            high_ch2.Minimum = -30D;
+            high_ch2.Name = "high_ch2";
+            high_ch2.Size = new Size(43, 55);
+            high_ch2.TabIndex = 3;
+            high_ch2.Value = 0D;
+            high_ch2.ValueChanged += high_odt2_ValueChanged;
             // 
-            // mid_odt2
+            // mid_ch2
             // 
-            mid_odt2.Location = new Point(540, 194);
-            mid_odt2.Margin = new Padding(4, 5, 4, 5);
-            mid_odt2.Maximum = 30D;
-            mid_odt2.Minimum = -30D;
-            mid_odt2.Name = "mid_odt2";
-            mid_odt2.Size = new Size(43, 55);
-            mid_odt2.TabIndex = 3;
-            mid_odt2.Value = 0D;
-            mid_odt2.ValueChanged += mid_odt2_ValueChanged;
+            mid_ch2.Location = new Point(540, 194);
+            mid_ch2.Margin = new Padding(4, 5, 4, 5);
+            mid_ch2.Maximum = 30D;
+            mid_ch2.Minimum = -30D;
+            mid_ch2.Name = "mid_ch2";
+            mid_ch2.Size = new Size(43, 55);
+            mid_ch2.TabIndex = 3;
+            mid_ch2.Value = 0D;
+            mid_ch2.ValueChanged += mid_odt2_ValueChanged;
             // 
-            // filter_odt2
+            // filter_ch2
             // 
-            filter_odt2.Location = new Point(133, 133);
-            filter_odt2.Margin = new Padding(4, 5, 4, 5);
-            filter_odt2.Maximum = 1D;
-            filter_odt2.Minimum = -1D;
-            filter_odt2.Name = "filter_odt2";
-            filter_odt2.Size = new Size(43, 55);
-            filter_odt2.TabIndex = 3;
-            filter_odt2.Value = 0D;
-            filter_odt2.ValueChanged += filter_odt2_ValueChanged;
+            filter_ch2.Location = new Point(133, 133);
+            filter_ch2.Margin = new Padding(4, 5, 4, 5);
+            filter_ch2.Maximum = 1D;
+            filter_ch2.Minimum = -1D;
+            filter_ch2.Name = "filter_ch2";
+            filter_ch2.Size = new Size(43, 55);
+            filter_ch2.TabIndex = 3;
+            filter_ch2.Value = 0D;
+            filter_ch2.ValueChanged += filter_odt2_ValueChanged;
             // 
-            // low_odt2
+            // low_ch2
             // 
-            low_odt2.Location = new Point(540, 273);
-            low_odt2.Margin = new Padding(4, 5, 4, 5);
-            low_odt2.Maximum = 30D;
-            low_odt2.Minimum = -30D;
-            low_odt2.Name = "low_odt2";
-            low_odt2.Size = new Size(43, 55);
-            low_odt2.TabIndex = 3;
-            low_odt2.Value = 0D;
-            low_odt2.ValueChanged += low_odt2_ValueChanged;
+            low_ch2.Location = new Point(540, 273);
+            low_ch2.Margin = new Padding(4, 5, 4, 5);
+            low_ch2.Maximum = 30D;
+            low_ch2.Minimum = -30D;
+            low_ch2.Name = "low_ch2";
+            low_ch2.Size = new Size(43, 55);
+            low_ch2.TabIndex = 3;
+            low_ch2.Value = 0D;
+            low_ch2.ValueChanged += low_odt2_ValueChanged;
             // 
             // mic_level
             // 
@@ -317,19 +316,19 @@ namespace iRANE_62
             odt2_flexfx.Text = "FLEXFX";
             odt2_flexfx.UseVisualStyleBackColor = true;
             // 
-            // odt1
+            // chanel1
             // 
-            odt1.BorderStyle = BorderStyle.FixedSingle;
-            odt1.Controls.Add(volumeMeter_ch1);
-            odt1.Controls.Add(low_odt1);
-            odt1.Controls.Add(odt1_flexfx);
-            odt1.Controls.Add(pan_odt1);
-            odt1.Controls.Add(filter_odt1);
-            odt1.Location = new Point(258, 33);
-            odt1.Margin = new Padding(2);
-            odt1.Name = "odt1";
-            odt1.Size = new Size(233, 319);
-            odt1.TabIndex = 7;
+            chanel1.BorderStyle = BorderStyle.FixedSingle;
+            chanel1.Controls.Add(volumeMeter_ch1);
+            chanel1.Controls.Add(pot_low_ch1);
+            chanel1.Controls.Add(flexfx_ch1);
+            chanel1.Controls.Add(pan_ch1);
+            chanel1.Controls.Add(filter_ch1);
+            chanel1.Location = new Point(258, 33);
+            chanel1.Margin = new Padding(2);
+            chanel1.Name = "chanel1";
+            chanel1.Size = new Size(233, 319);
+            chanel1.TabIndex = 7;
             // 
             // volumeMeter_ch1
             // 
@@ -343,28 +342,28 @@ namespace iRANE_62
             volumeMeter_ch1.TabIndex = 12;
             volumeMeter_ch1.Text = "volumeMeter1";
             // 
-            // low_odt1
+            // pot_low_ch1
             // 
-            low_odt1.Location = new Point(150, 240);
-            low_odt1.Margin = new Padding(4, 5, 4, 5);
-            low_odt1.Maximum = 30D;
-            low_odt1.Minimum = -30D;
-            low_odt1.Name = "low_odt1";
-            low_odt1.Size = new Size(43, 55);
-            low_odt1.TabIndex = 3;
-            low_odt1.Value = 0D;
-            low_odt1.ValueChanged += low_odt1_ValueChanged;
+            pot_low_ch1.Location = new Point(150, 240);
+            pot_low_ch1.Margin = new Padding(4, 5, 4, 5);
+            pot_low_ch1.Maximum = 30D;
+            pot_low_ch1.Minimum = -30D;
+            pot_low_ch1.Name = "pot_low_ch1";
+            pot_low_ch1.Size = new Size(43, 55);
+            pot_low_ch1.TabIndex = 3;
+            pot_low_ch1.Value = 0D;
+            pot_low_ch1.ValueChanged += low_odt1_ValueChanged;
             // 
-            // odt1_flexfx
+            // flexfx_ch1
             // 
-            odt1_flexfx.AutoSize = true;
-            odt1_flexfx.Location = new Point(8, 223);
-            odt1_flexfx.Margin = new Padding(2);
-            odt1_flexfx.Name = "odt1_flexfx";
-            odt1_flexfx.Size = new Size(82, 24);
-            odt1_flexfx.TabIndex = 5;
-            odt1_flexfx.Text = "FLEX FX";
-            odt1_flexfx.UseVisualStyleBackColor = true;
+            flexfx_ch1.AutoSize = true;
+            flexfx_ch1.Location = new Point(8, 223);
+            flexfx_ch1.Margin = new Padding(2);
+            flexfx_ch1.Name = "flexfx_ch1";
+            flexfx_ch1.Size = new Size(82, 24);
+            flexfx_ch1.TabIndex = 5;
+            flexfx_ch1.Text = "FLEX FX";
+            flexfx_ch1.UseVisualStyleBackColor = true;
             // 
             // mic_volume
             // 
@@ -378,18 +377,18 @@ namespace iRANE_62
             mic_volume.TabIndex = 12;
             mic_volume.Text = "volumeMeter1";
             // 
-            // odt2
+            // chanel2
             // 
-            odt2.BorderStyle = BorderStyle.FixedSingle;
-            odt2.Controls.Add(volumeMeter_ch2);
-            odt2.Controls.Add(pan_odt2);
-            odt2.Controls.Add(filter_odt2);
-            odt2.Controls.Add(odt2_flexfx);
-            odt2.Location = new Point(522, 33);
-            odt2.Margin = new Padding(2);
-            odt2.Name = "odt2";
-            odt2.Size = new Size(201, 319);
-            odt2.TabIndex = 7;
+            chanel2.BorderStyle = BorderStyle.FixedSingle;
+            chanel2.Controls.Add(volumeMeter_ch2);
+            chanel2.Controls.Add(pan_ch2);
+            chanel2.Controls.Add(filter_ch2);
+            chanel2.Controls.Add(odt2_flexfx);
+            chanel2.Location = new Point(522, 33);
+            chanel2.Margin = new Padding(2);
+            chanel2.Name = "chanel2";
+            chanel2.Size = new Size(201, 319);
+            chanel2.TabIndex = 7;
             // 
             // volumeMeter_ch2
             // 
@@ -403,29 +402,29 @@ namespace iRANE_62
             volumeMeter_ch2.TabIndex = 12;
             volumeMeter_ch2.Text = "volumeMeter1";
             // 
-            // mainVolumeRight
+            // volumeMeter_mainRight
             // 
-            mainVolumeRight.Amplitude = 0F;
-            mainVolumeRight.Location = new Point(86, 21);
-            mainVolumeRight.Margin = new Padding(2);
-            mainVolumeRight.MaxDb = 18F;
-            mainVolumeRight.MinDb = -60F;
-            mainVolumeRight.Name = "mainVolumeRight";
-            mainVolumeRight.Size = new Size(24, 282);
-            mainVolumeRight.TabIndex = 12;
-            mainVolumeRight.Text = "volumeMeter1";
+            volumeMeter_mainRight.Amplitude = 0F;
+            volumeMeter_mainRight.Location = new Point(86, 21);
+            volumeMeter_mainRight.Margin = new Padding(2);
+            volumeMeter_mainRight.MaxDb = 18F;
+            volumeMeter_mainRight.MinDb = -60F;
+            volumeMeter_mainRight.Name = "volumeMeter_mainRight";
+            volumeMeter_mainRight.Size = new Size(24, 282);
+            volumeMeter_mainRight.TabIndex = 12;
+            volumeMeter_mainRight.Text = "volumeMeter1";
             // 
-            // mainVolumeLeft
+            // volumeMeter_mainLeft
             // 
-            mainVolumeLeft.Amplitude = 0F;
-            mainVolumeLeft.Location = new Point(30, 21);
-            mainVolumeLeft.Margin = new Padding(2);
-            mainVolumeLeft.MaxDb = 18F;
-            mainVolumeLeft.MinDb = -60F;
-            mainVolumeLeft.Name = "mainVolumeLeft";
-            mainVolumeLeft.Size = new Size(24, 282);
-            mainVolumeLeft.TabIndex = 12;
-            mainVolumeLeft.Text = "volumeMeter1";
+            volumeMeter_mainLeft.Amplitude = 0F;
+            volumeMeter_mainLeft.Location = new Point(30, 21);
+            volumeMeter_mainLeft.Margin = new Padding(2);
+            volumeMeter_mainLeft.MaxDb = 18F;
+            volumeMeter_mainLeft.MinDb = -60F;
+            volumeMeter_mainLeft.Name = "volumeMeter_mainLeft";
+            volumeMeter_mainLeft.Size = new Size(24, 282);
+            volumeMeter_mainLeft.TabIndex = 12;
+            volumeMeter_mainLeft.Text = "volumeMeter1";
             // 
             // loops1
             // 
@@ -472,16 +471,16 @@ namespace iRANE_62
             loopIn_ch1.UseVisualStyleBackColor = true;
             loopIn_ch1.Click += loopIn_ch1_Click;
             // 
-            // main
+            // pot_mainVolume
             // 
-            main.Location = new Point(913, 39);
-            main.Margin = new Padding(4, 5, 4, 5);
-            main.Maximum = 1D;
-            main.Minimum = 0D;
-            main.Name = "main";
-            main.Size = new Size(43, 55);
-            main.TabIndex = 3;
-            main.Value = 0.5D;
+            pot_mainVolume.Location = new Point(913, 39);
+            pot_mainVolume.Margin = new Padding(4, 5, 4, 5);
+            pot_mainVolume.Maximum = 1D;
+            pot_mainVolume.Minimum = 0D;
+            pot_mainVolume.Name = "pot_mainVolume";
+            pot_mainVolume.Size = new Size(43, 55);
+            pot_mainVolume.TabIndex = 3;
+            pot_mainVolume.Value = 0.5D;
             // 
             // efx_filter
             // 
@@ -827,17 +826,6 @@ namespace iRANE_62
             odt1_cue_pgm1.Text = "CUE PGM 1";
             odt1_cue_pgm1.UseVisualStyleBackColor = true;
             // 
-            // btn_cue_usb_aux
-            // 
-            btn_cue_usb_aux.AutoSize = true;
-            btn_cue_usb_aux.Location = new Point(440, 702);
-            btn_cue_usb_aux.Margin = new Padding(2);
-            btn_cue_usb_aux.Name = "btn_cue_usb_aux";
-            btn_cue_usb_aux.Size = new Size(122, 24);
-            btn_cue_usb_aux.TabIndex = 5;
-            btn_cue_usb_aux.Text = "CUE USB AUX";
-            btn_cue_usb_aux.UseVisualStyleBackColor = true;
-            // 
             // odt2_cue_pgm2
             // 
             odt2_cue_pgm2.AutoSize = true;
@@ -919,49 +907,49 @@ namespace iRANE_62
             mic_flexfx.Text = "FLEXFX";
             mic_flexfx.UseVisualStyleBackColor = true;
             // 
-            // odt2_upfader
+            // upfader_ch2
             // 
-            odt2_upfader.ImeMode = ImeMode.NoControl;
-            odt2_upfader.Location = new Point(718, 834);
-            odt2_upfader.Margin = new Padding(2);
-            odt2_upfader.Name = "odt2_upfader";
-            odt2_upfader.Size = new Size(76, 306);
-            odt2_upfader.TabIndex = 13;
+            upfader_ch2.ImeMode = ImeMode.NoControl;
+            upfader_ch2.Location = new Point(718, 834);
+            upfader_ch2.Margin = new Padding(2);
+            upfader_ch2.Name = "upfader_ch2";
+            upfader_ch2.Size = new Size(76, 306);
+            upfader_ch2.TabIndex = 13;
             // 
-            // odt1_upfader
+            // upfader_ch1
             // 
-            odt1_upfader.AutoScroll = true;
-            odt1_upfader.ForeColor = SystemColors.ControlText;
-            odt1_upfader.Location = new Point(219, 834);
-            odt1_upfader.Margin = new Padding(2);
-            odt1_upfader.Name = "odt1_upfader";
-            odt1_upfader.Size = new Size(54, 306);
-            odt1_upfader.TabIndex = 13;
+            upfader_ch1.AutoScroll = true;
+            upfader_ch1.ForeColor = SystemColors.ControlText;
+            upfader_ch1.Location = new Point(219, 834);
+            upfader_ch1.Margin = new Padding(2);
+            upfader_ch1.Name = "upfader_ch1";
+            upfader_ch1.Size = new Size(54, 306);
+            upfader_ch1.TabIndex = 13;
             // 
-            // fader1
+            // crossfader
             // 
-            fader1.BackColor = SystemColors.ActiveCaption;
-            fader1.Location = new Point(289, 1128);
-            fader1.Margin = new Padding(2);
-            fader1.Maximum = 0;
-            fader1.Minimum = 1;
-            fader1.Name = "fader1";
-            fader1.Orientation = Orientation.Horizontal;
-            fader1.Size = new Size(410, 99);
-            fader1.TabIndex = 14;
-            fader1.Text = "fader1";
-            fader1.Value = 1;
+            crossfader.BackColor = SystemColors.ActiveCaption;
+            crossfader.Location = new Point(289, 1146);
+            crossfader.Margin = new Padding(2);
+            crossfader.Maximum = 0;
+            crossfader.Minimum = 1;
+            crossfader.Name = "crossfader";
+            crossfader.Orientation = Orientation.Horizontal;
+            crossfader.Size = new Size(410, 99);
+            crossfader.TabIndex = 14;
+            crossfader.Text = "fader1";
+            crossfader.Value = 1;
             // 
-            // panel1
+            // panel_volume
             // 
-            panel1.BorderStyle = BorderStyle.FixedSingle;
-            panel1.Controls.Add(mainVolumeRight);
-            panel1.Controls.Add(mainVolumeLeft);
-            panel1.Location = new Point(751, 33);
-            panel1.Margin = new Padding(2);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(135, 319);
-            panel1.TabIndex = 13;
+            panel_volume.BorderStyle = BorderStyle.FixedSingle;
+            panel_volume.Controls.Add(volumeMeter_mainRight);
+            panel_volume.Controls.Add(volumeMeter_mainLeft);
+            panel_volume.Location = new Point(751, 33);
+            panel_volume.Margin = new Padding(2);
+            panel_volume.Name = "panel_volume";
+            panel_volume.Size = new Size(135, 319);
+            panel_volume.TabIndex = 13;
             // 
             // Mixer
             // 
@@ -969,44 +957,43 @@ namespace iRANE_62
             AutoScaleMode = AutoScaleMode.Font;
             AutoScroll = true;
             ClientSize = new Size(1000, 1256);
-            Controls.Add(fader1);
-            Controls.Add(odt1_upfader);
-            Controls.Add(main);
-            Controls.Add(odt2_upfader);
+            Controls.Add(crossfader);
+            Controls.Add(upfader_ch1);
+            Controls.Add(pot_mainVolume);
+            Controls.Add(upfader_ch2);
             Controls.Add(efx_phaser);
             Controls.Add(efx_robot);
             Controls.Add(efx_filter);
             Controls.Add(efx_reverb);
             Controls.Add(odt2_cue_pgm2);
-            Controls.Add(btn_cue_usb_aux);
             Controls.Add(odt1_cue_pgm1);
             Controls.Add(efx_flanger);
             Controls.Add(efx_echo);
-            Controls.Add(low_odt2);
-            Controls.Add(mid_odt2);
+            Controls.Add(low_ch2);
+            Controls.Add(mid_ch2);
             Controls.Add(mic_low);
-            Controls.Add(mid_odt1);
+            Controls.Add(mid_ch1);
             Controls.Add(mic_high);
-            Controls.Add(high_odt2);
-            Controls.Add(high_odt1);
+            Controls.Add(high_ch2);
+            Controls.Add(high_ch1);
             Controls.Add(gain_ch2);
             Controls.Add(gain_ch1);
-            Controls.Add(odt2);
+            Controls.Add(chanel2);
             Controls.Add(efx);
             Controls.Add(loops2);
             Controls.Add(loops1);
             Controls.Add(cue);
             Controls.Add(mic);
-            Controls.Add(odt1);
+            Controls.Add(chanel1);
             Controls.Add(panel_phones);
-            Controls.Add(panel1);
+            Controls.Add(panel_volume);
             Margin = new Padding(2);
             Name = "Mixer";
             Text = "Form1";
-            odt1.ResumeLayout(false);
-            odt1.PerformLayout();
-            odt2.ResumeLayout(false);
-            odt2.PerformLayout();
+            chanel1.ResumeLayout(false);
+            chanel1.PerformLayout();
+            chanel2.ResumeLayout(false);
+            chanel2.PerformLayout();
             loops1.ResumeLayout(false);
             efx.ResumeLayout(false);
             efx.PerformLayout();
@@ -1017,33 +1004,32 @@ namespace iRANE_62
             panel_phones.PerformLayout();
             mic.ResumeLayout(false);
             mic.PerformLayout();
-            panel1.ResumeLayout(false);
+            panel_volume.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-        private NAudio.Gui.PanSlider pan_odt1;
-        private NAudio.Gui.Pot high_odt1;
-        private NAudio.Gui.Pot mid_odt1;
-        private NAudio.Gui.Pot filter_odt1;
-        private NAudio.Gui.PanSlider pan_odt2;
-        private NAudio.Gui.Pot high_odt2;
-        private NAudio.Gui.Pot mid_odt2;
-        private NAudio.Gui.Pot filter_odt2;
-        private NAudio.Gui.Pot low_odt2;
+        private NAudio.Gui.PanSlider pan_ch1;
+        private NAudio.Gui.Pot high_ch1;
+        private NAudio.Gui.Pot mid_ch1;
+        private NAudio.Gui.Pot filter_ch1;
+        private NAudio.Gui.PanSlider pan_ch2;
+        private NAudio.Gui.Pot high_ch2;
+        private NAudio.Gui.Pot mid_ch2;
+        private NAudio.Gui.Pot filter_ch2;
+        private NAudio.Gui.Pot low_ch2;
         private NAudio.Gui.Pot mic_level;
         private NAudio.Gui.Pot mic_high;
         private NAudio.Gui.Pot mic_low;
         private Button btn_micOnOff;
         private Button btn_micOver;
-        private Button qwe;
         private ImageList imageList1;
         private CheckBox odt2_flexfx;
-        private Panel odt1;
-        private Panel odt2;
+        private Panel chanel1;
+        private Panel chanel2;
         private Panel loops1;
-        private NAudio.Gui.Pot main;
+        private NAudio.Gui.Pot pot_mainVolume;
         private Button loopIn_ch1;
         private Button loopOut_ch1;
         private Button exitLoop_ch1;
@@ -1075,30 +1061,29 @@ namespace iRANE_62
         private Button cue5_ch2;
         private Panel cue;
         private CheckBox odt1_cue_pgm1;
-        private CheckBox btn_cue_usb_aux;
         private CheckBox odt2_cue_pgm2;
         private Panel panel_phones;
         private NAudio.Gui.Pot phones_level;
         private NAudio.Gui.Pot phones_pan;
         private CheckBox phones_split_sue;
-        private NumericUpDown odt1_upfaer;
-        private NumericUpDown odt2_upfaer;
+        private NumericUpDown upfaer_ch1;
+        private NumericUpDown upfaer_ch2;
         private NumericUpDown cross_fader;
-        private NAudio.Gui.Pot low_odt1;
-        private CheckBox odt1_flexfx;
+        private NAudio.Gui.Pot pot_low_ch1;
+        private CheckBox flexfx_ch1;
         private Panel mic;
         private CheckBox mic_flexfx;
         private NAudio.Gui.VolumeMeter mic_volume;
-        private NAudio.Gui.VolumeMeter mainVolumeRight;
-        private NAudio.Gui.VolumeMeter mainVolumeLeft;
+        private NAudio.Gui.VolumeMeter volumeMeter_mainRight;
+        private NAudio.Gui.VolumeMeter volumeMeter_mainLeft;
         private NAudio.Gui.VolumeMeter volumeMeter_ch2;
-        private NAudio.Gui.VolumeSlider odt2_upfader;
-        public NAudio.Gui.VolumeSlider odt1_upfader;
+        private NAudio.Gui.VolumeSlider upfader_ch2;
+        public NAudio.Gui.VolumeSlider upfader_ch1;
         private CheckBox chBox_cue_samples;
         private NAudio.Gui.VolumeMeter volumeMeter_ch1;
-        private NAudio.Gui.Fader fader1;
+        private NAudio.Gui.Fader crossfader;
         internal NAudio.Gui.Pot gain_ch1;
         internal NAudio.Gui.Pot gain_ch2;
-        private Panel panel1;
+        private Panel panel_volume;
     }
 }

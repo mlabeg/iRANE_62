@@ -2,7 +2,7 @@
 using NAudio.Wave.SampleProviders;
 using System;
 
-namespace iRANE_62.Models
+namespace iRANE_62.Handlers
 {
     public class MicrophoneHandler : IDisposable
     {
@@ -18,6 +18,7 @@ namespace iRANE_62.Models
         private float micRightLevel;
 
         public event EventHandler<StreamVolumeEventArgs> VolumeIndicator;
+        public event Action<bool> IsActiveChanged;
 
         public MicrophoneHandler()
         {
@@ -45,14 +46,20 @@ namespace iRANE_62.Models
                 {
                     ToggleMicrophone(value);
                     isActive = value;
+                    IsActiveChanged?.Invoke(isActive);
                 }
             }
+        }
+
+        public MeteringSampleProvider GetMeteringSampleProvider()
+        {
+            return meteringProvider;
         }
 
         public float MicLeftLevel
         {
             get => micLeftLevel;
-            set => micLeftLevel=value;
+            set => micLeftLevel = value;
         }
 
         public float MicRightLevel

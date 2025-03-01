@@ -1,3 +1,4 @@
+using iRANE_62.Handlers;
 using iRANE_62.Models;
 using NAudio.Extras;
 using NAudio.Gui;
@@ -11,26 +12,40 @@ namespace iRANE_62
 {
     public partial class Mixer : Form
     {
-        private AudioSource audioSource1;
-        private AudioSource audioSource2;
+        private readonly AudioSourceHandler audioSource1;
+        private readonly AudioSourceHandler audioSource2;
+        private readonly MicrophoneHandler microphoneHandler;
+        private readonly AudioOutputHandler audioOutputHandler;
 
-        private MicrophoneHandler microphoneHandler;
-        
+        public event Action<AudioSourceHandler, TimeSpan, Color> CuePointAdded;
 
-        public event Action<AudioSource, TimeSpan, Color> CuePointAdded;
 
         public Mixer() { }
 
-        public Mixer(ref AudioSource player1, ref AudioSource player2) : this()
+        public Mixer(ref AudioSourceHandler player1, ref AudioSourceHandler player2, AudioOutputHandler audioOutputHandler) : this()
         {
-            this.audioSource1 = player1;
-            this.audioSource2 = player2;
+            this.audioSource1 = player1 ?? throw new ArgumentNullException(nameof(player1));
+            this.audioSource2 = player2 ?? throw new ArgumentNullException(nameof(player2));
+            this.audioOutputHandler = audioOutputHandler ?? throw new ArgumentNullException(nameof(audioOutputHandler));
             microphoneHandler = new MicrophoneHandler();
             InitializeComponent();
 
             efxCheckedChangedEventHandler();
             blockCueButtons();
             SetupMicrophoneControls();
+            SetupVolumeMeters();
+            microphoneHandler.IsActiveChanged += UpdateMicrophoneOutput;
+        }
+
+        private void SetupVolumeMeters()
+        {
+            audioSource1.VolumeMetered += OnChannelVolumeMetered;
+            audioSource2.VolumeMetered += OnChannelVolumeMetered;
+        }
+
+        private void OnChannelVolumeMetered(object sender, StreamVolumeEventArgs e)
+        {
+            UpdateMainVolumeMeters(); 
         }
 
         #region FX
@@ -106,24 +121,24 @@ namespace iRANE_62
 
         private void level_odt1_ValueChanged(object sender, EventArgs e)
         {
-            if (audioSource1.WavePlayer != null)
+            if (audioSource1.AudioFileReader != null)
             {
-                audioSource1.SetVolumeDelegate((float)gain_ch1.Value);
+                audioSource1.SetVolume((float)gain_ch1.Value);
             }
         }
 
         private void level_odt2_ValueChanged(object sender, EventArgs e)
         {
-            if (audioSource2.WavePlayer != null)
+            if (audioSource2.AudioFileReader != null)
             {
-                audioSource2.SetVolumeDelegate((float)gain_ch2.Value);
+                audioSource2.SetVolume((float)gain_ch2.Value);
             }
         }
 
         public void OnPostMainVolumeMeter(object sender, StreamVolumeEventArgs e)
         {
-            mainVolumeLeft.Amplitude = e.MaxSampleValues[0];
-            mainVolumeRight.Amplitude = e.MaxSampleValues[1];
+            volumeMeter_mainLeft.Amplitude = e.MaxSampleValues[0];
+            volumeMeter_mainRight.Amplitude = e.MaxSampleValues[1];
         }
 
         public void OnPostChanel1VolumeMeter(object sender, StreamVolumeEventArgs e)
@@ -139,50 +154,50 @@ namespace iRANE_62
         private void high_odt1_ValueChanged(object sender, EventArgs e)
         {//doda³em bardziej ³agodne przejœcie miêdzy bandami, na studyjnych nie s³ychaæ fuzej ró¿nicy, bêdzie móg³ usun¹æ jak oka¿e siê, ¿e program jest za wolny   
 
-            audioSource1.Equalizer.Band9 = (float)high_odt1.Value;
-            audioSource1.Equalizer.Band8 = (float)high_odt1.Value;
-            audioSource1.Equalizer.Band7 = (float)(high_odt1.Value + mid_odt1.Value) / 2;
+            audioSource1.Equalizer.Band9 = (float)high_ch1.Value;
+            audioSource1.Equalizer.Band8 = (float)high_ch1.Value;
+            audioSource1.Equalizer.Band7 = (float)(high_ch1.Value + mid_ch1.Value) / 2;
             audioSource1.Equalizer.equalizer.Update();
         }
 
         private void mid_odt1_ValueChanged(object sender, EventArgs e)
         {
-            audioSource1.Equalizer.Band6 = (float)(mid_odt1.Value + high_odt1.Value) / 2;
-            audioSource1.Equalizer.Band5 = (float)mid_odt1.Value;
-            audioSource1.Equalizer.Band4 = (float)(mid_odt1.Value + low_odt1.Value) / 2;
+            audioSource1.Equalizer.Band6 = (float)(mid_ch1.Value + high_ch1.Value) / 2;
+            audioSource1.Equalizer.Band5 = (float)mid_ch1.Value;
+            audioSource1.Equalizer.Band4 = (float)(mid_ch1.Value + pot_low_ch1.Value) / 2;
             audioSource1.Equalizer.equalizer.Update();
         }
 
         private void low_odt1_ValueChanged(object sender, EventArgs e)
         {
-            audioSource1.Equalizer.Band3 = (float)(low_odt1.Value + mid_odt1.Value) / 2;
-            audioSource1.Equalizer.Band2 = (float)low_odt1.Value;
-            audioSource1.Equalizer.Band1 = (float)low_odt1.Value;
+            audioSource1.Equalizer.Band3 = (float)(pot_low_ch1.Value + mid_ch1.Value) / 2;
+            audioSource1.Equalizer.Band2 = (float)pot_low_ch1.Value;
+            audioSource1.Equalizer.Band1 = (float)pot_low_ch1.Value;
             audioSource1.Equalizer.equalizer.Update();
         }
 
         private void high_odt2_ValueChanged(object sender, EventArgs e)
         {
-            audioSource2.Equalizer.Band7 = (float)high_odt2.Value;
-            audioSource2.Equalizer.Band9 = (float)high_odt2.Value;
-            audioSource2.Equalizer.Band8 = (float)high_odt2.Value;
+            audioSource2.Equalizer.Band7 = (float)high_ch2.Value;
+            audioSource2.Equalizer.Band9 = (float)high_ch2.Value;
+            audioSource2.Equalizer.Band8 = (float)high_ch2.Value;
             audioSource2.Equalizer.equalizer.Update();
         }
 
         private void mid_odt2_ValueChanged(object sender, EventArgs e)
         {
-            audioSource2.Equalizer.Band4 = (float)mid_odt2.Value;
-            audioSource2.Equalizer.Band5 = (float)mid_odt2.Value;
-            audioSource2.Equalizer.Band6 = (float)mid_odt2.Value;
+            audioSource2.Equalizer.Band4 = (float)mid_ch2.Value;
+            audioSource2.Equalizer.Band5 = (float)mid_ch2.Value;
+            audioSource2.Equalizer.Band6 = (float)mid_ch2.Value;
             audioSource2.Equalizer.equalizer.Update();
         }
 
         private void low_odt2_ValueChanged(object sender, EventArgs e)
         {
 
-            audioSource2.Equalizer.Band1 = (float)low_odt2.Value;
-            audioSource2.Equalizer.Band2 = (float)low_odt2.Value;
-            audioSource2.Equalizer.Band3 = (float)low_odt2.Value;
+            audioSource2.Equalizer.Band1 = (float)low_ch2.Value;
+            audioSource2.Equalizer.Band2 = (float)low_ch2.Value;
+            audioSource2.Equalizer.Band3 = (float)low_ch2.Value;
             audioSource2.Equalizer.equalizer.Update();
         }
 
@@ -190,14 +205,14 @@ namespace iRANE_62
         {
             if (audioSource1.Equalizer.PanningProvider != null)
             {
-                float panValue = (float)pan_odt1.Pan;
+                float panValue = (float)pan_ch1.Pan;
                 audioSource1.Equalizer.PanningProvider.Pan = panValue;
             }
         }
 
         private void pan_odt2_PanChanged(object sender, EventArgs e)
         {
-            float panValue = (float)pan_odt2.Pan;
+            float panValue = (float)pan_ch2.Pan;
             audioSource2.Equalizer.PanningProvider.Pan = panValue;
         }
 
@@ -205,7 +220,7 @@ namespace iRANE_62
         {
             if (audioSource1 != null)
             {
-                float potValue = (float)filter_odt1.Value;
+                float potValue = (float)filter_ch1.Value;
                 audioSource1.Equalizer.FilterSampleProvider.FilterValue = potValue;
             }
         }
@@ -214,7 +229,7 @@ namespace iRANE_62
         {
             if (audioSource2 != null)
             {
-                float potValue = (float)filter_odt2.Value;
+                float potValue = (float)filter_ch2.Value;
                 audioSource2.Equalizer.FilterSampleProvider.FilterValue = potValue;
             }
         }
@@ -394,7 +409,7 @@ namespace iRANE_62
                 cue5_ch2.BackColor = Color.White;
             }
         }
-        private void CueButtonClick(AudioSource player, int cue, TimeSpan currentTime)
+        private void CueButtonClick(AudioSourceHandler player, int cue, TimeSpan currentTime)
         {
             var cuePoint = player.Song.CuePoints[cue];
 
@@ -412,13 +427,29 @@ namespace iRANE_62
         }
 
         #endregion
-        
+
         #region Microphone
+
+        private void UpdateMicrophoneOutput(bool isActive)
+        {
+            if (isActive)
+            {
+                audioOutputHandler.AddSource(microphoneHandler, microphoneHandler.GetMeteringSampleProvider());
+            }
+            else
+            {
+                audioOutputHandler.RemoveSource(microphoneHandler);
+
+            }
+        }
 
         private void SetupMicrophoneControls()
         {
-            microphoneHandler.VolumeIndicator+= OnMicrophoneVolumeMeter;
+            microphoneHandler.VolumeIndicator += OnMicrophoneVolumeMeter;
             microphoneHandler.Volume = (float)mic_level.Value;
+            btn_micOnOff.BackColor = microphoneHandler.IsActive ? Color.Green : SystemColors.Control;
+            if (microphoneHandler.IsActive)
+                UpdateMicrophoneOutput(true);
         }
 
         private void mic_on_Click(object sender, EventArgs e)
@@ -434,10 +465,13 @@ namespace iRANE_62
             }
 
         }
+
         private void UpdateMainVolumeMeters()
         {
-            mainVolumeLeft.Amplitude = microphoneHandler.MicLeftLevel;
-            mainVolumeRight.Amplitude = microphoneHandler.MicRightLevel;
+            float leftLevel = Math.Max(audioSource1.LeftChanelVolumeLevel, audioSource2.LeftChanelVolumeLevel);
+            float rightLevel = Math.Max(audioSource1.RightChanelVolumeLevel, audioSource2.RightChanelVolumeLevel);
+            volumeMeter_mainLeft.Amplitude = Math.Max(leftLevel, microphoneHandler.MicLeftLevel);
+            volumeMeter_mainRight.Amplitude = Math.Max(rightLevel, microphoneHandler.MicRightLevel);
         }
 
         private void mic_level_ValueChanged(object sender, EventArgs e)
@@ -455,7 +489,7 @@ namespace iRANE_62
         {
             microphoneHandler.MicLeftLevel = e.MaxSampleValues[0];
             microphoneHandler.MicRightLevel = e.MaxSampleValues[1];
-            mic_volume.Amplitude = Math.Max(microphoneHandler.MicLeftLevel, microphoneHandler.MicRightLevel); 
+            mic_volume.Amplitude = Math.Max(microphoneHandler.MicLeftLevel, microphoneHandler.MicRightLevel);
             UpdateMainVolumeMeters();
         }
         #endregion
