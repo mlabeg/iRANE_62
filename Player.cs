@@ -83,7 +83,7 @@ namespace iRANE_62
 
         private void SetVolumeFromMixerLevel(AudioSourceHandler player)
         {
-            player.SetVolume(player.Id == 1 ? (float)mixer.gain_ch1.Value : (float)mixer.gain_ch2.Value);
+            player.SetVolume(player.Id == 1 ? (float)mixer.pot_gain_ch1.Value : (float)mixer.pot_gain_ch2.Value);
         }
 
 

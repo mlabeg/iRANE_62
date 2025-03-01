@@ -125,7 +125,7 @@ namespace iRANE_62.Handlers
 
             Equalizer.FilterSampleProvider = new FilterSampleProvider(sampleChannel, AudioFileReader.WaveFormat.SampleRate);
             Equalizer.PanningProvider = new StereoPanningSampleProvider(Equalizer.FilterSampleProvider);
-            Equalizer.equalizer = new Equalizer(Equalizer.PanningProvider, Equalizer.bands);
+            Equalizer.equalizer = new Equalizer(Equalizer.PanningProvider, Equalizer.Bands);
 
             outputProvider = new MeteringSampleProvider(Equalizer.equalizer);
 
