@@ -45,7 +45,7 @@ namespace iRANE_62
 
         private void OnChannelVolumeMetered(object sender, StreamVolumeEventArgs e)
         {
-            UpdateMainVolumeMeters(); 
+            UpdateMainVolumeMeters();
         }
 
         #region FX
@@ -494,5 +494,30 @@ namespace iRANE_62
         }
         #endregion
 
+        private void mic_high_ValueChanged(object sender, EventArgs e)
+        {
+            if (microphoneHandler.Equalizer != null)
+            {
+                float highValue = (float)mic_high.Value;
+                // Adjust high-frequency bands (e.g., 4000 Hz, 8000 Hz, 16000 Hz)
+                microphoneHandler.Equalizer.Bands[6].Gain = highValue;  // 4000 Hz
+                microphoneHandler.Equalizer.Bands[7].Gain = highValue;  // 8000 Hz
+                microphoneHandler.Equalizer.Bands[8].Gain = highValue;  // 16000 Hz
+                microphoneHandler.Equalizer.equalizer.Update();
+            }
+        }
+
+        private void mic_low_ValueChanged(object sender, EventArgs e)
+        {
+            if (microphoneHandler.Equalizer != null)
+            {
+                float lowValue = (float)mic_low.Value;
+                // Adjust low-frequency bands (e.g., 60 Hz, 120 Hz, 250 Hz)
+                microphoneHandler.Equalizer.Bands[0].Gain = lowValue;  // 60 Hz
+                microphoneHandler.Equalizer.Bands[1].Gain = lowValue;  // 120 Hz
+                microphoneHandler.Equalizer.Bands[2].Gain = lowValue;  // 250 Hz
+                microphoneHandler.Equalizer.equalizer.Update();
+            }
+        }
     }
 }

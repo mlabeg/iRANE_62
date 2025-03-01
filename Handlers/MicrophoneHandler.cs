@@ -1,6 +1,9 @@
-﻿using NAudio.Wave;
+﻿using iRANE_62.Models;
+using NAudio.Extras;
+using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using System;
+using System.Xml.Linq;
 
 namespace iRANE_62.Handlers
 {
@@ -12,6 +15,7 @@ namespace iRANE_62.Handlers
         private MixingSampleProvider mixerProvider;
         private MeteringSampleProvider meteringProvider;
         private VolumeSampleProvider volumeProvider;
+        private Eq equalizer;
         private bool isActive;
 
         private float micLeftLevel;
@@ -22,10 +26,10 @@ namespace iRANE_62.Handlers
 
         public MicrophoneHandler()
         {
-            InitializeAudio();
+            Initialize();
         }
 
-        private void InitializeAudio()
+        private void Initialize()
         {
             mixerProvider = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2))
             {
@@ -51,10 +55,6 @@ namespace iRANE_62.Handlers
             }
         }
 
-        public MeteringSampleProvider GetMeteringSampleProvider()
-        {
-            return meteringProvider;
-        }
 
         public float MicLeftLevel
         {
@@ -84,6 +84,13 @@ namespace iRANE_62.Handlers
             }
         }
 
+        public Eq Equalizer => equalizer;
+
+        public MeteringSampleProvider GetMeteringSampleProvider()
+        {
+            return meteringProvider;
+        }
+
         private void ToggleMicrophone(bool enable)
         {
             if (enable)
@@ -93,7 +100,7 @@ namespace iRANE_62.Handlers
                     microphoneInput = new WaveInEvent
                     {
                         WaveFormat = new WaveFormat(44100, 2),
-                        BufferMilliseconds = 10
+                        BufferMilliseconds = 20
                     };
 
                     micBuffer = new BufferedWaveProvider(microphoneInput.WaveFormat)
@@ -107,7 +114,10 @@ namespace iRANE_62.Handlers
                         Volume = Volume
                     };
 
-                    meteringProvider = new MeteringSampleProvider(volumeProvider);
+                    equalizer = new Eq();
+                    equalizer.equalizer=new Equalizer(volumeProvider,equalizer.Bands);
+
+                    meteringProvider = new MeteringSampleProvider(equalizer.equalizer);
                     meteringProvider.StreamVolume += (s, e) => VolumeIndicator?.Invoke(this, e);
 
                     mixerProvider.AddMixerInput(meteringProvider);

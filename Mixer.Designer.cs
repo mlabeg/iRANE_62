@@ -260,23 +260,25 @@ namespace iRANE_62
             // 
             mic_high.Location = new Point(116, 167);
             mic_high.Margin = new Padding(4, 5, 4, 5);
-            mic_high.Maximum = 1D;
-            mic_high.Minimum = 0D;
+            mic_high.Maximum = 30D;
+            mic_high.Minimum = -30D;
             mic_high.Name = "mic_high";
             mic_high.Size = new Size(43, 55);
             mic_high.TabIndex = 3;
             mic_high.Value = 0.5D;
+            mic_high.ValueChanged += mic_high_ValueChanged;
             // 
             // mic_low
             // 
             mic_low.Location = new Point(116, 244);
             mic_low.Margin = new Padding(4, 5, 4, 5);
-            mic_low.Maximum = 1D;
-            mic_low.Minimum = 0D;
+            mic_low.Maximum = 30D;
+            mic_low.Minimum = -30D;
             mic_low.Name = "mic_low";
             mic_low.Size = new Size(43, 55);
             mic_low.TabIndex = 3;
             mic_low.Value = 0.5D;
+            mic_low.ValueChanged += mic_low_ValueChanged;
             // 
             // btn_micOnOff
             // 
