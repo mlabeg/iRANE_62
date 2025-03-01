@@ -1,35 +1,24 @@
 ﻿using iRANE_62.Extensions;
+using iRANE_62.Handlers;
 using iRANE_62.Models;
-using Microsoft.VisualBasic;
 using NAudio.Dmo.Effect;
 using NAudio.Extras;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using NAudio.WaveFormRenderer;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+
 
 namespace iRANE_62
 {
     public partial class Player : Form
     {
-        private Mixer mixer;
+        private readonly Mixer mixer;
 
-        private AudioSource chanel1;
-        private AudioSource chanel2;
+        private AudioSourceHandler chanel1;
+        private AudioSourceHandler chanel2;
 
-        private string? imageFile;
+        private readonly AudioOutputHandler audioOutputHandler;
         private readonly WaveFormRenderer waveFormRenderer;
-        private readonly WaveFormRendererSettings waveformSettings;
 
         public Player()
         {
@@ -38,42 +27,27 @@ namespace iRANE_62
             timer1.Interval = 250;
             timer1.Tick += OnTimerTick;
 
-            chanel1 = new AudioSource(1);
-            chanel2 = new AudioSource(2);
-
-            waveformSettings = new StandardWaveFormRendererSettings()
-            {
-                BackgroundColor = Color.Black,
-                TopPeakPen = new Pen(Color.White),
-                BottomPeakPen = new Pen(Color.White),
-            };
+            chanel1 = new AudioSourceHandler(1);
+            chanel2 = new AudioSourceHandler(2);
+            audioOutputHandler = new AudioOutputHandler();
+            mixer = new Mixer(ref chanel1, ref chanel2, audioOutputHandler);
 
             waveFormRenderer = new WaveFormRenderer();
-        }
 
-        private void PlayerLoad(object sender, EventArgs e)
-        {
-            OpenMikser();
-        }
-
-        private void OpenMikser()
-        {
-            if (mixer == null || mixer.IsDisposed)
-            {
-                mixer = new Mixer(ref chanel1, ref chanel2);
-                mixer.Show();
-            }
-            else
-            {
-                mixer.Focus();
-            }
             mixer.CuePointAdded += DrawCuePoint;
+            mixer.Show();
+            SetupVolumeMeters();
         }
 
+        private void SetupVolumeMeters()
+        {
+            chanel1.VolumeMetered += mixer.OnPostChanel1VolumeMeter;
+            chanel2.VolumeMetered += mixer.OnPostChanel2VolumeMeter;
+        }
 
         #region Play button
 
-        private void Play(AudioSource audioSource)
+        private void Play(AudioSourceHandler audioSource)
         {
             if (audioSource.FileName == null)
             {
@@ -86,83 +60,32 @@ namespace iRANE_62
             }
         }
 
-        private void BeginPlayback(AudioSource audioSource)//rozbić na drobniejsze!
-
+        private void BeginPlayback(AudioSourceHandler audioSource)
         {
-            if (audioSource.WavePlayer != null)
+            try
             {
-                if (audioSource.WavePlayer.PlaybackState == PlaybackState.Playing)
+                if (audioSource.IsPlaying)
                 {
-                    audioSource.WavePlayer.Pause();
-                    return;
+                    audioSource.Pause(audioOutputHandler);
                 }
-
-                if (audioSource.WavePlayer.PlaybackState == PlaybackState.Paused)
+                else
                 {
                     SetVolumeFromMixerLevel(audioSource);
-                    audioSource.WavePlayer.Play();
-                    return;
+                    audioSource.Play(audioOutputHandler);
+                    timer1.Enabled = true;
                 }
-
-                audioSource.WavePlayer.Stop();
-                audioSource.WavePlayer.Dispose();
             }
-
-            if (audioSource.FileName == String.Empty) return;
-
-            audioSource.WavePlayer = new WaveOutEvent();
-
-
-            //Pre
-            var sampleChannel = new SampleChannel(audioSource.AudioFileReader, true);
-            audioSource.SetVolumeDelegate = vol => sampleChannel.Volume = vol;
-
-            if (audioSource.Id == 1)
+            catch (Exception ex)
             {
-                sampleChannel.PreVolumeMeter += mixer.OnPostChanel1VolumeMeter;
+                MessageBox.Show($"Błąd odtwarzacza: {ex.Message}");
             }
-            else
-            {
-                sampleChannel.PreVolumeMeter += mixer.OnPostChanel2VolumeMeter;
-            }
-
-            #region Sekcja EQ
-            //High- LowPassFilter -
-            audioSource.Equalizer.FilterSampleProvider = new FilterSampleProvider(sampleChannel, audioSource.AudioFileReader.WaveFormat.SampleRate);
-
-            //Pan
-            audioSource.Equalizer.PanningProvider = new StereoPanningSampleProvider(audioSource.Equalizer.FilterSampleProvider);
-
-            //EQ
-            audioSource.Equalizer.equalizer = new Equalizer(audioSource.Equalizer.PanningProvider, audioSource.Equalizer.bands);
-            #endregion
-
-
-            //Post
-            var postVolumeMeter = new MeteringSampleProvider(audioSource.Equalizer.equalizer);
-            postVolumeMeter.StreamVolume += mixer.OnPostMainVolumeMeter;
-            //zronić z tego funkcję??
-
-            audioSource.WavePlayer.Init(postVolumeMeter);
-
-            SetVolumeFromMixerLevel(audioSource);
-
-            audioSource.WavePlayer.Play();
-            timer1.Enabled = true;
-
         }
 
-        private void SetVolumeFromMixerLevel(AudioSource player)//zmienić na private void Set..(Player player, float gain)
+        private void SetVolumeFromMixerLevel(AudioSourceHandler player)
         {
-            if (player.Id == 1)
-            {
-                player.SetVolumeDelegate((float)mixer.gain_ch1.Value);
-            }
-            else
-            {
-                player.SetVolumeDelegate((float)mixer.gain_ch2.Value);
-            }
+            player.SetVolume(player.Id == 1 ? (float)mixer.gain_ch1.Value : (float)mixer.gain_ch2.Value);
         }
+
 
         // ten kawałek kodu może być potrzebny później przy dodaniu obsługi słuchawek
         /* private IWavePlayer CreateWavePlayer()//możesz to dodać jako menu rozwijane z paska u góry
@@ -182,21 +105,22 @@ namespace iRANE_62
 
         #region Open button
 
-        private void LoadTrack(AudioSource player, string fileName)
+        private void LoadTrack(AudioSourceHandler player, string fileName)
         {
-            player.FileName = fileName;
-            player.AudioFileReader = new AudioFileReader(player.FileName);
-
-            LabelTrackUpdate(player);
-            RenderWaveform(player);
-
-            Song song = new Song(player.FileName);
-            player.Song = song;
-
-            UpadteTotalSongTime(player, song);
-            EnableGuiOnChanel(player.Id);
-            mixer.CueColorClear(player.Id);//TODO2 zmienić to na sprawdzanie czy dany utwór ma zapisane CuePointy
-            //nie używać pola mkxer w ten sposób
+            try
+            {
+                player.LoadFile(fileName);
+                LabelTrackUpdate(player);
+                RenderWaveform(player);
+                UpadteTotalSongTime(player, player.Song);
+                EnableGuiOnChanel(player.Id);
+                mixer.CueColorClear(player.Id);//TODO2 zmienić to na sprawdzanie czy dany utwór ma zapisane CuePointy
+                                               //nie używać pola mkxer w ten sposób
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Błąd ładowania ścieżki: {ex.Message}");
+            }
         }
 
         private void AddToPlaylist(Song song)
@@ -207,99 +131,56 @@ namespace iRANE_62
             }
         }
 
-        private void OpenFromButton(AudioSource player)
+        private void OpenFromButton(AudioSourceHandler player)
         {
             var fileName = SelectInputFile();
             if (fileName != String.Empty)
             {
+                //player.LoadFile(fileName);
                 LoadTrack(player, fileName);
                 AddToPlaylist(player.Song);
             }
         }
 
-        private void LoadSongFromPlaylist(AudioSource player, Song song)
+        private void LoadSongFromPlaylist(AudioSourceHandler player, Song song)
         {
             LoadTrack(player, song.Path);
         }
 
-        private void UpadteTotalSongTime(AudioSource player, Song song)
+        private void UpadteTotalSongTime(AudioSourceHandler player, Song song)
         {
-            if (player.Id == 1)
-            {
-                labelTotalTime_1.Text = FormatTimeSpan(song.SongSpan);
-
-            }
-            else
-            {
-                labelTotalTime_2.Text = FormatTimeSpan(song.SongSpan);
-            }
+            (player.Id == 1 ? labelTotalTime_1 : labelTotalTime_2).Text = FormatTimeSpan(song.SongSpan);
         }
 
         private string SelectInputFile()
         {
-
-            var ofd = new OpenFileDialog();
-            ofd.Filter = "Audio Files|*.mp3;*.wav;*.aiff;*.wma";
-
-
-            if (ofd.ShowDialog() == DialogResult.OK)
-            {
-                return ofd.FileName;
-            }
-
-            return String.Empty;
+            using var ofd = new OpenFileDialog() { Filter = "Audio Files|*.mp3;*.wav;*.aiff;*.wma" };
+            return ofd.ShowDialog() == DialogResult.OK ? ofd.FileName : string.Empty;
         }
 
-        private void LabelTrackUpdate(AudioSource player)
+        private void LabelTrackUpdate(AudioSourceHandler player)
         {
-            string songName = player.FileName.Split('\\').Last().ToString();
-            if (player.Id == 1)
-            {
-                labelTrack1.Text = songName;
-            }
-            else
-            {
-                labelTrack2.Text = songName;
-            }
-
+            string songName = player.FileName.Split('\\').Last();
+            (player.Id == 1 ? labelTrack1 : labelTrack2).Text = songName;
         }
 
         #endregion
 
         #region GUI + keyboard shortcuts
 
-        private void btnPlay1_Click(object sender, EventArgs e)
-        {
-            Play(chanel1);
-        }
-
-        private void btnPlay_2_Click(object sender, EventArgs e)
-        {
-            Play(chanel2);
-        }
+        private void btnPlay1_Click(object sender, EventArgs e) => Play(chanel1);
+        private void btnPlay_2_Click(object sender, EventArgs e) => Play(chanel2);
 
         private void Odtwarzacz_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Space)
-            {
-                PressedSpacebarOrEnter(ref chanel1);
-            }
+            if (e.KeyCode == Keys.Space) PressedSpacebarOrEnter(ref chanel1);
+            if (e.KeyCode == Keys.Enter) PressedSpacebarOrEnter(ref chanel2);
 
-            if (e.KeyCode == Keys.Enter)
-            {
-                PressedSpacebarOrEnter(ref chanel2);
-            }
         }
 
-        private void PressedSpacebarOrEnter(ref AudioSource player)
+        private void PressedSpacebarOrEnter(ref AudioSourceHandler player)
         {
-            if (player.WavePlayer == null) return;
-
-            if (player.WavePlayer.PlaybackState == PlaybackState.Playing)
-            {
-                player.WavePlayer.Pause();
-            }
-            player.WavePlayer.Play();
+            if (player.FileName != null) BeginPlayback(player);
         }
 
         private void EnableGuiOnChanel(int playerId)
@@ -343,10 +224,8 @@ namespace iRANE_62
             }
         }
 
-        private void btnOpen_1_Click(object sender, EventArgs e)
-        {
-            OpenFromButton(chanel1);
-        }
+        private void btnOpen_1_Click(object sender, EventArgs e) => OpenFromButton(chanel1);
+        private void btnOpen_2_Click(object sender, EventArgs e) => OpenFromButton(chanel2);
 
         private void btnOpen_KeyDown(object sender, KeyEventArgs e)
         {
@@ -359,11 +238,6 @@ namespace iRANE_62
             {
                 OpenFromButton(chanel1);
             }
-        }
-
-        private void btnOpen_2_Click(object sender, EventArgs e)
-        {
-            OpenFromButton(chanel2);
         }
 
         private void listBox1_KeyDown(object sender, KeyEventArgs e)
@@ -450,117 +324,78 @@ namespace iRANE_62
 
         private void waveform_ch1_MouseClick(object sender, MouseEventArgs e)
         {
-            double clickPositionRatio = (double)e.X / waveform_ch1.Width;
-            TimeSpan newTime = TimeSpan.FromSeconds(chanel1.AudioFileReader.TotalTime.TotalSeconds * clickPositionRatio);
-
-            chanel1.AudioFileReader.CurrentTime = newTime;
-
-            chanel1.CurrentPlaybackPosition = e.X;
-            waveform_ch1.Invalidate();
+            if (chanel1.AudioFileReader != null)//w miejscach jak to możesz dokładnie sprawdzić czy waveform (lub inne GUI) jest zablokowane,
+                                                //żeby nie sprawdać tego w funkcji i nie zwlaniać programu
+            {
+                double clickPositionRatio = (double)e.X / waveform_ch1.Width;
+                chanel1.AudioFileReader.CurrentTime = TimeSpan.FromSeconds(chanel1.AudioFileReader.TotalTime.TotalSeconds * clickPositionRatio);
+                chanel1.CurrentPlaybackPosition = e.X;
+                waveform_ch1.Invalidate();
+            }
         }
 
         private void waveform_ch2_MouseClick(object sender, MouseEventArgs e)
         {
-            double clickPositionRatio = (double)e.X / waveform_ch2.Width;
-            TimeSpan newTime = TimeSpan.FromSeconds(chanel2.AudioFileReader.TotalTime.TotalSeconds * clickPositionRatio);
-
-            chanel2.AudioFileReader.CurrentTime = newTime;
-
-            chanel2.CurrentPlaybackPosition = e.X;
-            waveform_ch2.Invalidate();
-        }
-
-        private void playlista_Click(object sender, EventArgs e)
-        {/*
-            var fileName = SelectInputFile();
-            if (fileName != String.Empty)
+            if (chanel2.AudioFileReader != null)
             {
-                AddToPlaylist(new Song(fileName));
-            }*/
+                double clickPositionRatio = (double)e.X / waveform_ch2.Width;
+                chanel2.AudioFileReader.CurrentTime = TimeSpan.FromSeconds(chanel2.AudioFileReader.TotalTime.TotalSeconds * clickPositionRatio);
+                chanel2.CurrentPlaybackPosition = e.X;
+                waveform_ch2.Invalidate();
+            }
         }
 
         #endregion
 
         #region Stop button
 
-        private void btnStop_1_Click(object sender, EventArgs e)
-        {
-            Stop(ref chanel1);
-        }
-        private void btnStop_2_Click(object sender, EventArgs e)
-        {
+        private void btnStop_1_Click(object sender, EventArgs e) => Stop(ref chanel1);
+        private void btnStop_2_Click(object sender, EventArgs e) => Stop(ref chanel2);
 
-            Stop(ref chanel2);
-        }
-        private void Stop(ref AudioSource player)
+        private void Stop(ref AudioSourceHandler player)
         {
-            if (player.WavePlayer != null)
-            {
-                player.WavePlayer.Stop();
-            }
+            player.Stop(audioOutputHandler);
         }
+
         #endregion
 
         #region Pause button
 
-        private void btnPause_1_Click(object sender, EventArgs e)
-        {
-            Pause(ref chanel1);
-        }
+        private void btnPause_1_Click(object sender, EventArgs e) => Pause(ref chanel1);
+        private void btnPause_2_Click(object sender, EventArgs e) => Pause(ref chanel2);
 
-        private void btnPause_2_Click(object sender, EventArgs e)
+        private void Pause(ref AudioSourceHandler player)
         {
-            Pause(ref chanel2);
-        }
-
-        private void Pause(ref AudioSource player)
-        {
-            if (player.WavePlayer != null)
-                player.WavePlayer.Pause();
+            player.Pause(audioOutputHandler);
         }
 
         #endregion
 
         #region Waveform Rendering
 
-        /*  private WaveFormRendererSettings GetRendererSettings()
-          {//TODO tu opcje robię na sztywno, można pomyśleć o dodaniu ich paramrtryzacji;
-              //z drugiej strony dobrze będzie mieć wszystkie waveFormy w jednym formacie, zeby nie było problemów z ich późniejszym ładowaniem
-
-              var settings = (WaveFormRendererSettings)comboBoxRenderSettings.SelectedItem;
-              settings.TopHeight = ((int)upDownBlockSize.Value);
-              settings.BottomHeight = ((int)upDownBlockSize.Value);
-              settings.Width = (int)upDownWidth.Value;
-              settings.DecibelScale = checkBoxDecibels.Checked;
-              return settings;
-          }*/
-
-        private void RenderWaveform(AudioSource player)
+        private void RenderWaveform(AudioSourceHandler player)
         {
             if (player.FileName == null) return;
 
-            var settings = waveformSettings;//TODO zmień na jednolity "ładny" kolor waveforma
-
-            if (imageFile != null)
+            var settings = new StandardWaveFormRendererSettings()//nie powinieneś hardcodować tego
             {
-                settings.BackgroundImage = new Bitmap(imageFile);
-            }
+                BackgroundColor = Color.Black,
+                TopPeakPen = new Pen(Color.White),
+                BottomPeakPen = new Pen(Color.White),
 
-            if (player.Id == 1)
-            {
-                waveform_ch1.Image = null;
-            }
-            else
-            {
-                waveform_ch2.Image = null;
-            }
+                TopSpacerPen = new Pen(Color.Blue),//sprawdzić co to robi
+                BottomSpacerPen = new Pen(Color.Red),
+            };
 
-            Enabled = false; //nie wiem czy to nie będzie blokować obu odtwarzaczy na raz
-            var peakProvider = new RmsPeakProvider(200);
+            if (player.Id == 1) waveform_ch1.Image = null;
+            else waveform_ch2.Image = null;
+
+            Enabled = false;
+            var peakProvider = new RmsPeakProvider(100);
             Task.Factory.StartNew(() => RenderThreadFunc(peakProvider, settings, player));
         }
 
-        private void RenderThreadFunc(IPeakProvider peakProvider, WaveFormRendererSettings settings, AudioSource player)
+        private void RenderThreadFunc(IPeakProvider peakProvider, WaveFormRendererSettings settings, AudioSourceHandler player)
         {
             Image image = null;
             try
@@ -579,7 +414,7 @@ namespace iRANE_62
             }
         }
 
-        private void FinishedRender(Image image, AudioSource player)
+        private void FinishedRender(Image image, AudioSourceHandler player)
         {
             if (player.Id == 1)
             {
@@ -613,8 +448,7 @@ namespace iRANE_62
             }
         }
 
-
-        public void DrawCuePoint(AudioSource player, TimeSpan cuePoint, Color color)
+        public void DrawCuePoint(AudioSourceHandler player, TimeSpan cuePoint, Color color)
         {
             if (player.Song == null || player.AudioFileReader == null)
                 return;
@@ -641,27 +475,18 @@ namespace iRANE_62
             waveform.Invalidate(); // Odświeżenie kontrolki, aby wyświetlić nową linię
         }
 
-
         #endregion
 
-        void PlaybackPanel_Disposed(object sender, EventArgs e)
+        private void PlaybackPanel_Disposed(object sender, EventArgs e)
         {
             CleanUp();
         }
 
         private void CleanUp()
         {
-            if (chanel1.AudioFileReader != null)
-            {
-                chanel1.AudioFileReader.Dispose();
-                chanel1.AudioFileReader = null;
-            }
-
-            if (chanel2.AudioFileReader != null)
-            {
-                chanel2.AudioFileReader.Dispose();
-                chanel2.AudioFileReader = null;
-            }
+            chanel1.Dispose();
+            chanel2.Dispose();
+            audioOutputHandler.Dispose();
         }
 
         void OnTimerTick(object sender, EventArgs e)
@@ -709,8 +534,5 @@ namespace iRANE_62
         {
             return string.Format("{0:D2}:{1:D2}", (int)ts.TotalMinutes, ts.Seconds);
         }
-
-
     }
-
 }
