@@ -16,6 +16,7 @@ namespace iRANE_62
         private readonly AudioSourceHandler audioSource2;
         private readonly MicrophoneHandler microphoneHandler;
         private readonly AudioOutputHandler audioOutputHandler;
+        private readonly SystemVolumeHandler systemVolumeHandler;
 
         public event Action<AudioSourceHandler, TimeSpan, Color> CuePointAdded;
 
@@ -32,24 +33,15 @@ namespace iRANE_62
             this.audioSource2 = player2 ?? throw new ArgumentNullException(nameof(player2));
             this.audioOutputHandler = audioOutputHandler ?? throw new ArgumentNullException(nameof(audioOutputHandler));
             microphoneHandler = new MicrophoneHandler();
+            systemVolumeHandler = new SystemVolumeHandler();
             InitializeComponent();
 
             efxCheckedChangedEventHandler();
             blockCueButtons();
             SetupMicrophoneControls();
             SetupVolumeMeters();
+            SetupSystemVolume();
             microphoneHandler.IsActiveChanged += UpdateMicrophoneOutput;
-        }
-
-        private void SetupVolumeMeters()
-        {
-            audioSource1.VolumeMetered += OnChannelVolumeMetered;
-            audioSource2.VolumeMetered += OnChannelVolumeMetered;
-        }
-
-        private void OnChannelVolumeMetered(object sender, StreamVolumeEventArgs e)
-        {
-            UpdateMainVolumeMeters();
         }
 
         #region FX
@@ -121,7 +113,7 @@ namespace iRANE_62
         }
         #endregion
 
-        #region EQ
+        #region Eq
 
         private void level_odt1_ValueChanged(object sender, EventArgs e)
         {
@@ -333,7 +325,6 @@ namespace iRANE_62
 
         private void cue1_ch1_Click(object sender, EventArgs e)
         {
-
             TimeSpan currentTime = audioSource1.AudioFileReader.CurrentTime;
 
             CueButtonClick(audioSource1, 0, currentTime);
@@ -350,7 +341,6 @@ namespace iRANE_62
         private void cue3_ch1_Click(object sender, EventArgs e)
         {
             TimeSpan currentTime = audioSource1.AudioFileReader.CurrentTime;
-
             CueButtonClick(audioSource1, 2, currentTime);
             btn_cue3_ch1.BackColor = CuePointsColors.Colors[2];
         }
@@ -486,12 +476,12 @@ namespace iRANE_62
                 if (audioSource1.AudioFileReader != null)
                 {
                     chanel1OriginalVolume = (float)pot_gain_ch1.Value;
-                    audioSource1.SetVolume(Math.Min(chanel1OriginalVolume,0.1f));
+                    audioSource1.SetVolume(Math.Min(chanel1OriginalVolume, 0.1f));
                 }
                 if (audioSource2.AudioFileReader != null)
                 {
                     chanel2OriginalVolume = (float)pot_gain_ch2.Value;
-                    audioSource2.SetVolume(Math.Min(chanel2OriginalVolume,0.1f));
+                    audioSource2.SetVolume(Math.Min(chanel2OriginalVolume, 0.1f));
                 }
             }
             else
@@ -555,6 +545,29 @@ namespace iRANE_62
         }
         #endregion
 
+        #region Volume
 
+        private void pot_mainVolume_ValueChanged(object sender, EventArgs e)
+        {
+            systemVolumeHandler.Volume = (float)pot_systemVolume.Value;
+        }
+
+        private void SetupSystemVolume()
+        {
+            pot_systemVolume.Value = systemVolumeHandler.Volume;
+        }
+
+        private void SetupVolumeMeters()
+        {
+            audioSource1.VolumeMetered += OnChannelVolumeMetered;
+            audioSource2.VolumeMetered += OnChannelVolumeMetered;
+        }
+
+        private void OnChannelVolumeMetered(object sender, StreamVolumeEventArgs e)
+        {
+            UpdateMainVolumeMeters();
+        }
+
+        #endregion
     }
 }

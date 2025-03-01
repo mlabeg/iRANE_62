@@ -64,7 +64,7 @@ namespace iRANE_62
             btn_exitLoop_ch1 = new Button();
             btn_loopOut_ch1 = new Button();
             btn_loopIn_ch1 = new Button();
-            pot_mainVolume = new NAudio.Gui.Pot();
+            pot_systemVolume = new NAudio.Gui.Pot();
             chBox_efx_filter = new CheckBox();
             chBox_efx_flanger = new CheckBox();
             chBox_efx_phaser = new CheckBox();
@@ -474,16 +474,17 @@ namespace iRANE_62
             btn_loopIn_ch1.UseVisualStyleBackColor = true;
             btn_loopIn_ch1.Click += loopIn_ch1_Click;
             // 
-            // pot_mainVolume
+            // pot_systemVolume
             // 
-            pot_mainVolume.Location = new Point(913, 39);
-            pot_mainVolume.Margin = new Padding(4, 5, 4, 5);
-            pot_mainVolume.Maximum = 1D;
-            pot_mainVolume.Minimum = 0D;
-            pot_mainVolume.Name = "pot_mainVolume";
-            pot_mainVolume.Size = new Size(43, 55);
-            pot_mainVolume.TabIndex = 3;
-            pot_mainVolume.Value = 0.5D;
+            pot_systemVolume.Location = new Point(913, 39);
+            pot_systemVolume.Margin = new Padding(4, 5, 4, 5);
+            pot_systemVolume.Maximum = 1D;
+            pot_systemVolume.Minimum = 0D;
+            pot_systemVolume.Name = "pot_systemVolume";
+            pot_systemVolume.Size = new Size(43, 55);
+            pot_systemVolume.TabIndex = 3;
+            pot_systemVolume.Value = 0.5D;
+            pot_systemVolume.ValueChanged += pot_mainVolume_ValueChanged;
             // 
             // chBox_efx_filter
             // 
@@ -962,7 +963,7 @@ namespace iRANE_62
             ClientSize = new Size(1000, 1256);
             Controls.Add(fader_crossfader);
             Controls.Add(volumeSlider_upfader_ch1);
-            Controls.Add(pot_mainVolume);
+            Controls.Add(pot_systemVolume);
             Controls.Add(volumeSlider_upfader_ch2);
             Controls.Add(chBox_efx_phaser);
             Controls.Add(chBox_efx_robot);
@@ -1032,7 +1033,7 @@ namespace iRANE_62
         private Panel panel_chanel1;
         private Panel panel_chanel2;
         private Panel panel_loops1;
-        private NAudio.Gui.Pot pot_mainVolume;
+        private NAudio.Gui.Pot pot_systemVolume;
         private Button btn_loopIn_ch1;
         private Button btn_loopOut_ch1;
         private Button btn_exitLoop_ch1;
