@@ -116,165 +116,165 @@ namespace iRANE_62
             panel_volume.SuspendLayout();
             SuspendLayout();
             // 
-            // pan_ch1
+            // panSlider_ch1
             // 
             panSlider_ch1.Location = new Point(24, 58);
             panSlider_ch1.Margin = new Padding(2);
-            panSlider_ch1.Name = "pan_ch1";
+            panSlider_ch1.Name = "panSlider_ch1";
             panSlider_ch1.Pan = 0F;
             panSlider_ch1.Size = new Size(66, 32);
             panSlider_ch1.TabIndex = 1;
             panSlider_ch1.PanChanged += pan_odt1_PanChanged;
             // 
-            // gain_ch1
+            // pot_gain_ch1
             // 
             pot_gain_ch1.Location = new Point(409, 39);
             pot_gain_ch1.Margin = new Padding(4, 5, 4, 5);
             pot_gain_ch1.Maximum = 1D;
             pot_gain_ch1.Minimum = 0D;
-            pot_gain_ch1.Name = "gain_ch1";
+            pot_gain_ch1.Name = "pot_gain_ch1";
             pot_gain_ch1.Size = new Size(43, 55);
             pot_gain_ch1.TabIndex = 3;
             pot_gain_ch1.Value = 0.5D;
             pot_gain_ch1.ValueChanged += level_odt1_ValueChanged;
             // 
-            // high_ch1
+            // pot_high_ch1
             // 
             pot_high_ch1.Location = new Point(409, 118);
             pot_high_ch1.Margin = new Padding(4, 5, 4, 5);
             pot_high_ch1.Maximum = 30D;
             pot_high_ch1.Minimum = -30D;
-            pot_high_ch1.Name = "high_ch1";
+            pot_high_ch1.Name = "pot_high_ch1";
             pot_high_ch1.Size = new Size(43, 55);
             pot_high_ch1.TabIndex = 3;
             pot_high_ch1.Value = 0D;
             pot_high_ch1.ValueChanged += high_odt1_ValueChanged;
             // 
-            // mid_ch1
+            // pot_mid_ch1
             // 
             pot_mid_ch1.Location = new Point(409, 194);
             pot_mid_ch1.Margin = new Padding(4, 5, 4, 5);
             pot_mid_ch1.Maximum = 30D;
             pot_mid_ch1.Minimum = -30D;
-            pot_mid_ch1.Name = "mid_ch1";
+            pot_mid_ch1.Name = "pot_mid_ch1";
             pot_mid_ch1.Size = new Size(43, 55);
             pot_mid_ch1.TabIndex = 3;
             pot_mid_ch1.Value = 0D;
             pot_mid_ch1.ValueChanged += mid_odt1_ValueChanged;
             // 
-            // filter_ch1
+            // pot_filter_ch1
             // 
             pot_filter_ch1.Location = new Point(30, 133);
             pot_filter_ch1.Margin = new Padding(4, 5, 4, 5);
             pot_filter_ch1.Maximum = 1D;
             pot_filter_ch1.Minimum = -1D;
-            pot_filter_ch1.Name = "filter_ch1";
+            pot_filter_ch1.Name = "pot_filter_ch1";
             pot_filter_ch1.Size = new Size(43, 55);
             pot_filter_ch1.TabIndex = 3;
             pot_filter_ch1.Value = 0D;
             pot_filter_ch1.ValueChanged += filter_odt1_ValueChanged;
             // 
-            // pan_ch2
+            // panSlider_ch2
             // 
             panSlider_ch2.Location = new Point(110, 58);
             panSlider_ch2.Margin = new Padding(2);
-            panSlider_ch2.Name = "pan_ch2";
+            panSlider_ch2.Name = "panSlider_ch2";
             panSlider_ch2.Pan = 0F;
             panSlider_ch2.Size = new Size(66, 32);
             panSlider_ch2.TabIndex = 1;
             panSlider_ch2.PanChanged += pan_odt2_PanChanged;
             // 
-            // gain_ch2
+            // pot_gain_ch2
             // 
             pot_gain_ch2.Location = new Point(540, 39);
             pot_gain_ch2.Margin = new Padding(4, 5, 4, 5);
             pot_gain_ch2.Maximum = 1D;
             pot_gain_ch2.Minimum = 0D;
-            pot_gain_ch2.Name = "gain_ch2";
+            pot_gain_ch2.Name = "pot_gain_ch2";
             pot_gain_ch2.Size = new Size(43, 55);
             pot_gain_ch2.TabIndex = 3;
             pot_gain_ch2.Value = 0.5D;
             pot_gain_ch2.ValueChanged += level_odt2_ValueChanged;
             // 
-            // high_ch2
+            // pot_high_ch2
             // 
             pot_high_ch2.Location = new Point(540, 118);
             pot_high_ch2.Margin = new Padding(4, 5, 4, 5);
             pot_high_ch2.Maximum = 30D;
             pot_high_ch2.Minimum = -30D;
-            pot_high_ch2.Name = "high_ch2";
+            pot_high_ch2.Name = "pot_high_ch2";
             pot_high_ch2.Size = new Size(43, 55);
             pot_high_ch2.TabIndex = 3;
             pot_high_ch2.Value = 0D;
             pot_high_ch2.ValueChanged += high_odt2_ValueChanged;
             // 
-            // mid_ch2
+            // pot_mid_ch2
             // 
             pot_mid_ch2.Location = new Point(540, 194);
             pot_mid_ch2.Margin = new Padding(4, 5, 4, 5);
             pot_mid_ch2.Maximum = 30D;
             pot_mid_ch2.Minimum = -30D;
-            pot_mid_ch2.Name = "mid_ch2";
+            pot_mid_ch2.Name = "pot_mid_ch2";
             pot_mid_ch2.Size = new Size(43, 55);
             pot_mid_ch2.TabIndex = 3;
             pot_mid_ch2.Value = 0D;
             pot_mid_ch2.ValueChanged += mid_odt2_ValueChanged;
             // 
-            // filter_ch2
+            // pot_filter_ch2
             // 
             pot_filter_ch2.Location = new Point(133, 133);
             pot_filter_ch2.Margin = new Padding(4, 5, 4, 5);
             pot_filter_ch2.Maximum = 1D;
             pot_filter_ch2.Minimum = -1D;
-            pot_filter_ch2.Name = "filter_ch2";
+            pot_filter_ch2.Name = "pot_filter_ch2";
             pot_filter_ch2.Size = new Size(43, 55);
             pot_filter_ch2.TabIndex = 3;
             pot_filter_ch2.Value = 0D;
             pot_filter_ch2.ValueChanged += filter_odt2_ValueChanged;
             // 
-            // low_ch2
+            // pot_low_ch2
             // 
             pot_low_ch2.Location = new Point(540, 273);
             pot_low_ch2.Margin = new Padding(4, 5, 4, 5);
             pot_low_ch2.Maximum = 30D;
             pot_low_ch2.Minimum = -30D;
-            pot_low_ch2.Name = "low_ch2";
+            pot_low_ch2.Name = "pot_low_ch2";
             pot_low_ch2.Size = new Size(43, 55);
             pot_low_ch2.TabIndex = 3;
             pot_low_ch2.Value = 0D;
             pot_low_ch2.ValueChanged += low_odt2_ValueChanged;
             // 
-            // mic_level
+            // pot_mic_level
             // 
             pot_mic_level.Location = new Point(31, 58);
             pot_mic_level.Margin = new Padding(4, 5, 4, 5);
             pot_mic_level.Maximum = 1D;
             pot_mic_level.Minimum = 0D;
-            pot_mic_level.Name = "mic_level";
+            pot_mic_level.Name = "pot_mic_level";
             pot_mic_level.Size = new Size(43, 55);
             pot_mic_level.TabIndex = 3;
             pot_mic_level.Value = 0.5D;
             pot_mic_level.ValueChanged += mic_level_ValueChanged;
             // 
-            // mic_high
+            // pot_mic_high
             // 
             pot_mic_high.Location = new Point(116, 167);
             pot_mic_high.Margin = new Padding(4, 5, 4, 5);
             pot_mic_high.Maximum = 30D;
             pot_mic_high.Minimum = -30D;
-            pot_mic_high.Name = "mic_high";
+            pot_mic_high.Name = "pot_mic_high";
             pot_mic_high.Size = new Size(43, 55);
             pot_mic_high.TabIndex = 3;
             pot_mic_high.Value = 0.5D;
             pot_mic_high.ValueChanged += mic_high_ValueChanged;
             // 
-            // mic_low
+            // pot_mic_low
             // 
             pot_mic_low.Location = new Point(116, 244);
             pot_mic_low.Margin = new Padding(4, 5, 4, 5);
             pot_mic_low.Maximum = 30D;
             pot_mic_low.Minimum = -30D;
-            pot_mic_low.Name = "mic_low";
+            pot_mic_low.Name = "pot_mic_low";
             pot_mic_low.Size = new Size(43, 55);
             pot_mic_low.TabIndex = 3;
             pot_mic_low.Value = 0.5D;
@@ -289,7 +289,7 @@ namespace iRANE_62
             btn_micOnOff.TabIndex = 4;
             btn_micOnOff.Text = "ON";
             btn_micOnOff.UseVisualStyleBackColor = true;
-            btn_micOnOff.Click += mic_on_Click;
+            btn_micOnOff.Click += btn_micOnOff_Click;
             // 
             // btn_micOver
             // 
@@ -300,6 +300,7 @@ namespace iRANE_62
             btn_micOver.TabIndex = 4;
             btn_micOver.Text = "OVER";
             btn_micOver.UseVisualStyleBackColor = true;
+            btn_micOver.Click += btn_micOver_Click;
             // 
             // imageList1
             // 
@@ -307,18 +308,18 @@ namespace iRANE_62
             imageList1.ImageSize = new Size(16, 16);
             imageList1.TransparentColor = Color.Transparent;
             // 
-            // odt2_flexfx
+            // chBox_flexfx_ch2
             // 
             chBox_flexfx_ch2.AutoSize = true;
             chBox_flexfx_ch2.Location = new Point(119, 223);
             chBox_flexfx_ch2.Margin = new Padding(2);
-            chBox_flexfx_ch2.Name = "odt2_flexfx";
+            chBox_flexfx_ch2.Name = "chBox_flexfx_ch2";
             chBox_flexfx_ch2.Size = new Size(78, 24);
             chBox_flexfx_ch2.TabIndex = 5;
             chBox_flexfx_ch2.Text = "FLEXFX";
             chBox_flexfx_ch2.UseVisualStyleBackColor = true;
             // 
-            // chanel1
+            // panel_chanel1
             // 
             panel_chanel1.BorderStyle = BorderStyle.FixedSingle;
             panel_chanel1.Controls.Add(volumeMeter_ch1);
@@ -328,7 +329,7 @@ namespace iRANE_62
             panel_chanel1.Controls.Add(pot_filter_ch1);
             panel_chanel1.Location = new Point(258, 33);
             panel_chanel1.Margin = new Padding(2);
-            panel_chanel1.Name = "chanel1";
+            panel_chanel1.Name = "panel_chanel1";
             panel_chanel1.Size = new Size(233, 319);
             panel_chanel1.TabIndex = 7;
             // 
@@ -356,30 +357,30 @@ namespace iRANE_62
             pot_low_ch1.Value = 0D;
             pot_low_ch1.ValueChanged += low_odt1_ValueChanged;
             // 
-            // flexfx_ch1
+            // chBox_flexfx_ch1
             // 
             chBox_flexfx_ch1.AutoSize = true;
             chBox_flexfx_ch1.Location = new Point(8, 223);
             chBox_flexfx_ch1.Margin = new Padding(2);
-            chBox_flexfx_ch1.Name = "flexfx_ch1";
+            chBox_flexfx_ch1.Name = "chBox_flexfx_ch1";
             chBox_flexfx_ch1.Size = new Size(82, 24);
             chBox_flexfx_ch1.TabIndex = 5;
             chBox_flexfx_ch1.Text = "FLEX FX";
             chBox_flexfx_ch1.UseVisualStyleBackColor = true;
             // 
-            // mic_volume
+            // volumeMeter_mic_volume
             // 
             volumeMeter_mic_volume.Amplitude = 0F;
             volumeMeter_mic_volume.Location = new Point(94, 58);
             volumeMeter_mic_volume.Margin = new Padding(2);
             volumeMeter_mic_volume.MaxDb = 18F;
             volumeMeter_mic_volume.MinDb = -60F;
-            volumeMeter_mic_volume.Name = "mic_volume";
+            volumeMeter_mic_volume.Name = "volumeMeter_mic_volume";
             volumeMeter_mic_volume.Size = new Size(24, 217);
             volumeMeter_mic_volume.TabIndex = 12;
             volumeMeter_mic_volume.Text = "volumeMeter1";
             // 
-            // chanel2
+            // panel_chanel2
             // 
             panel_chanel2.BorderStyle = BorderStyle.FixedSingle;
             panel_chanel2.Controls.Add(volumeMeter_ch2);
@@ -388,7 +389,7 @@ namespace iRANE_62
             panel_chanel2.Controls.Add(chBox_flexfx_ch2);
             panel_chanel2.Location = new Point(522, 33);
             panel_chanel2.Margin = new Padding(2);
-            panel_chanel2.Name = "chanel2";
+            panel_chanel2.Name = "panel_chanel2";
             panel_chanel2.Size = new Size(201, 319);
             panel_chanel2.TabIndex = 7;
             // 
@@ -428,7 +429,7 @@ namespace iRANE_62
             volumeMeter_mainLeft.TabIndex = 12;
             volumeMeter_mainLeft.Text = "volumeMeter1";
             // 
-            // loops1
+            // panel_loops1
             // 
             panel_loops1.BorderStyle = BorderStyle.FixedSingle;
             panel_loops1.Controls.Add(btn_exitLoop_ch1);
@@ -436,37 +437,37 @@ namespace iRANE_62
             panel_loops1.Controls.Add(btn_loopIn_ch1);
             panel_loops1.Location = new Point(10, 142);
             panel_loops1.Margin = new Padding(2);
-            panel_loops1.Name = "loops1";
+            panel_loops1.Name = "panel_loops1";
             panel_loops1.Size = new Size(70, 210);
             panel_loops1.TabIndex = 7;
             // 
-            // exitLoop_ch1
+            // btn_exitLoop_ch1
             // 
             btn_exitLoop_ch1.Location = new Point(12, 145);
             btn_exitLoop_ch1.Margin = new Padding(2);
-            btn_exitLoop_ch1.Name = "exitLoop_ch1";
+            btn_exitLoop_ch1.Name = "btn_exitLoop_ch1";
             btn_exitLoop_ch1.Size = new Size(45, 45);
             btn_exitLoop_ch1.TabIndex = 4;
             btn_exitLoop_ch1.Text = "Exit";
             btn_exitLoop_ch1.UseVisualStyleBackColor = true;
             btn_exitLoop_ch1.Click += exitLoop_ch1_Click;
             // 
-            // loopOut_ch1
+            // btn_loopOut_ch1
             // 
             btn_loopOut_ch1.Location = new Point(12, 82);
             btn_loopOut_ch1.Margin = new Padding(2);
-            btn_loopOut_ch1.Name = "loopOut_ch1";
+            btn_loopOut_ch1.Name = "btn_loopOut_ch1";
             btn_loopOut_ch1.Size = new Size(45, 45);
             btn_loopOut_ch1.TabIndex = 4;
             btn_loopOut_ch1.Text = "Out";
             btn_loopOut_ch1.UseVisualStyleBackColor = true;
             btn_loopOut_ch1.Click += loopOut_ch1_Click;
             // 
-            // loopIn_ch1
+            // btn_loopIn_ch1
             // 
             btn_loopIn_ch1.Location = new Point(12, 21);
             btn_loopIn_ch1.Margin = new Padding(2);
-            btn_loopIn_ch1.Name = "loopIn_ch1";
+            btn_loopIn_ch1.Name = "btn_loopIn_ch1";
             btn_loopIn_ch1.Size = new Size(45, 45);
             btn_loopIn_ch1.TabIndex = 4;
             btn_loopIn_ch1.Text = "In";
@@ -484,130 +485,130 @@ namespace iRANE_62
             pot_mainVolume.TabIndex = 3;
             pot_mainVolume.Value = 0.5D;
             // 
-            // efx_filter
+            // chBox_efx_filter
             // 
             chBox_efx_filter.AutoSize = true;
             chBox_efx_filter.Location = new Point(203, 385);
             chBox_efx_filter.Margin = new Padding(2);
-            chBox_efx_filter.Name = "efx_filter";
+            chBox_efx_filter.Name = "chBox_efx_filter";
             chBox_efx_filter.Size = new Size(73, 24);
             chBox_efx_filter.TabIndex = 5;
             chBox_efx_filter.Text = "FILTER";
             chBox_efx_filter.UseVisualStyleBackColor = true;
             chBox_efx_filter.CheckedChanged += efx_filter_CheckedChanged;
             // 
-            // efx_flanger
+            // chBox_efx_flanger
             // 
             chBox_efx_flanger.AutoSize = true;
             chBox_efx_flanger.Location = new Point(305, 385);
             chBox_efx_flanger.Margin = new Padding(2);
-            chBox_efx_flanger.Name = "efx_flanger";
+            chBox_efx_flanger.Name = "chBox_efx_flanger";
             chBox_efx_flanger.Size = new Size(93, 24);
             chBox_efx_flanger.TabIndex = 5;
             chBox_efx_flanger.Text = "FLANGER";
             chBox_efx_flanger.UseVisualStyleBackColor = true;
             chBox_efx_flanger.CheckedChanged += efx_flanger_CheckedChanged;
             // 
-            // efx_phaser
+            // chBox_efx_phaser
             // 
             chBox_efx_phaser.AutoSize = true;
             chBox_efx_phaser.Location = new Point(406, 385);
             chBox_efx_phaser.Margin = new Padding(2);
-            chBox_efx_phaser.Name = "efx_phaser";
+            chBox_efx_phaser.Name = "chBox_efx_phaser";
             chBox_efx_phaser.Size = new Size(85, 24);
             chBox_efx_phaser.TabIndex = 5;
             chBox_efx_phaser.Text = "PHASER";
             chBox_efx_phaser.UseVisualStyleBackColor = true;
             chBox_efx_phaser.CheckedChanged += efx_phaser_CheckedChanged;
             // 
-            // efx_echo
+            // chBox_efx_echo
             // 
             chBox_efx_echo.AutoSize = true;
             chBox_efx_echo.Location = new Point(508, 385);
             chBox_efx_echo.Margin = new Padding(2);
-            chBox_efx_echo.Name = "efx_echo";
+            chBox_efx_echo.Name = "chBox_efx_echo";
             chBox_efx_echo.Size = new Size(70, 24);
             chBox_efx_echo.TabIndex = 5;
             chBox_efx_echo.Text = "ECHO";
             chBox_efx_echo.UseVisualStyleBackColor = true;
             chBox_efx_echo.CheckedChanged += efx_echo_CheckedChanged;
             // 
-            // efx_reverb
+            // chBox_efx_reverb
             // 
             chBox_efx_reverb.AutoSize = true;
             chBox_efx_reverb.Location = new Point(711, 385);
             chBox_efx_reverb.Margin = new Padding(2);
-            chBox_efx_reverb.Name = "efx_reverb";
+            chBox_efx_reverb.Name = "chBox_efx_reverb";
             chBox_efx_reverb.Size = new Size(83, 24);
             chBox_efx_reverb.TabIndex = 5;
             chBox_efx_reverb.Text = "REVERB";
             chBox_efx_reverb.UseVisualStyleBackColor = true;
             chBox_efx_reverb.CheckedChanged += efx_reverb_CheckedChanged;
             // 
-            // efx_robot
+            // chBox_efx_robot
             // 
             chBox_efx_robot.AutoSize = true;
             chBox_efx_robot.Location = new Point(610, 385);
             chBox_efx_robot.Margin = new Padding(2);
-            chBox_efx_robot.Name = "efx_robot";
+            chBox_efx_robot.Name = "chBox_efx_robot";
             chBox_efx_robot.Size = new Size(78, 24);
             chBox_efx_robot.TabIndex = 5;
             chBox_efx_robot.Text = "ROBOT";
             chBox_efx_robot.UseVisualStyleBackColor = true;
             chBox_efx_robot.CheckedChanged += efx_robot_CheckedChanged;
             // 
-            // efx_tap
+            // chBox_efx_tap
             // 
             chBox_efx_tap.Location = new Point(114, 99);
             chBox_efx_tap.Margin = new Padding(2);
-            chBox_efx_tap.Name = "efx_tap";
+            chBox_efx_tap.Name = "chBox_efx_tap";
             chBox_efx_tap.Size = new Size(43, 26);
             chBox_efx_tap.TabIndex = 4;
             chBox_efx_tap.Text = "TAP";
             chBox_efx_tap.UseVisualStyleBackColor = true;
             // 
-            // efx_wyswietlacz
+            // chBox_efx_wyswietlacz
             // 
             chBox_efx_wyswietlacz.Location = new Point(198, 61);
             chBox_efx_wyswietlacz.Margin = new Padding(2);
-            chBox_efx_wyswietlacz.Name = "efx_wyswietlacz";
+            chBox_efx_wyswietlacz.Name = "chBox_efx_wyswietlacz";
             chBox_efx_wyswietlacz.Size = new Size(208, 107);
             chBox_efx_wyswietlacz.TabIndex = 9;
             // 
-            // efx_on
+            // chBox_efx_on
             // 
             chBox_efx_on.AutoSize = true;
             chBox_efx_on.Location = new Point(437, 99);
             chBox_efx_on.Margin = new Padding(2);
-            chBox_efx_on.Name = "efx_on";
+            chBox_efx_on.Name = "chBox_efx_on";
             chBox_efx_on.Size = new Size(53, 24);
             chBox_efx_on.TabIndex = 5;
             chBox_efx_on.Text = "ON";
             chBox_efx_on.UseVisualStyleBackColor = true;
             // 
-            // efx_cue
+            // chBox_efx_cue
             // 
             chBox_efx_cue.AutoSize = true;
             chBox_efx_cue.Location = new Point(539, 99);
             chBox_efx_cue.Margin = new Padding(2);
-            chBox_efx_cue.Name = "efx_cue";
+            chBox_efx_cue.Name = "chBox_efx_cue";
             chBox_efx_cue.Size = new Size(58, 24);
             chBox_efx_cue.TabIndex = 5;
             chBox_efx_cue.Text = "CUE";
             chBox_efx_cue.UseVisualStyleBackColor = true;
             // 
-            // efx_depth
+            // pot_efx_depth
             // 
             pot_efx_depth.Location = new Point(655, 84);
             pot_efx_depth.Margin = new Padding(4, 5, 4, 5);
             pot_efx_depth.Maximum = 10D;
             pot_efx_depth.Minimum = 0D;
-            pot_efx_depth.Name = "efx_depth";
+            pot_efx_depth.Name = "pot_efx_depth";
             pot_efx_depth.Size = new Size(43, 55);
             pot_efx_depth.TabIndex = 3;
             pot_efx_depth.Value = 0D;
             // 
-            // efx
+            // panel_efx
             // 
             panel_efx.BorderStyle = BorderStyle.FixedSingle;
             panel_efx.Controls.Add(chBox_efx_tap);
@@ -617,11 +618,11 @@ namespace iRANE_62
             panel_efx.Controls.Add(chBox_efx_wyswietlacz);
             panel_efx.Location = new Point(84, 366);
             panel_efx.Margin = new Padding(2);
-            panel_efx.Name = "efx";
+            panel_efx.Name = "panel_efx";
             panel_efx.Size = new Size(802, 186);
             panel_efx.TabIndex = 7;
             // 
-            // loops2
+            // panel_loops2
             // 
             panel_loops2.BorderStyle = BorderStyle.FixedSingle;
             panel_loops2.Controls.Add(btn_exitLoop_ch2);
@@ -629,164 +630,164 @@ namespace iRANE_62
             panel_loops2.Controls.Add(btn_loopIn_ch2);
             panel_loops2.Location = new Point(901, 142);
             panel_loops2.Margin = new Padding(2);
-            panel_loops2.Name = "loops2";
+            panel_loops2.Name = "panel_loops2";
             panel_loops2.Size = new Size(70, 210);
             panel_loops2.TabIndex = 7;
             // 
-            // exitLoop_ch2
+            // btn_exitLoop_ch2
             // 
             btn_exitLoop_ch2.Location = new Point(9, 145);
             btn_exitLoop_ch2.Margin = new Padding(2);
-            btn_exitLoop_ch2.Name = "exitLoop_ch2";
+            btn_exitLoop_ch2.Name = "btn_exitLoop_ch2";
             btn_exitLoop_ch2.Size = new Size(45, 45);
             btn_exitLoop_ch2.TabIndex = 4;
             btn_exitLoop_ch2.Text = "Exit";
             btn_exitLoop_ch2.UseVisualStyleBackColor = true;
             btn_exitLoop_ch2.Click += exitLoop_ch2_Click;
             // 
-            // loopOut_ch2
+            // btn_loopOut_ch2
             // 
             btn_loopOut_ch2.Location = new Point(9, 82);
             btn_loopOut_ch2.Margin = new Padding(2);
-            btn_loopOut_ch2.Name = "loopOut_ch2";
+            btn_loopOut_ch2.Name = "btn_loopOut_ch2";
             btn_loopOut_ch2.Size = new Size(45, 45);
             btn_loopOut_ch2.TabIndex = 4;
             btn_loopOut_ch2.Text = "Out";
             btn_loopOut_ch2.UseVisualStyleBackColor = true;
             btn_loopOut_ch2.Click += loopOut_ch2_Click;
             // 
-            // loopIn_ch2
+            // btn_loopIn_ch2
             // 
             btn_loopIn_ch2.Location = new Point(9, 21);
             btn_loopIn_ch2.Margin = new Padding(2);
-            btn_loopIn_ch2.Name = "loopIn_ch2";
+            btn_loopIn_ch2.Name = "btn_loopIn_ch2";
             btn_loopIn_ch2.Size = new Size(45, 45);
             btn_loopIn_ch2.TabIndex = 4;
             btn_loopIn_ch2.Text = "In";
             btn_loopIn_ch2.UseVisualStyleBackColor = true;
             btn_loopIn_ch2.Click += loopIn_ch2_Click;
             // 
-            // cue1_ch1
+            // btn_cue1_ch1
             // 
             btn_cue1_ch1.FlatStyle = FlatStyle.Flat;
             btn_cue1_ch1.Location = new Point(17, 23);
             btn_cue1_ch1.Margin = new Padding(2);
-            btn_cue1_ch1.Name = "cue1_ch1";
+            btn_cue1_ch1.Name = "btn_cue1_ch1";
             btn_cue1_ch1.Size = new Size(57, 26);
             btn_cue1_ch1.TabIndex = 4;
             btn_cue1_ch1.Text = "CUE1";
             btn_cue1_ch1.UseVisualStyleBackColor = true;
             btn_cue1_ch1.Click += cue1_ch1_Click;
             // 
-            // cue2_ch1
+            // btn_cue2_ch1
             // 
             btn_cue2_ch1.FlatStyle = FlatStyle.Flat;
             btn_cue2_ch1.Location = new Point(78, 23);
             btn_cue2_ch1.Margin = new Padding(2);
-            btn_cue2_ch1.Name = "cue2_ch1";
+            btn_cue2_ch1.Name = "btn_cue2_ch1";
             btn_cue2_ch1.Size = new Size(56, 26);
             btn_cue2_ch1.TabIndex = 4;
             btn_cue2_ch1.Text = "CUE2";
             btn_cue2_ch1.UseVisualStyleBackColor = true;
             btn_cue2_ch1.Click += cue2_ch1_Click;
             // 
-            // cue3_ch1
+            // btn_cue3_ch1
             // 
             btn_cue3_ch1.FlatStyle = FlatStyle.Flat;
             btn_cue3_ch1.Location = new Point(138, 23);
             btn_cue3_ch1.Margin = new Padding(2);
-            btn_cue3_ch1.Name = "cue3_ch1";
+            btn_cue3_ch1.Name = "btn_cue3_ch1";
             btn_cue3_ch1.Size = new Size(57, 26);
             btn_cue3_ch1.TabIndex = 4;
             btn_cue3_ch1.Text = "CUE3";
             btn_cue3_ch1.UseVisualStyleBackColor = true;
             btn_cue3_ch1.Click += cue3_ch1_Click;
             // 
-            // cue4_ch1
+            // btn_cue4_ch1
             // 
             btn_cue4_ch1.FlatStyle = FlatStyle.Flat;
             btn_cue4_ch1.Location = new Point(199, 23);
             btn_cue4_ch1.Margin = new Padding(2);
-            btn_cue4_ch1.Name = "cue4_ch1";
+            btn_cue4_ch1.Name = "btn_cue4_ch1";
             btn_cue4_ch1.Size = new Size(50, 26);
             btn_cue4_ch1.TabIndex = 4;
             btn_cue4_ch1.Text = "CUE4";
             btn_cue4_ch1.UseVisualStyleBackColor = true;
             btn_cue4_ch1.Click += cue4_ch1_Click;
             // 
-            // cue5_ch1
+            // btn_cue5_ch1
             // 
             btn_cue5_ch1.FlatStyle = FlatStyle.Flat;
             btn_cue5_ch1.Location = new Point(253, 23);
             btn_cue5_ch1.Margin = new Padding(2);
-            btn_cue5_ch1.Name = "cue5_ch1";
+            btn_cue5_ch1.Name = "btn_cue5_ch1";
             btn_cue5_ch1.Size = new Size(54, 26);
             btn_cue5_ch1.TabIndex = 4;
             btn_cue5_ch1.Text = "CUE5";
             btn_cue5_ch1.UseVisualStyleBackColor = true;
             btn_cue5_ch1.Click += cue5_ch1_Click;
             // 
-            // cue1_ch2
+            // btn_cue1_ch2
             // 
             btn_cue1_ch2.FlatStyle = FlatStyle.Flat;
             btn_cue1_ch2.Location = new Point(478, 23);
             btn_cue1_ch2.Margin = new Padding(2);
-            btn_cue1_ch2.Name = "cue1_ch2";
+            btn_cue1_ch2.Name = "btn_cue1_ch2";
             btn_cue1_ch2.Size = new Size(57, 26);
             btn_cue1_ch2.TabIndex = 4;
             btn_cue1_ch2.Text = "CUE1";
             btn_cue1_ch2.UseVisualStyleBackColor = true;
             btn_cue1_ch2.Click += cue1_ch2_Click;
             // 
-            // cue3_ch2
+            // btn_cue3_ch2
             // 
             btn_cue3_ch2.FlatStyle = FlatStyle.Flat;
             btn_cue3_ch2.Location = new Point(599, 23);
             btn_cue3_ch2.Margin = new Padding(2);
-            btn_cue3_ch2.Name = "cue3_ch2";
+            btn_cue3_ch2.Name = "btn_cue3_ch2";
             btn_cue3_ch2.Size = new Size(57, 26);
             btn_cue3_ch2.TabIndex = 4;
             btn_cue3_ch2.Text = "CUE3";
             btn_cue3_ch2.UseVisualStyleBackColor = true;
             btn_cue3_ch2.Click += cue3_ch2_Click;
             // 
-            // cue2_ch2
+            // btn_cue2_ch2
             // 
             btn_cue2_ch2.FlatStyle = FlatStyle.Flat;
             btn_cue2_ch2.Location = new Point(539, 23);
             btn_cue2_ch2.Margin = new Padding(2);
-            btn_cue2_ch2.Name = "cue2_ch2";
+            btn_cue2_ch2.Name = "btn_cue2_ch2";
             btn_cue2_ch2.Size = new Size(56, 26);
             btn_cue2_ch2.TabIndex = 4;
             btn_cue2_ch2.Text = "CUE2";
             btn_cue2_ch2.UseVisualStyleBackColor = true;
             btn_cue2_ch2.Click += cue2_ch2_Click;
             // 
-            // cue4_ch2
+            // btn_cue4_ch2
             // 
             btn_cue4_ch2.FlatStyle = FlatStyle.Flat;
             btn_cue4_ch2.Location = new Point(660, 23);
             btn_cue4_ch2.Margin = new Padding(2);
-            btn_cue4_ch2.Name = "cue4_ch2";
+            btn_cue4_ch2.Name = "btn_cue4_ch2";
             btn_cue4_ch2.Size = new Size(50, 26);
             btn_cue4_ch2.TabIndex = 4;
             btn_cue4_ch2.Text = "CUE4";
             btn_cue4_ch2.UseVisualStyleBackColor = true;
             btn_cue4_ch2.Click += cue4_ch2_Click;
             // 
-            // cue5_ch2
+            // btn_cue5_ch2
             // 
             btn_cue5_ch2.FlatStyle = FlatStyle.Flat;
             btn_cue5_ch2.Location = new Point(714, 23);
             btn_cue5_ch2.Margin = new Padding(2);
-            btn_cue5_ch2.Name = "cue5_ch2";
+            btn_cue5_ch2.Name = "btn_cue5_ch2";
             btn_cue5_ch2.Size = new Size(54, 26);
             btn_cue5_ch2.TabIndex = 4;
             btn_cue5_ch2.Text = "CUE5";
             btn_cue5_ch2.UseVisualStyleBackColor = true;
             btn_cue5_ch2.Click += cue5_ch2_Click;
             // 
-            // cue
+            // panel_cue
             // 
             panel_cue.BorderStyle = BorderStyle.FixedSingle;
             panel_cue.Controls.Add(chBox_cue_samples);
@@ -802,7 +803,7 @@ namespace iRANE_62
             panel_cue.Controls.Add(btn_cue4_ch1);
             panel_cue.Location = new Point(84, 570);
             panel_cue.Margin = new Padding(2);
-            panel_cue.Name = "cue";
+            panel_cue.Name = "panel_cue";
             panel_cue.Size = new Size(802, 83);
             panel_cue.TabIndex = 7;
             // 
@@ -817,23 +818,23 @@ namespace iRANE_62
             chBox_cue_samples.Text = "checkBox1";
             chBox_cue_samples.UseVisualStyleBackColor = true;
             // 
-            // odt1_cue_pgm1
+            // chBox_cue_ch1
             // 
             chBox_cue_ch1.AutoSize = true;
             chBox_cue_ch1.Location = new Point(141, 702);
             chBox_cue_ch1.Margin = new Padding(2);
-            chBox_cue_ch1.Name = "odt1_cue_pgm1";
+            chBox_cue_ch1.Name = "chBox_cue_ch1";
             chBox_cue_ch1.Size = new Size(105, 24);
             chBox_cue_ch1.TabIndex = 5;
             chBox_cue_ch1.Text = "CUE PGM 1";
             chBox_cue_ch1.UseVisualStyleBackColor = true;
             // 
-            // odt2_cue_pgm2
+            // chBox_cue_ch2
             // 
             chBox_cue_ch2.AutoSize = true;
             chBox_cue_ch2.Location = new Point(711, 702);
             chBox_cue_ch2.Margin = new Padding(2);
-            chBox_cue_ch2.Name = "odt2_cue_pgm2";
+            chBox_cue_ch2.Name = "chBox_cue_ch2";
             chBox_cue_ch2.Size = new Size(105, 24);
             chBox_cue_ch2.TabIndex = 5;
             chBox_cue_ch2.Text = "CUE PGM 2";
@@ -851,40 +852,40 @@ namespace iRANE_62
             panel_phones.Size = new Size(70, 215);
             panel_phones.TabIndex = 10;
             // 
-            // phones_split_sue
+            // chBox_phones_split
             // 
             chBox_phones_split.AutoSize = true;
             chBox_phones_split.Location = new Point(15, 171);
             chBox_phones_split.Margin = new Padding(2);
-            chBox_phones_split.Name = "phones_split_sue";
+            chBox_phones_split.Name = "chBox_phones_split";
             chBox_phones_split.Size = new Size(97, 24);
             chBox_phones_split.TabIndex = 5;
             chBox_phones_split.Text = "SPLIT CUE";
             chBox_phones_split.UseVisualStyleBackColor = true;
             // 
-            // phones_level
+            // pot_phones_level
             // 
             pot_phones_level.Location = new Point(11, 23);
             pot_phones_level.Margin = new Padding(4, 5, 4, 5);
             pot_phones_level.Maximum = 1D;
             pot_phones_level.Minimum = 0D;
-            pot_phones_level.Name = "phones_level";
+            pot_phones_level.Name = "pot_phones_level";
             pot_phones_level.Size = new Size(43, 55);
             pot_phones_level.TabIndex = 3;
             pot_phones_level.Value = 0.5D;
             // 
-            // phones_pan
+            // pot_phones_pan
             // 
             pot_phones_pan.Location = new Point(11, 88);
             pot_phones_pan.Margin = new Padding(4, 5, 4, 5);
             pot_phones_pan.Maximum = 1D;
             pot_phones_pan.Minimum = 0D;
-            pot_phones_pan.Name = "phones_pan";
+            pot_phones_pan.Name = "pot_phones_pan";
             pot_phones_pan.Size = new Size(43, 55);
             pot_phones_pan.TabIndex = 3;
             pot_phones_pan.Value = 0.5D;
             // 
-            // mic
+            // panel_mic
             // 
             panel_mic.BorderStyle = BorderStyle.FixedSingle;
             panel_mic.Controls.Add(volumeMeter_mic_volume);
@@ -894,48 +895,48 @@ namespace iRANE_62
             panel_mic.Controls.Add(pot_mic_level);
             panel_mic.Location = new Point(84, 33);
             panel_mic.Margin = new Padding(2);
-            panel_mic.Name = "mic";
+            panel_mic.Name = "panel_mic";
             panel_mic.Size = new Size(135, 319);
             panel_mic.TabIndex = 7;
             // 
-            // mic_flexfx
+            // chBox_mic_flexfx
             // 
             chBox_mic_flexfx.AutoSize = true;
             chBox_mic_flexfx.Location = new Point(21, 279);
             chBox_mic_flexfx.Margin = new Padding(2);
-            chBox_mic_flexfx.Name = "mic_flexfx";
+            chBox_mic_flexfx.Name = "chBox_mic_flexfx";
             chBox_mic_flexfx.Size = new Size(78, 24);
             chBox_mic_flexfx.TabIndex = 5;
             chBox_mic_flexfx.Text = "FLEXFX";
             chBox_mic_flexfx.UseVisualStyleBackColor = true;
             // 
-            // upfader_ch2
+            // volumeSlider_upfader_ch2
             // 
             volumeSlider_upfader_ch2.ImeMode = ImeMode.NoControl;
             volumeSlider_upfader_ch2.Location = new Point(718, 834);
             volumeSlider_upfader_ch2.Margin = new Padding(2);
-            volumeSlider_upfader_ch2.Name = "upfader_ch2";
+            volumeSlider_upfader_ch2.Name = "volumeSlider_upfader_ch2";
             volumeSlider_upfader_ch2.Size = new Size(76, 306);
             volumeSlider_upfader_ch2.TabIndex = 13;
             // 
-            // upfader_ch1
+            // volumeSlider_upfader_ch1
             // 
             volumeSlider_upfader_ch1.AutoScroll = true;
             volumeSlider_upfader_ch1.ForeColor = SystemColors.ControlText;
             volumeSlider_upfader_ch1.Location = new Point(219, 834);
             volumeSlider_upfader_ch1.Margin = new Padding(2);
-            volumeSlider_upfader_ch1.Name = "upfader_ch1";
+            volumeSlider_upfader_ch1.Name = "volumeSlider_upfader_ch1";
             volumeSlider_upfader_ch1.Size = new Size(54, 306);
             volumeSlider_upfader_ch1.TabIndex = 13;
             // 
-            // crossfader
+            // fader_crossfader
             // 
             fader_crossfader.BackColor = SystemColors.ActiveCaption;
             fader_crossfader.Location = new Point(289, 1146);
             fader_crossfader.Margin = new Padding(2);
             fader_crossfader.Maximum = 0;
             fader_crossfader.Minimum = 1;
-            fader_crossfader.Name = "crossfader";
+            fader_crossfader.Name = "fader_crossfader";
             fader_crossfader.Orientation = Orientation.Horizontal;
             fader_crossfader.Size = new Size(410, 99);
             fader_crossfader.TabIndex = 14;

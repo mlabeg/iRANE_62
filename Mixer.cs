@@ -19,6 +19,10 @@ namespace iRANE_62
 
         public event Action<AudioSourceHandler, TimeSpan, Color> CuePointAdded;
 
+        private float chanel1OriginalVolume = 0.5f;
+        private float chanel2OriginalVolume = 0.5f;
+        private bool isMicOverActive = false;
+
 
         public Mixer() { }
 
@@ -52,12 +56,12 @@ namespace iRANE_62
 
         private void efxCheckedChangedEventHandler()
         {
-            efx_echo.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
-            efx_flanger.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
-            efx_filter.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
-            efx_phaser.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
-            efx_reverb.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
-            efx_robot.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
+            chBox_efx_echo.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
+            chBox_efx_flanger.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
+            chBox_efx_filter.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
+            chBox_efx_phaser.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
+            chBox_efx_reverb.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
+            chBox_efx_robot.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
         }
 
         private void efx_flanger_CheckedChanged(object sender, EventArgs e)
@@ -123,7 +127,9 @@ namespace iRANE_62
         {
             if (audioSource1.AudioFileReader != null)
             {
-                audioSource1.SetVolume((float)gain_ch1.Value);
+                float newVolume = (float)pot_gain_ch1.Value;
+                audioSource1.SetVolume(isMicOverActive ? Math.Min(newVolume, 0.1f) : newVolume);
+                if (!isMicOverActive) chanel1OriginalVolume = newVolume;
             }
         }
 
@@ -131,7 +137,9 @@ namespace iRANE_62
         {
             if (audioSource2.AudioFileReader != null)
             {
-                audioSource2.SetVolume((float)gain_ch2.Value);
+                float newVolume = (float)pot_gain_ch2.Value;
+                audioSource2.SetVolume(isMicOverActive ? Math.Min(newVolume, 0.1f) : newVolume);
+                if (!isMicOverActive) chanel2OriginalVolume = newVolume;
             }
         }
 
@@ -154,23 +162,23 @@ namespace iRANE_62
         private void high_odt1_ValueChanged(object sender, EventArgs e)
         {//doda³em bardziej ³agodne przejœcie miêdzy bandami, na studyjnych nie s³ychaæ fuzej ró¿nicy, bêdzie móg³ usun¹æ jak oka¿e siê, ¿e program jest za wolny   
 
-            audioSource1.Equalizer.Band9 = (float)high_ch1.Value;
-            audioSource1.Equalizer.Band8 = (float)high_ch1.Value;
-            audioSource1.Equalizer.Band7 = (float)(high_ch1.Value + mid_ch1.Value) / 2;
+            audioSource1.Equalizer.Band9 = (float)pot_high_ch1.Value;
+            audioSource1.Equalizer.Band8 = (float)pot_high_ch1.Value;
+            audioSource1.Equalizer.Band7 = (float)(pot_high_ch1.Value + pot_mid_ch1.Value) / 2;
             audioSource1.Equalizer.equalizer.Update();
         }
 
         private void mid_odt1_ValueChanged(object sender, EventArgs e)
         {
-            audioSource1.Equalizer.Band6 = (float)(mid_ch1.Value + high_ch1.Value) / 2;
-            audioSource1.Equalizer.Band5 = (float)mid_ch1.Value;
-            audioSource1.Equalizer.Band4 = (float)(mid_ch1.Value + pot_low_ch1.Value) / 2;
+            audioSource1.Equalizer.Band6 = (float)(pot_mid_ch1.Value + pot_high_ch1.Value) / 2;
+            audioSource1.Equalizer.Band5 = (float)pot_mid_ch1.Value;
+            audioSource1.Equalizer.Band4 = (float)(pot_mid_ch1.Value + pot_low_ch1.Value) / 2;
             audioSource1.Equalizer.equalizer.Update();
         }
 
         private void low_odt1_ValueChanged(object sender, EventArgs e)
         {
-            audioSource1.Equalizer.Band3 = (float)(pot_low_ch1.Value + mid_ch1.Value) / 2;
+            audioSource1.Equalizer.Band3 = (float)(pot_low_ch1.Value + pot_mid_ch1.Value) / 2;
             audioSource1.Equalizer.Band2 = (float)pot_low_ch1.Value;
             audioSource1.Equalizer.Band1 = (float)pot_low_ch1.Value;
             audioSource1.Equalizer.equalizer.Update();
@@ -178,26 +186,26 @@ namespace iRANE_62
 
         private void high_odt2_ValueChanged(object sender, EventArgs e)
         {
-            audioSource2.Equalizer.Band7 = (float)high_ch2.Value;
-            audioSource2.Equalizer.Band9 = (float)high_ch2.Value;
-            audioSource2.Equalizer.Band8 = (float)high_ch2.Value;
+            audioSource2.Equalizer.Band7 = (float)pot_high_ch2.Value;
+            audioSource2.Equalizer.Band9 = (float)pot_high_ch2.Value;
+            audioSource2.Equalizer.Band8 = (float)pot_high_ch2.Value;
             audioSource2.Equalizer.equalizer.Update();
         }
 
         private void mid_odt2_ValueChanged(object sender, EventArgs e)
         {
-            audioSource2.Equalizer.Band4 = (float)mid_ch2.Value;
-            audioSource2.Equalizer.Band5 = (float)mid_ch2.Value;
-            audioSource2.Equalizer.Band6 = (float)mid_ch2.Value;
+            audioSource2.Equalizer.Band4 = (float)pot_mid_ch2.Value;
+            audioSource2.Equalizer.Band5 = (float)pot_mid_ch2.Value;
+            audioSource2.Equalizer.Band6 = (float)pot_mid_ch2.Value;
             audioSource2.Equalizer.equalizer.Update();
         }
 
         private void low_odt2_ValueChanged(object sender, EventArgs e)
         {
 
-            audioSource2.Equalizer.Band1 = (float)low_ch2.Value;
-            audioSource2.Equalizer.Band2 = (float)low_ch2.Value;
-            audioSource2.Equalizer.Band3 = (float)low_ch2.Value;
+            audioSource2.Equalizer.Band1 = (float)pot_low_ch2.Value;
+            audioSource2.Equalizer.Band2 = (float)pot_low_ch2.Value;
+            audioSource2.Equalizer.Band3 = (float)pot_low_ch2.Value;
             audioSource2.Equalizer.equalizer.Update();
         }
 
@@ -205,14 +213,14 @@ namespace iRANE_62
         {
             if (audioSource1.Equalizer.PanningProvider != null)
             {
-                float panValue = (float)pan_ch1.Pan;
+                float panValue = (float)panSlider_ch1.Pan;
                 audioSource1.Equalizer.PanningProvider.Pan = panValue;
             }
         }
 
         private void pan_odt2_PanChanged(object sender, EventArgs e)
         {
-            float panValue = (float)pan_ch2.Pan;
+            float panValue = (float)panSlider_ch2.Pan;
             audioSource2.Equalizer.PanningProvider.Pan = panValue;
         }
 
@@ -220,7 +228,7 @@ namespace iRANE_62
         {
             if (audioSource1 != null)
             {
-                float potValue = (float)filter_ch1.Value;
+                float potValue = (float)pot_filter_ch1.Value;
                 audioSource1.Equalizer.FilterSampleProvider.FilterValue = potValue;
             }
         }
@@ -229,7 +237,7 @@ namespace iRANE_62
         {
             if (audioSource2 != null)
             {
-                float potValue = (float)filter_ch2.Value;
+                float potValue = (float)pot_filter_ch2.Value;
                 audioSource2.Equalizer.FilterSampleProvider.FilterValue = potValue;
             }
         }
@@ -238,7 +246,7 @@ namespace iRANE_62
         #region Loop
         private void loopOut_ch1_Click(object sender, EventArgs e)
         {
-            if (audioSource1.AudioFileReader != null)
+            if (audioSource1.IsPlaying)
             {
                 audioSource1.Loop.SetLoopOut(audioSource1.AudioFileReader.CurrentTime);
             }
@@ -246,7 +254,7 @@ namespace iRANE_62
 
         private void loopIn_ch1_Click(object sender, EventArgs e)
         {
-            if (audioSource1.AudioFileReader != null)
+            if (audioSource1.IsPlaying)
             {
                 audioSource1.Loop.SetLoopIn(audioSource1.AudioFileReader.CurrentTime);
                 audioSource1.Loop.LoopActive = true;
@@ -262,7 +270,7 @@ namespace iRANE_62
 
         private void loopOut_ch2_Click(object sender, EventArgs e)
         {
-            if (audioSource2.AudioFileReader != null)
+            if (audioSource2.IsPlaying)
             {
                 audioSource2.Loop.SetLoopOut(audioSource2.AudioFileReader.CurrentTime);
             }
@@ -270,7 +278,7 @@ namespace iRANE_62
 
         private void loopIn_ch2_Click(object sender, EventArgs e)
         {
-            if (audioSource2.AudioFileReader != null)
+            if (audioSource2.IsPlaying)
             {
                 audioSource2.Loop.SetLoopIn(audioSource2.AudioFileReader.CurrentTime);
                 audioSource2.Loop.LoopActive = true;
@@ -289,17 +297,17 @@ namespace iRANE_62
 
         private void blockCueButtons()
         {
-            cue1_ch1.Enabled = false;
-            cue2_ch1.Enabled = false;
-            cue3_ch1.Enabled = false;
-            cue4_ch1.Enabled = false;
-            cue5_ch1.Enabled = false;
+            btn_cue1_ch1.Enabled = false;
+            btn_cue2_ch1.Enabled = false;
+            btn_cue3_ch1.Enabled = false;
+            btn_cue4_ch1.Enabled = false;
+            btn_cue5_ch1.Enabled = false;
 
-            cue1_ch2.Enabled = false;
-            cue2_ch2.Enabled = false;
-            cue3_ch2.Enabled = false;
-            cue4_ch2.Enabled = false;
-            cue5_ch2.Enabled = false;
+            btn_cue1_ch2.Enabled = false;
+            btn_cue2_ch2.Enabled = false;
+            btn_cue3_ch2.Enabled = false;
+            btn_cue4_ch2.Enabled = false;
+            btn_cue5_ch2.Enabled = false;
 
         }
 
@@ -307,19 +315,19 @@ namespace iRANE_62
         {
             if (playerId == 1)
             {
-                cue1_ch1.Enabled = true;
-                cue2_ch1.Enabled = true;
-                cue3_ch1.Enabled = true;
-                cue4_ch1.Enabled = true;
-                cue5_ch1.Enabled = true;
+                btn_cue1_ch1.Enabled = true;
+                btn_cue2_ch1.Enabled = true;
+                btn_cue3_ch1.Enabled = true;
+                btn_cue4_ch1.Enabled = true;
+                btn_cue5_ch1.Enabled = true;
             }
             else
             {
-                cue1_ch2.Enabled = true;
-                cue2_ch2.Enabled = true;
-                cue3_ch2.Enabled = true;
-                cue4_ch2.Enabled = true;
-                cue5_ch2.Enabled = true;
+                btn_cue1_ch2.Enabled = true;
+                btn_cue2_ch2.Enabled = true;
+                btn_cue3_ch2.Enabled = true;
+                btn_cue4_ch2.Enabled = true;
+                btn_cue5_ch2.Enabled = true;
             }
         }
 
@@ -329,14 +337,14 @@ namespace iRANE_62
             TimeSpan currentTime = audioSource1.AudioFileReader.CurrentTime;
 
             CueButtonClick(audioSource1, 0, currentTime);
-            cue1_ch1.BackColor = CuePointsColors.Colors[0];
+            btn_cue1_ch1.BackColor = CuePointsColors.Colors[0];
         }
         private void cue2_ch1_Click(object sender, EventArgs e)
         {
             TimeSpan currentTime = audioSource1.AudioFileReader.CurrentTime;
 
             CueButtonClick(audioSource1, 1, currentTime);
-            cue2_ch1.BackColor = CuePointsColors.Colors[1];
+            btn_cue2_ch1.BackColor = CuePointsColors.Colors[1];
 
         }
         private void cue3_ch1_Click(object sender, EventArgs e)
@@ -344,69 +352,69 @@ namespace iRANE_62
             TimeSpan currentTime = audioSource1.AudioFileReader.CurrentTime;
 
             CueButtonClick(audioSource1, 2, currentTime);
-            cue3_ch1.BackColor = CuePointsColors.Colors[2];
+            btn_cue3_ch1.BackColor = CuePointsColors.Colors[2];
         }
         private void cue4_ch1_Click(object sender, EventArgs e)
         {
             TimeSpan currentTime = audioSource1.AudioFileReader.CurrentTime;
             CueButtonClick(audioSource1, 3, currentTime);
-            cue4_ch1.BackColor = CuePointsColors.Colors[3];
+            btn_cue4_ch1.BackColor = CuePointsColors.Colors[3];
         }
         private void cue5_ch1_Click(object sender, EventArgs e)
         {
             TimeSpan currentTime = audioSource1.AudioFileReader.CurrentTime;
             CueButtonClick(audioSource1, 4, currentTime);
-            cue5_ch1.BackColor = CuePointsColors.Colors[4];
+            btn_cue5_ch1.BackColor = CuePointsColors.Colors[4];
         }
         private void cue1_ch2_Click(object sender, EventArgs e)
         {
             TimeSpan currentTime = audioSource2.AudioFileReader.CurrentTime;
             CueButtonClick(audioSource2, 0, currentTime);
-            cue1_ch2.BackColor = CuePointsColors.Colors[0];
+            btn_cue1_ch2.BackColor = CuePointsColors.Colors[0];
         }
         private void cue2_ch2_Click(object sender, EventArgs e)
         {
             TimeSpan currentTime = audioSource2.AudioFileReader.CurrentTime;
             CueButtonClick(audioSource2, 1, currentTime);
-            cue2_ch2.BackColor = CuePointsColors.Colors[1];
+            btn_cue2_ch2.BackColor = CuePointsColors.Colors[1];
         }
         private void cue3_ch2_Click(object sender, EventArgs e)
         {
             TimeSpan currentTime = audioSource2.AudioFileReader.CurrentTime;
             CueButtonClick(audioSource2, 2, currentTime);
-            cue3_ch2.BackColor = CuePointsColors.Colors[2];
+            btn_cue3_ch2.BackColor = CuePointsColors.Colors[2];
         }
         private void cue4_ch2_Click(object sender, EventArgs e)
         {
             TimeSpan currentTime = audioSource2.AudioFileReader.CurrentTime;
             CueButtonClick(audioSource2, 3, currentTime);
-            cue4_ch2.BackColor = CuePointsColors.Colors[3];
+            btn_cue4_ch2.BackColor = CuePointsColors.Colors[3];
         }
         private void cue5_ch2_Click(object sender, EventArgs e)
         {
             TimeSpan currentTime = audioSource2.AudioFileReader.CurrentTime;
             CueButtonClick(audioSource2, 4, currentTime);
-            cue5_ch2.BackColor = CuePointsColors.Colors[4];
+            btn_cue5_ch2.BackColor = CuePointsColors.Colors[4];
         }
 
         public void CueColorClear(int playerId)
         {
             if (playerId == 1)
             {
-                cue1_ch1.BackColor = Color.White;
-                cue2_ch1.BackColor = Color.White;
-                cue3_ch1.BackColor = Color.White;
-                cue4_ch1.BackColor = Color.White;
-                cue5_ch1.BackColor = Color.White;
+                btn_cue1_ch1.BackColor = Color.White;
+                btn_cue2_ch1.BackColor = Color.White;
+                btn_cue3_ch1.BackColor = Color.White;
+                btn_cue4_ch1.BackColor = Color.White;
+                btn_cue5_ch1.BackColor = Color.White;
             }
             else
             {
 
-                cue1_ch2.BackColor = Color.White;
-                cue2_ch2.BackColor = Color.White;
-                cue3_ch2.BackColor = Color.White;
-                cue4_ch2.BackColor = Color.White;
-                cue5_ch2.BackColor = Color.White;
+                btn_cue1_ch2.BackColor = Color.White;
+                btn_cue2_ch2.BackColor = Color.White;
+                btn_cue3_ch2.BackColor = Color.White;
+                btn_cue4_ch2.BackColor = Color.White;
+                btn_cue5_ch2.BackColor = Color.White;
             }
         }
         private void CueButtonClick(AudioSourceHandler player, int cue, TimeSpan currentTime)
@@ -446,13 +454,14 @@ namespace iRANE_62
         private void SetupMicrophoneControls()
         {
             microphoneHandler.VolumeIndicator += OnMicrophoneVolumeMeter;
-            microphoneHandler.Volume = (float)mic_level.Value;
+            microphoneHandler.Volume = (float)pot_mic_level.Value;
             btn_micOnOff.BackColor = microphoneHandler.IsActive ? Color.Green : SystemColors.Control;
+            btn_micOver.BackColor = isMicOverActive ? Color.Green : SystemColors.Control;
             if (microphoneHandler.IsActive)
                 UpdateMicrophoneOutput(true);
         }
 
-        private void mic_on_Click(object sender, EventArgs e)
+        private void btn_micOnOff_Click(object sender, EventArgs e)
         {
             microphoneHandler.IsActive = !microphoneHandler.IsActive;
             btn_micOnOff.BackColor = microphoneHandler.IsActive ? Color.Green : SystemColors.Control;
@@ -463,7 +472,35 @@ namespace iRANE_62
                 microphoneHandler.MicRightLevel = 0f;
                 UpdateMainVolumeMeters();
             }
+        }
 
+        private void btn_micOver_Click(object sender, EventArgs e)
+        {
+            if (!microphoneHandler.IsActive) return;
+
+            isMicOverActive = !isMicOverActive;
+            btn_micOver.BackColor = isMicOverActive ? Color.Green : SystemColors.Control;
+
+            if (isMicOverActive)
+            {
+                if (audioSource1.AudioFileReader != null)
+                {
+                    chanel1OriginalVolume = (float)pot_gain_ch1.Value;
+                    audioSource1.SetVolume(Math.Min(chanel1OriginalVolume,0.1f));
+                }
+                if (audioSource2.AudioFileReader != null)
+                {
+                    chanel2OriginalVolume = (float)pot_gain_ch2.Value;
+                    audioSource2.SetVolume(Math.Min(chanel2OriginalVolume,0.1f));
+                }
+            }
+            else
+            {
+                if (audioSource1.AudioFileReader != null)
+                    audioSource1.SetVolume(chanel1OriginalVolume);
+                if (audioSource2.AudioFileReader != null)
+                    audioSource2.SetVolume(chanel2OriginalVolume);
+            }
         }
 
         private void UpdateMainVolumeMeters()
@@ -476,7 +513,7 @@ namespace iRANE_62
 
         private void mic_level_ValueChanged(object sender, EventArgs e)
         {
-            microphoneHandler.Volume = (float)mic_level.Value;
+            microphoneHandler.Volume = (float)pot_mic_level.Value;
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -489,20 +526,18 @@ namespace iRANE_62
         {
             microphoneHandler.MicLeftLevel = e.MaxSampleValues[0];
             microphoneHandler.MicRightLevel = e.MaxSampleValues[1];
-            mic_volume.Amplitude = Math.Max(microphoneHandler.MicLeftLevel, microphoneHandler.MicRightLevel);
+            volumeMeter_mic_volume.Amplitude = Math.Max(microphoneHandler.MicLeftLevel, microphoneHandler.MicRightLevel);
             UpdateMainVolumeMeters();
         }
-        #endregion
 
         private void mic_high_ValueChanged(object sender, EventArgs e)
         {
             if (microphoneHandler.Equalizer != null)
             {
-                float highValue = (float)mic_high.Value;
-                // Adjust high-frequency bands (e.g., 4000 Hz, 8000 Hz, 16000 Hz)
-                microphoneHandler.Equalizer.Bands[6].Gain = highValue;  // 4000 Hz
-                microphoneHandler.Equalizer.Bands[7].Gain = highValue;  // 8000 Hz
-                microphoneHandler.Equalizer.Bands[8].Gain = highValue;  // 16000 Hz
+                float highValue = (float)pot_mic_high.Value;
+                microphoneHandler.Equalizer.Bands[6].Gain = highValue;
+                microphoneHandler.Equalizer.Bands[7].Gain = highValue;
+                microphoneHandler.Equalizer.Bands[8].Gain = highValue;
                 microphoneHandler.Equalizer.equalizer.Update();
             }
         }
@@ -511,13 +546,15 @@ namespace iRANE_62
         {
             if (microphoneHandler.Equalizer != null)
             {
-                float lowValue = (float)mic_low.Value;
-                // Adjust low-frequency bands (e.g., 60 Hz, 120 Hz, 250 Hz)
-                microphoneHandler.Equalizer.Bands[0].Gain = lowValue;  // 60 Hz
-                microphoneHandler.Equalizer.Bands[1].Gain = lowValue;  // 120 Hz
-                microphoneHandler.Equalizer.Bands[2].Gain = lowValue;  // 250 Hz
+                float lowValue = (float)pot_mic_low.Value;
+                microphoneHandler.Equalizer.Bands[0].Gain = lowValue;
+                microphoneHandler.Equalizer.Bands[1].Gain = lowValue;
+                microphoneHandler.Equalizer.Bands[2].Gain = lowValue;
                 microphoneHandler.Equalizer.equalizer.Update();
             }
         }
+        #endregion
+
+
     }
 }
