@@ -44,6 +44,11 @@ namespace iRANE_62
             microphoneHandler.IsActiveChanged += UpdateMicrophoneOutput;
         }
 
+        private void volumeSlider_upfader_ch2_VolumeChanged_1(object sender, EventArgs e)
+        {
+           var tmp= volumeSlider_upfader_ch1.Volume;
+        }
+
         #region FX
 
         private void efxCheckedChangedEventHandler()

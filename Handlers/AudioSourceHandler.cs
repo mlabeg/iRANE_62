@@ -16,7 +16,6 @@ namespace iRANE_62.Handlers
     public class AudioSourceHandler
     {
         public int Id { get; set; }
-        public IWavePlayer WavePlayer { get; private set; }//do usunięcia
         public AudioFileReader AudioFileReader { get; private set; }
         public string FileName { get; private set; }
         public Song? Song { get; set; }
@@ -25,8 +24,7 @@ namespace iRANE_62.Handlers
 
         public int CurrentPlaybackPosition { get; set; }
 
-        public Action<float> SetVolumeDelegate;//jedno z dwoch do usuniecia
-        //private Action<float> setVolumeDelegate;//jedno z dwoch do usuniecia
+        public Action<float> SetVolumeDelegate;
 
         private float leftChanelVolumeLevel;
         private float rightChanelVolumeLevel;

@@ -913,12 +913,12 @@ namespace iRANE_62
             // 
             // volumeSlider_upfader_ch2
             // 
-            volumeSlider_upfader_ch2.ImeMode = ImeMode.NoControl;
-            volumeSlider_upfader_ch2.Location = new Point(718, 834);
+            volumeSlider_upfader_ch2.Location = new Point(711, 834);
             volumeSlider_upfader_ch2.Margin = new Padding(2);
             volumeSlider_upfader_ch2.Name = "volumeSlider_upfader_ch2";
             volumeSlider_upfader_ch2.Size = new Size(76, 306);
             volumeSlider_upfader_ch2.TabIndex = 13;
+            volumeSlider_upfader_ch2.VolumeChanged += this.volumeSlider_upfader_ch2_VolumeChanged_1;
             // 
             // volumeSlider_upfader_ch1
             // 
