@@ -11,9 +11,10 @@ namespace iRANE_62.Handlers
         private readonly VerticalVolumeSlider fader;
         private readonly Pot mainVolumePot;
 
-        private float gain;        
+        private float gain;
         private float faderVolume;
-        private float mainVolume; 
+        private float mainVolume;
+        private float crossfaderBalance;
         private float originalVolume;
         private bool isMicOverActive;
 
@@ -55,6 +56,19 @@ namespace iRANE_62.Handlers
             }
         }
 
+        public void SetCrossfadeBalance(float balance)
+        {
+            if (audioSource.Id == 1)
+            {
+                crossfaderBalance = balance <= 0.5f ? 0.75f : 0.75f * (2 - 2 * balance);
+            }
+            else
+            {
+                crossfaderBalance = balance <= 0.5f ? 1.5f * balance : 0.75f;
+            }
+            UpdateVolume();
+        }
+
         private void SetupControls()
         {
             gainPot.ValueChanged += (s, e) =>
@@ -75,13 +89,14 @@ namespace iRANE_62.Handlers
 
             gainPot.Value = 0.5f;
             fader.Volume = 0.5f;
+            crossfaderBalance = 0.5f;
         }
 
         private void UpdateVolume()
         {
             if (audioSource?.AudioFileReader != null)
             {
-                float effectiveVolume = isMicOverActive ? 0.1f : gain * faderVolume * mainVolume;
+                float effectiveVolume = isMicOverActive ? 0.1f : gain * faderVolume * mainVolume * crossfaderBalance;
                 audioSource.SetVolume(effectiveVolume);
                 if (!isMicOverActive) originalVolume = effectiveVolume;
             }
@@ -89,7 +104,7 @@ namespace iRANE_62.Handlers
 
         private float CalculateEffectiveVolume()
         {
-            return gain * faderVolume * mainVolume;
+            return gain * faderVolume * mainVolume * crossfaderBalance;
         }
     }
 }

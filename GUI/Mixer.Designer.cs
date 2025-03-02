@@ -101,10 +101,10 @@ namespace iRANE_62
             pot_phones_pan = new NAudio.Gui.Pot();
             panel_mic = new Panel();
             chBox_mic_flexfx = new CheckBox();
-            fader_crossfader = new NAudio.Gui.Fader();
             panel_volume = new Panel();
             verticalVolumeSlider_ch2 = new Controls.VerticalVolumeSlider();
             verticalVolumeSlider_ch1 = new Controls.VerticalVolumeSlider();
+            crossfaderSlider = new Controls.CrossfaderSlider();
             panel_chanel1.SuspendLayout();
             panel_chanel2.SuspendLayout();
             panel_loops1.SuspendLayout();
@@ -911,20 +911,6 @@ namespace iRANE_62
             chBox_mic_flexfx.Text = "FLEXFX";
             chBox_mic_flexfx.UseVisualStyleBackColor = true;
             // 
-            // fader_crossfader
-            // 
-            fader_crossfader.BackColor = SystemColors.ActiveCaption;
-            fader_crossfader.Location = new Point(289, 1039);
-            fader_crossfader.Margin = new Padding(2);
-            fader_crossfader.Maximum = 0;
-            fader_crossfader.Minimum = 1;
-            fader_crossfader.Name = "fader_crossfader";
-            fader_crossfader.Orientation = Orientation.Horizontal;
-            fader_crossfader.Size = new Size(410, 99);
-            fader_crossfader.TabIndex = 14;
-            fader_crossfader.Text = "fader1";
-            fader_crossfader.Value = 1;
-            // 
             // panel_volume
             // 
             panel_volume.BorderStyle = BorderStyle.FixedSingle;
@@ -960,15 +946,27 @@ namespace iRANE_62
             verticalVolumeSlider_ch1.TabIndex = 15;
             verticalVolumeSlider_ch1.Volume = 0.5F;
             // 
+            // crossfaderSlider
+            // 
+            crossfaderSlider.BackColor = SystemColors.Control;
+            crossfaderSlider.ForeColor = Color.Black;
+            crossfaderSlider.Location = new Point(350, 1061);
+            crossfaderSlider.Name = "crossfaderSlider";
+            crossfaderSlider.Position = 0.5F;
+            crossfaderSlider.Size = new Size(300, 60);
+            crossfaderSlider.TabIndex = 16;
+            crossfaderSlider.Text = "crossfaderSlider1";
+            crossfaderSlider.PositionChanged += crossfaderSlider_PositionChanged;
+            // 
             // Mixer
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoScroll = true;
-            ClientSize = new Size(1000, 1172);
+            ClientSize = new Size(982, 1153);
+            Controls.Add(crossfaderSlider);
             Controls.Add(verticalVolumeSlider_ch1);
             Controls.Add(verticalVolumeSlider_ch2);
-            Controls.Add(fader_crossfader);
             Controls.Add(pot_systemVolume);
             Controls.Add(chBox_efx_phaser);
             Controls.Add(chBox_efx_robot);
@@ -1075,8 +1073,6 @@ namespace iRANE_62
         private NAudio.Gui.Pot pot_phones_level;
         private NAudio.Gui.Pot pot_phones_pan;
         private CheckBox chBox_phones_split;
-        private NumericUpDown upfaer_ch1;
-        private NumericUpDown upfaer_ch2;
         private NumericUpDown cross_fader;
         private NAudio.Gui.Pot pot_low_ch1;
         private CheckBox chBox_flexfx_ch1;
@@ -1088,11 +1084,11 @@ namespace iRANE_62
         private NAudio.Gui.VolumeMeter volumeMeter_ch2;
         private CheckBox chBox_cue_samples;
         private NAudio.Gui.VolumeMeter volumeMeter_ch1;
-        private NAudio.Gui.Fader fader_crossfader;
         internal NAudio.Gui.Pot pot_gain_ch1;
         internal NAudio.Gui.Pot pot_gain_ch2;
         private Panel panel_volume;
         private Controls.VerticalVolumeSlider verticalVolumeSlider_ch2;
         private Controls.VerticalVolumeSlider verticalVolumeSlider_ch1;
+        private Controls.CrossfaderSlider crossfaderSlider;
     }
 }

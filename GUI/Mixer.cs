@@ -61,21 +61,21 @@ namespace iRANE_62
             chBox_efx_robot.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
         }
 
-        private void efx_flanger_CheckedChanged(object sender, EventArgs e){}
+        private void efx_flanger_CheckedChanged(object sender, EventArgs e) { }
 
-        private void efx_phaser_CheckedChanged(object sender, EventArgs e){}
+        private void efx_phaser_CheckedChanged(object sender, EventArgs e) { }
 
-        private void efx_echo_CheckedChanged(object sender, EventArgs e){}
+        private void efx_echo_CheckedChanged(object sender, EventArgs e) { }
 
-        private void efx_robot_CheckedChanged(object sender, EventArgs e){}
+        private void efx_robot_CheckedChanged(object sender, EventArgs e) { }
 
-        private void efx_reverb_CheckedChanged(object sender, EventArgs e){}
+        private void efx_reverb_CheckedChanged(object sender, EventArgs e) { }
 
-        private void efx_ext_insert_CheckedChanged(object sender, EventArgs e){}
+        private void efx_ext_insert_CheckedChanged(object sender, EventArgs e) { }
 
-        private void efx_insert_CheckedChanged(object sender, EventArgs e){}
+        private void efx_insert_CheckedChanged(object sender, EventArgs e) { }
 
-        private void efx_filter_CheckedChanged(object sender, EventArgs e){}
+        private void efx_filter_CheckedChanged(object sender, EventArgs e) { }
 
         private void Efx_CheckBox_Change(object? sender, EventArgs e)
         {
@@ -445,14 +445,6 @@ namespace iRANE_62
             btn_micOver.BackColor = isMicOverActive ? Color.Green : SystemColors.Control;
         }
 
-        private void UpdateMainVolumeMeters()
-        {
-            float leftLevel = Math.Max(audioSource1.LeftChanelVolumeLevel, audioSource2.LeftChanelVolumeLevel);
-            float rightLevel = Math.Max(audioSource1.RightChanelVolumeLevel, audioSource2.RightChanelVolumeLevel);
-            volumeMeter_mainLeft.Amplitude = Math.Max(leftLevel, microphoneHandler.MicLeftLevel);
-            volumeMeter_mainRight.Amplitude = Math.Max(rightLevel, microphoneHandler.MicRightLevel);
-        }
-
         private void mic_level_ValueChanged(object sender, EventArgs e)
         {
             microphoneHandler.Volume = (float)pot_mic_level.Value;
@@ -497,7 +489,7 @@ namespace iRANE_62
         }
         #endregion
 
-        #region Volume
+        #region Volume + Faders
 
         private void pot_mainVolume_ValueChanged(object sender, EventArgs e)
         {
@@ -520,6 +512,22 @@ namespace iRANE_62
             UpdateMainVolumeMeters();
         }
 
+        private void UpdateMainVolumeMeters()
+        {
+            float leftLevel = Math.Max(audioSource1.LeftChanelVolumeLevel, audioSource2.LeftChanelVolumeLevel);
+            float rightLevel = Math.Max(audioSource1.RightChanelVolumeLevel, audioSource2.RightChanelVolumeLevel);
+            volumeMeter_mainLeft.Amplitude = Math.Max(leftLevel, microphoneHandler.MicLeftLevel);
+            volumeMeter_mainRight.Amplitude = Math.Max(rightLevel, microphoneHandler.MicRightLevel);
+        }
+     
+        private void crossfaderSlider_PositionChanged(object sender, EventArgs e)
+        {
+            channel1VolumeHandler.SetCrossfadeBalance(crossfaderSlider.Position);
+            channel2VolumeHandler.SetCrossfadeBalance(crossfaderSlider.Position);
+        }
+       
         #endregion
+
+
     }
 }
