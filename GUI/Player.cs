@@ -70,7 +70,9 @@ namespace iRANE_62
                 }
                 else
                 {
-                    SetVolumeFromMixerLevel(audioSource);
+                    mixer.Channel1VolumeHandler.UpdateVolume();
+                    mixer.Channel2VolumeHandler.UpdateVolume();
+
                     audioSource.Play(audioOutputHandler);
                     timer1.Enabled = true;
                 }

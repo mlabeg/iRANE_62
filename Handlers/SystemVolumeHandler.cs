@@ -24,9 +24,6 @@ namespace iRANE_62.Handlers
             }
         }
 
-        /// <summary>
-        /// Gets or sets the system master volume (0.0f to 1.0f).
-        /// </summary>
         public float Volume
         {
             get => endpointVolume.MasterVolumeLevelScalar;
@@ -38,9 +35,6 @@ namespace iRANE_62.Handlers
             }
         }
 
-        /// <summary>
-        /// Mutes or unmutes the system audio.
-        /// </summary>
         public bool IsMuted
         {
             get => endpointVolume.Mute;

@@ -17,8 +17,9 @@ namespace iRANE_62
         private readonly MicrophoneHandler microphoneHandler;
         private readonly AudioOutputHandler audioOutputHandler;
         private readonly SystemVolumeHandler systemVolumeHandler;
-        private readonly ChannelVolumeHandler channel1VolumeHandler;
-        private readonly ChannelVolumeHandler channel2VolumeHandler;
+
+        public readonly ChannelVolumeHandler Channel1VolumeHandler;
+        public readonly ChannelVolumeHandler Channel2VolumeHandler;
 
         public event Action<AudioSourceHandler, TimeSpan, Color> CuePointAdded;
 
@@ -38,14 +39,15 @@ namespace iRANE_62
             systemVolumeHandler = new SystemVolumeHandler();
             InitializeComponent();
 
-            channel1VolumeHandler = new ChannelVolumeHandler(audioSource1, pot_gain_ch1, verticalVolumeSlider_ch2, pot_systemVolume);
-            channel2VolumeHandler = new ChannelVolumeHandler(audioSource2, pot_gain_ch2, verticalVolumeSlider_ch1, pot_systemVolume);
+            Channel1VolumeHandler = new ChannelVolumeHandler(audioSource1, pot_gain_ch1, verticalVolumeSlider_ch1, pot_systemVolume);
+            Channel2VolumeHandler = new ChannelVolumeHandler(audioSource2, pot_gain_ch2, verticalVolumeSlider_ch2, pot_systemVolume);
 
             efxCheckedChangedEventHandler();
             blockCueButtons();
             SetupMicrophoneControls();
             SetupVolumeMeters();
             SetupSystemVolume();
+            SetupCrossfader();
             microphoneHandler.IsActiveChanged += UpdateMicrophoneOutput;
         }
 
@@ -440,8 +442,8 @@ namespace iRANE_62
 
             isMicOverActive = !isMicOverActive;
 
-            channel1VolumeHandler.IsMicOverActive = isMicOverActive;
-            channel2VolumeHandler.IsMicOverActive = isMicOverActive;
+            Channel1VolumeHandler.IsMicOverActive = isMicOverActive;
+            Channel2VolumeHandler.IsMicOverActive = isMicOverActive;
             btn_micOver.BackColor = isMicOverActive ? Color.Green : SystemColors.Control;
         }
 
@@ -519,13 +521,23 @@ namespace iRANE_62
             volumeMeter_mainLeft.Amplitude = Math.Max(leftLevel, microphoneHandler.MicLeftLevel);
             volumeMeter_mainRight.Amplitude = Math.Max(rightLevel, microphoneHandler.MicRightLevel);
         }
-     
+
+        private void SetupCrossfader()
+        {
+            UpdateCrossfaderVolumes(crossfaderSlider.Position); 
+        }
+
         private void crossfaderSlider_PositionChanged(object sender, EventArgs e)
         {
-            channel1VolumeHandler.SetCrossfadeBalance(crossfaderSlider.Position);
-            channel2VolumeHandler.SetCrossfadeBalance(crossfaderSlider.Position);
+            UpdateCrossfaderVolumes(crossfaderSlider.Position);
         }
-       
+
+        private void UpdateCrossfaderVolumes(float position)
+        {
+            Channel1VolumeHandler.SetCrossfadeBalance(position);
+            Channel2VolumeHandler.SetCrossfadeBalance(position);
+        }
+
         #endregion
 
 
