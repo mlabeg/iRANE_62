@@ -70,7 +70,9 @@ namespace iRANE_62
                 }
                 else
                 {
-                    SetVolumeFromMixerLevel(audioSource);
+                    mixer.Channel1VolumeHandler.UpdateVolume();
+                    mixer.Channel2VolumeHandler.UpdateVolume();
+
                     audioSource.Play(audioOutputHandler);
                     timer1.Enabled = true;
                 }
@@ -81,9 +83,9 @@ namespace iRANE_62
             }
         }
 
-        private void SetVolumeFromMixerLevel(AudioSourceHandler player)
+        private void SetVolumeFromMixerLevel(AudioSourceHandler audioSource)
         {
-            player.SetVolume(player.Id == 1 ? (float)mixer.pot_gain_ch1.Value : (float)mixer.pot_gain_ch2.Value);
+            audioSource.SetVolume(audioSource.Id == 1 ? (float)mixer.pot_gain_ch1.Value : (float)mixer.pot_gain_ch2.Value);
         }
 
 

@@ -1,5 +1,4 @@
-﻿// HorizontalCrossfader.cs
-using System;
+﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -7,15 +6,15 @@ namespace iRANE_62.Controls
 {
     public class CrossfaderSlider : Control
     {
-        private float position;  // 0.0f (left, full chanel1) to 1.0f (right, full chanel2)
+        private float position; 
 
         public event EventHandler PositionChanged;
 
         public CrossfaderSlider()
         {
-            this.Width = 100;  // Wide for horizontal movement
-            this.Height = 30;  // Narrow height
-            this.position = 0.5f;  // Center (equal mix)
+            this.Width = 100;  
+            this.Height = 30;  
+            this.position = 0.5f;  
             this.BackColor = SystemColors.Control;
             this.ForeColor = Color.Black;
             this.DoubleBuffered = true;
@@ -42,22 +41,20 @@ namespace iRANE_62.Controls
             Rectangle area = ClientRectangle;
             int borderWidth = 2;
 
-            // Draw background
             using (SolidBrush backgroundBrush = new SolidBrush(BackColor))
             {
                 g.FillRectangle(backgroundBrush, area);
             }
 
-            // Draw border
             using (Pen borderPen = new Pen(ForeColor, borderWidth))
             {
                 g.DrawRectangle(borderPen, area.X, area.Y, area.Width - 1, area.Height - 1);
             }
 
-            // Calculate slider position (horizontal)
-            float sliderWidth = area.Width * 0.1f;  // 10% of width for slider
-            float trackWidth = area.Width - sliderWidth;  // Available track width
-            float sliderLeft = trackWidth * position;  // Left edge moves from 0 to trackWidth
+            //Slider
+            float sliderWidth = area.Width * 0.1f;  
+            float trackWidth = area.Width - sliderWidth; 
+            float sliderLeft = trackWidth * position; 
 
             RectangleF sliderRect = new RectangleF(
                 area.X + sliderLeft,
@@ -66,7 +63,6 @@ namespace iRANE_62.Controls
                 area.Height - (2 * borderWidth)
             );
 
-            // Draw slider
             using (SolidBrush sliderBrush = new SolidBrush(ForeColor))
             {
                 g.FillRectangle(sliderBrush, sliderRect);
@@ -100,9 +96,9 @@ namespace iRANE_62.Controls
             float width = ClientRectangle.Width;
             float sliderWidth = width * 0.1f;
             float trackWidth = width - sliderWidth;
-            float proportion = (float)x / width;  // 0 to 1 across full width
-            proportion = Math.Max(0.0f, Math.Min(1.0f, proportion));  // Clamp to 0-1
-            Position = proportion;  // Map directly to 0-1 range
+            float proportion = (float)x / width;  
+            proportion = Math.Max(0.0f, Math.Min(1.0f, proportion)); 
+            Position = proportion; 
         }
     }
 }
