@@ -17,6 +17,8 @@ namespace iRANE_62
         private readonly MicrophoneHandler microphoneHandler;
         private readonly AudioOutputHandler audioOutputHandler;
         private readonly SystemVolumeHandler systemVolumeHandler;
+        private readonly ChannelVolumeHandler channel1VolumeHandler;
+        private readonly ChannelVolumeHandler channel2VolumeHandler;
 
         public event Action<AudioSourceHandler, TimeSpan, Color> CuePointAdded;
 
@@ -36,17 +38,15 @@ namespace iRANE_62
             systemVolumeHandler = new SystemVolumeHandler();
             InitializeComponent();
 
+            channel1VolumeHandler = new ChannelVolumeHandler(audioSource1, pot_gain_ch1, verticalVolumeSlider_ch2, pot_systemVolume);
+            channel2VolumeHandler = new ChannelVolumeHandler(audioSource2, pot_gain_ch2, verticalVolumeSlider_ch1, pot_systemVolume);
+
             efxCheckedChangedEventHandler();
             blockCueButtons();
             SetupMicrophoneControls();
             SetupVolumeMeters();
             SetupSystemVolume();
             microphoneHandler.IsActiveChanged += UpdateMicrophoneOutput;
-        }
-
-        private void volumeSlider_upfader_ch2_VolumeChanged_1(object sender, EventArgs e)
-        {
-           var tmp= volumeSlider_upfader_ch1.Volume;
         }
 
         #region FX
@@ -61,40 +61,21 @@ namespace iRANE_62
             chBox_efx_robot.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
         }
 
-        private void efx_flanger_CheckedChanged(object sender, EventArgs e)
-        {
-        }
+        private void efx_flanger_CheckedChanged(object sender, EventArgs e){}
 
-        private void efx_phaser_CheckedChanged(object sender, EventArgs e)
-        {
+        private void efx_phaser_CheckedChanged(object sender, EventArgs e){}
 
-        }
+        private void efx_echo_CheckedChanged(object sender, EventArgs e){}
 
-        private void efx_echo_CheckedChanged(object sender, EventArgs e)
-        {
-        }
+        private void efx_robot_CheckedChanged(object sender, EventArgs e){}
 
-        private void efx_robot_CheckedChanged(object sender, EventArgs e)
-        {
-        }
+        private void efx_reverb_CheckedChanged(object sender, EventArgs e){}
 
-        private void efx_reverb_CheckedChanged(object sender, EventArgs e)
-        {
-        }
+        private void efx_ext_insert_CheckedChanged(object sender, EventArgs e){}
 
-        private void efx_ext_insert_CheckedChanged(object sender, EventArgs e)
-        {
-        }
+        private void efx_insert_CheckedChanged(object sender, EventArgs e){}
 
-        private void efx_insert_CheckedChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void efx_filter_CheckedChanged(object sender, EventArgs e)
-        {
-
-
-        }
+        private void efx_filter_CheckedChanged(object sender, EventArgs e){}
 
         private void Efx_CheckBox_Change(object? sender, EventArgs e)
         {
@@ -120,25 +101,9 @@ namespace iRANE_62
 
         #region Eq
 
-        private void level_odt1_ValueChanged(object sender, EventArgs e)
-        {
-            if (audioSource1.AudioFileReader != null)
-            {
-                float newVolume = (float)pot_gain_ch1.Value;
-                audioSource1.SetVolume(isMicOverActive ? Math.Min(newVolume, 0.1f) : newVolume);
-                if (!isMicOverActive) chanel1OriginalVolume = newVolume;
-            }
-        }
+        private void pot_gain_ch1_ValueChanged(object sender, EventArgs e) { }
 
-        private void level_odt2_ValueChanged(object sender, EventArgs e)
-        {
-            if (audioSource2.AudioFileReader != null)
-            {
-                float newVolume = (float)pot_gain_ch2.Value;
-                audioSource2.SetVolume(isMicOverActive ? Math.Min(newVolume, 0.1f) : newVolume);
-                if (!isMicOverActive) chanel2OriginalVolume = newVolume;
-            }
-        }
+        private void pot_gain_ch2_ValueChanged(object sender, EventArgs e) { }
 
         public void OnPostMainVolumeMeter(object sender, StreamVolumeEventArgs e)
         {
@@ -474,28 +439,10 @@ namespace iRANE_62
             if (!microphoneHandler.IsActive) return;
 
             isMicOverActive = !isMicOverActive;
-            btn_micOver.BackColor = isMicOverActive ? Color.Green : SystemColors.Control;
 
-            if (isMicOverActive)
-            {
-                if (audioSource1.AudioFileReader != null)
-                {
-                    chanel1OriginalVolume = (float)pot_gain_ch1.Value;
-                    audioSource1.SetVolume(Math.Min(chanel1OriginalVolume, 0.1f));
-                }
-                if (audioSource2.AudioFileReader != null)
-                {
-                    chanel2OriginalVolume = (float)pot_gain_ch2.Value;
-                    audioSource2.SetVolume(Math.Min(chanel2OriginalVolume, 0.1f));
-                }
-            }
-            else
-            {
-                if (audioSource1.AudioFileReader != null)
-                    audioSource1.SetVolume(chanel1OriginalVolume);
-                if (audioSource2.AudioFileReader != null)
-                    audioSource2.SetVolume(chanel2OriginalVolume);
-            }
+            channel1VolumeHandler.IsMicOverActive = isMicOverActive;
+            channel2VolumeHandler.IsMicOverActive = isMicOverActive;
+            btn_micOver.BackColor = isMicOverActive ? Color.Green : SystemColors.Control;
         }
 
         private void UpdateMainVolumeMeters()
