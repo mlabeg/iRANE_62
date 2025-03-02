@@ -16,7 +16,9 @@ namespace iRANE_62.Handlers
         private MeteringSampleProvider meteringProvider;
         private VolumeSampleProvider volumeProvider;
         private Eq equalizer;
+
         private bool isActive;
+        private bool isMicOverActive;
 
         private float micLeftLevel;
         private float micRightLevel;
@@ -53,6 +55,11 @@ namespace iRANE_62.Handlers
                     IsActiveChanged?.Invoke(isActive);
                 }
             }
+        }
+        public bool IsMicOverActive
+        {
+            get => isMicOverActive;
+            set => isMicOverActive = value;
         }
 
 
@@ -115,7 +122,7 @@ namespace iRANE_62.Handlers
                     };
 
                     equalizer = new Eq();
-                    equalizer.equalizer=new Equalizer(volumeProvider,equalizer.Bands);
+                    equalizer.equalizer = new Equalizer(volumeProvider, equalizer.Bands);
 
                     meteringProvider = new MeteringSampleProvider(equalizer.equalizer);
                     meteringProvider.StreamVolume += (s, e) => VolumeIndicator?.Invoke(this, e);
