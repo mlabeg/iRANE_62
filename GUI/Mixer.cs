@@ -125,52 +125,68 @@ namespace iRANE_62
 
         private void high_odt1_ValueChanged(object sender, EventArgs e)
         {//doda³em bardziej ³agodne przejœcie miêdzy bandami, na studyjnych nie s³ychaæ fuzej ró¿nicy, bêdzie móg³ usun¹æ jak oka¿e siê, ¿e program jest za wolny   
-
-            audioSource1.Equalizer.Band9 = (float)pot_high_ch1.Value;
-            audioSource1.Equalizer.Band8 = (float)pot_high_ch1.Value;
-            audioSource1.Equalizer.Band7 = (float)(pot_high_ch1.Value + pot_mid_ch1.Value) / 2;
-            audioSource1.Equalizer.equalizer.Update();
+            if (audioSource1.AudioFileReader != null)
+            {
+                audioSource1.Equalizer.Band9 = (float)pot_high_ch1.Value;
+                audioSource1.Equalizer.Band8 = (float)pot_high_ch1.Value;
+                audioSource1.Equalizer.Band7 = (float)(pot_high_ch1.Value + pot_mid_ch1.Value) / 2;
+                audioSource1.Equalizer.equalizer.Update();
+            }
         }
 
         private void mid_odt1_ValueChanged(object sender, EventArgs e)
         {
-            audioSource1.Equalizer.Band6 = (float)(pot_mid_ch1.Value + pot_high_ch1.Value) / 2;
-            audioSource1.Equalizer.Band5 = (float)pot_mid_ch1.Value;
-            audioSource1.Equalizer.Band4 = (float)(pot_mid_ch1.Value + pot_low_ch1.Value) / 2;
-            audioSource1.Equalizer.equalizer.Update();
+            if (audioSource1.AudioFileReader != null)
+            {
+                audioSource1.Equalizer.Band6 = (float)(pot_mid_ch1.Value + pot_high_ch1.Value) / 2;
+                audioSource1.Equalizer.Band5 = (float)pot_mid_ch1.Value;
+                audioSource1.Equalizer.Band4 = (float)(pot_mid_ch1.Value + pot_low_ch1.Value) / 2;
+                audioSource1.Equalizer.equalizer.Update();
+            }
         }
 
         private void low_odt1_ValueChanged(object sender, EventArgs e)
         {
-            audioSource1.Equalizer.Band3 = (float)(pot_low_ch1.Value + pot_mid_ch1.Value) / 2;
-            audioSource1.Equalizer.Band2 = (float)pot_low_ch1.Value;
-            audioSource1.Equalizer.Band1 = (float)pot_low_ch1.Value;
-            audioSource1.Equalizer.equalizer.Update();
+            if (audioSource1.AudioFileReader != null)
+            {
+                audioSource1.Equalizer.Band3 = (float)(pot_low_ch1.Value + pot_mid_ch1.Value) / 2;
+                audioSource1.Equalizer.Band2 = (float)pot_low_ch1.Value;
+                audioSource1.Equalizer.Band1 = (float)pot_low_ch1.Value;
+                audioSource1.Equalizer.equalizer.Update();
+            }
         }
 
         private void high_odt2_ValueChanged(object sender, EventArgs e)
         {
-            audioSource2.Equalizer.Band7 = (float)pot_high_ch2.Value;
-            audioSource2.Equalizer.Band9 = (float)pot_high_ch2.Value;
-            audioSource2.Equalizer.Band8 = (float)pot_high_ch2.Value;
-            audioSource2.Equalizer.equalizer.Update();
+            if (audioSource2.AudioFileReader != null)
+            {
+                audioSource2.Equalizer.Band7 = (float)pot_high_ch2.Value;
+                audioSource2.Equalizer.Band9 = (float)pot_high_ch2.Value;
+                audioSource2.Equalizer.Band8 = (float)pot_high_ch2.Value;
+                audioSource2.Equalizer.equalizer.Update();
+            }
         }
 
         private void mid_odt2_ValueChanged(object sender, EventArgs e)
         {
-            audioSource2.Equalizer.Band4 = (float)pot_mid_ch2.Value;
-            audioSource2.Equalizer.Band5 = (float)pot_mid_ch2.Value;
-            audioSource2.Equalizer.Band6 = (float)pot_mid_ch2.Value;
-            audioSource2.Equalizer.equalizer.Update();
+            if (audioSource2.AudioFileReader != null)
+            {
+                audioSource2.Equalizer.Band4 = (float)pot_mid_ch2.Value;
+                audioSource2.Equalizer.Band5 = (float)pot_mid_ch2.Value;
+                audioSource2.Equalizer.Band6 = (float)pot_mid_ch2.Value;
+                audioSource2.Equalizer.equalizer.Update();
+            }
         }
 
         private void low_odt2_ValueChanged(object sender, EventArgs e)
         {
-
-            audioSource2.Equalizer.Band1 = (float)pot_low_ch2.Value;
-            audioSource2.Equalizer.Band2 = (float)pot_low_ch2.Value;
-            audioSource2.Equalizer.Band3 = (float)pot_low_ch2.Value;
-            audioSource2.Equalizer.equalizer.Update();
+            if (audioSource2.AudioFileReader != null)
+            {
+                audioSource2.Equalizer.Band1 = (float)pot_low_ch2.Value;
+                audioSource2.Equalizer.Band2 = (float)pot_low_ch2.Value;
+                audioSource2.Equalizer.Band3 = (float)pot_low_ch2.Value;
+                audioSource2.Equalizer.equalizer.Update();
+            }
         }
 
         private void pan_odt1_PanChanged(object sender, EventArgs e)
@@ -184,13 +200,16 @@ namespace iRANE_62
 
         private void pan_odt2_PanChanged(object sender, EventArgs e)
         {
-            float panValue = (float)panSlider_ch2.Pan;
-            audioSource2.Equalizer.PanningProvider.Pan = panValue;
+            if (audioSource2.AudioFileReader != null)
+            {
+                float panValue = (float)panSlider_ch2.Pan;
+                audioSource2.Equalizer.PanningProvider.Pan = panValue;
+            }
         }
 
         private void filter_odt1_ValueChanged(object sender, EventArgs e)
         {
-            if (audioSource1 != null)
+            if (audioSource1.AudioFileReader != null)
             {
                 float potValue = (float)pot_filter_ch1.Value;
                 audioSource1.Equalizer.FilterSampleProvider.FilterValue = potValue;
@@ -199,7 +218,7 @@ namespace iRANE_62
 
         private void filter_odt2_ValueChanged(object sender, EventArgs e)
         {
-            if (audioSource2 != null)
+            if (audioSource2.AudioFileReader != null)
             {
                 float potValue = (float)pot_filter_ch2.Value;
                 audioSource2.Equalizer.FilterSampleProvider.FilterValue = potValue;
@@ -524,7 +543,7 @@ namespace iRANE_62
 
         private void SetupCrossfader()
         {
-            UpdateCrossfaderVolumes(crossfaderSlider.Position); 
+            UpdateCrossfaderVolumes(crossfaderSlider.Position);
         }
 
         private void crossfaderSlider_PositionChanged(object sender, EventArgs e)
