@@ -17,14 +17,13 @@ namespace iRANE_62
         private readonly MicrophoneHandler microphoneHandler;
         private readonly AudioOutputHandler audioOutputHandler;
         private readonly SystemVolumeHandler systemVolumeHandler;
+        private readonly HeadphonesOutputHandler headphonesOutputHandler;
 
         public readonly ChannelVolumeHandler Channel1VolumeHandler;
         public readonly ChannelVolumeHandler Channel2VolumeHandler;
 
         public event Action<AudioSourceHandler, TimeSpan, Color> CuePointAdded;
 
-        private float chanel1OriginalVolume = 0.5f;
-        private float chanel2OriginalVolume = 0.5f;
         private bool isMicOverActive = false;
 
 
@@ -37,10 +36,17 @@ namespace iRANE_62
             this.audioOutputHandler = audioOutputHandler ?? throw new ArgumentNullException(nameof(audioOutputHandler));
             microphoneHandler = new MicrophoneHandler();
             systemVolumeHandler = new SystemVolumeHandler();
+            headphonesOutputHandler = new HeadphonesOutputHandler();
             InitializeComponent();
 
             Channel1VolumeHandler = new ChannelVolumeHandler(audioSource1, pot_gain_ch1, verticalVolumeSlider_ch1, pot_systemVolume);
             Channel2VolumeHandler = new ChannelVolumeHandler(audioSource2, pot_gain_ch2, verticalVolumeSlider_ch2, pot_systemVolume);
+
+            InitializeMixer();
+        }
+
+        private void InitializeMixer()
+        {
 
             efxCheckedChangedEventHandler();
             blockCueButtons();
@@ -48,7 +54,25 @@ namespace iRANE_62
             SetupVolumeMeters();
             SetupSystemVolume();
             SetupCrossfader();
+            UpdateHeadphonesOutput();
             microphoneHandler.IsActiveChanged += UpdateMicrophoneOutput;
+
+        }
+
+        public void UpdateHeadphonesOutput()
+        {
+            headphonesOutputHandler.RemoveSource(audioSource1);
+            headphonesOutputHandler.RemoveSource(audioSource2);
+
+            float volume = (float)pot_headphones_gain.Value;
+            if (chBox_cue_ch1.Checked && audioSource1.AudioFileReader != null)
+            {
+                headphonesOutputHandler.AddSource(audioSource1, audioSource1.OutputProvider, volume);
+            }
+            else if (chBox_cue_ch2.Checked && audioSource2.AudioFileReader != null)
+            {
+                headphonesOutputHandler.AddSource(audioSource2, audioSource2.OutputProvider, volume);
+            }
         }
 
         #region FX
@@ -471,12 +495,6 @@ namespace iRANE_62
             microphoneHandler.Volume = (float)pot_mic_level.Value;
         }
 
-        protected override void OnFormClosing(FormClosingEventArgs e)
-        {
-            base.OnFormClosing(e);
-            microphoneHandler?.Dispose();
-        }
-
         private void OnMicrophoneVolumeMeter(object sender, StreamVolumeEventArgs e)
         {
             microphoneHandler.MicLeftLevel = e.MaxSampleValues[0];
@@ -559,7 +577,7 @@ namespace iRANE_62
 
         #endregion
 
-        #region GUI doubleClick
+        #region GUI
         private void doubleClick(Pot pot)
         {
             pot.Value = 0.5f;
@@ -592,6 +610,46 @@ namespace iRANE_62
         private void pot_headphones_gain_DoubleClick(object sender, EventArgs e) => doubleClick((Pot)sender);
 
         private void pot_phones_pan_DoubleClick(object sender, EventArgs e) => doubleClick((Pot)sender);
+
+        private void pot_headphones_gain_ValueChanged(object sender, EventArgs e)
+        {
+            float volume = (float)pot_headphones_gain.Value;
+            if (chBox_cue_ch1.Checked)
+                headphonesOutputHandler.SetVolume(audioSource1, volume);
+            else if (chBox_cue_ch2.Checked)
+                headphonesOutputHandler.SetVolume(audioSource2, volume);
+        }
+
+        private void chBox_cue_ch1_CheckedChanged(object sender, EventArgs e)
+        {
+            cueCheckBoxChange((CheckBox)sender);
+        }
+
+        private void chBox_cue_ch2_CheckedChanged(object sender, EventArgs e)
+        {
+            cueCheckBoxChange((CheckBox)sender);
+        }
+
+        private void cueCheckBoxChange(CheckBox changedBox)
+        {
+            if (changedBox.Checked)
+            {
+                if (changedBox == chBox_cue_ch1)
+                    chBox_cue_ch2.Checked = false;
+                else if (changedBox == chBox_cue_ch2)
+                    chBox_cue_ch1.Checked = false;
+
+                UpdateHeadphonesOutput();
+            }
+        }
+
         #endregion
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            base.OnFormClosing(e);
+            microphoneHandler?.Dispose();
+            headphonesOutputHandler?.Dispose();
+        }
     }
 }

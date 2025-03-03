@@ -841,6 +841,7 @@ namespace iRANE_62
             chBox_cue_ch1.TabIndex = 5;
             chBox_cue_ch1.Text = "CUE PGM 1";
             chBox_cue_ch1.UseVisualStyleBackColor = true;
+            chBox_cue_ch1.CheckedChanged += chBox_cue_ch1_CheckedChanged;
             // 
             // chBox_cue_ch2
             // 
@@ -852,6 +853,7 @@ namespace iRANE_62
             chBox_cue_ch2.TabIndex = 5;
             chBox_cue_ch2.Text = "CUE PGM 2";
             chBox_cue_ch2.UseVisualStyleBackColor = true;
+            chBox_cue_ch2.CheckedChanged += chBox_cue_ch2_CheckedChanged;
             // 
             // panel_phones
             // 
@@ -886,6 +888,7 @@ namespace iRANE_62
             pot_headphones_gain.Size = new Size(43, 55);
             pot_headphones_gain.TabIndex = 3;
             pot_headphones_gain.Value = 0.5D;
+            pot_headphones_gain.ValueChanged += pot_headphones_gain_ValueChanged;
             pot_headphones_gain.DoubleClick += pot_headphones_gain_DoubleClick;
             // 
             // pot_phones_pan
