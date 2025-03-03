@@ -97,7 +97,7 @@ namespace iRANE_62
             chBox_cue_ch2 = new CheckBox();
             panel_phones = new Panel();
             chBox_phones_split = new CheckBox();
-            pot_phones_level = new NAudio.Gui.Pot();
+            pot_headphones_gain = new NAudio.Gui.Pot();
             pot_phones_pan = new NAudio.Gui.Pot();
             panel_mic = new Panel();
             chBox_mic_flexfx = new CheckBox();
@@ -137,6 +137,7 @@ namespace iRANE_62
             pot_gain_ch1.TabIndex = 3;
             pot_gain_ch1.Value = 0.5D;
             pot_gain_ch1.ValueChanged += pot_gain_ch1_ValueChanged;
+            pot_gain_ch1.Load += pot_gain_ch1_Load;
             // 
             // pot_high_ch1
             // 
@@ -149,6 +150,7 @@ namespace iRANE_62
             pot_high_ch1.TabIndex = 3;
             pot_high_ch1.Value = 0D;
             pot_high_ch1.ValueChanged += high_odt1_ValueChanged;
+            pot_high_ch1.Load += pot_high_ch1_Load;
             // 
             // pot_mid_ch1
             // 
@@ -161,6 +163,7 @@ namespace iRANE_62
             pot_mid_ch1.TabIndex = 3;
             pot_mid_ch1.Value = 0D;
             pot_mid_ch1.ValueChanged += mid_odt1_ValueChanged;
+            pot_mid_ch1.DoubleClick += pot_mid_ch1_DoubleClick;
             // 
             // pot_filter_ch1
             // 
@@ -195,6 +198,7 @@ namespace iRANE_62
             pot_gain_ch2.TabIndex = 3;
             pot_gain_ch2.Value = 0.5D;
             pot_gain_ch2.ValueChanged += pot_gain_ch2_ValueChanged;
+            pot_gain_ch2.DoubleClick += pot_gain_ch2_DoubleClick;
             // 
             // pot_high_ch2
             // 
@@ -207,6 +211,7 @@ namespace iRANE_62
             pot_high_ch2.TabIndex = 3;
             pot_high_ch2.Value = 0D;
             pot_high_ch2.ValueChanged += high_odt2_ValueChanged;
+            pot_high_ch2.DoubleClick += pot_high_ch2_DoubleClick;
             // 
             // pot_mid_ch2
             // 
@@ -219,6 +224,7 @@ namespace iRANE_62
             pot_mid_ch2.TabIndex = 3;
             pot_mid_ch2.Value = 0D;
             pot_mid_ch2.ValueChanged += mid_odt2_ValueChanged;
+            pot_mid_ch2.DoubleClick += pot_mid_ch2_DoubleClick;
             // 
             // pot_filter_ch2
             // 
@@ -231,6 +237,7 @@ namespace iRANE_62
             pot_filter_ch2.TabIndex = 3;
             pot_filter_ch2.Value = 0D;
             pot_filter_ch2.ValueChanged += filter_odt2_ValueChanged;
+            pot_filter_ch2.DoubleClick += pot_filter_ch2_DoubleClick;
             // 
             // pot_low_ch2
             // 
@@ -243,6 +250,7 @@ namespace iRANE_62
             pot_low_ch2.TabIndex = 3;
             pot_low_ch2.Value = 0D;
             pot_low_ch2.ValueChanged += low_odt2_ValueChanged;
+            pot_low_ch2.DoubleClick += pot_low_ch2_DoubleClick;
             // 
             // pot_mic_level
             // 
@@ -255,6 +263,7 @@ namespace iRANE_62
             pot_mic_level.TabIndex = 3;
             pot_mic_level.Value = 0.5D;
             pot_mic_level.ValueChanged += mic_level_ValueChanged;
+            pot_mic_level.DoubleClick += pot_mic_level_DoubleClick;
             // 
             // pot_mic_high
             // 
@@ -267,6 +276,7 @@ namespace iRANE_62
             pot_mic_high.TabIndex = 3;
             pot_mic_high.Value = 0.5D;
             pot_mic_high.ValueChanged += mic_high_ValueChanged;
+            pot_mic_high.DoubleClick += pot_mic_high_DoubleClick;
             // 
             // pot_mic_low
             // 
@@ -279,6 +289,7 @@ namespace iRANE_62
             pot_mic_low.TabIndex = 3;
             pot_mic_low.Value = 0.5D;
             pot_mic_low.ValueChanged += mic_low_ValueChanged;
+            pot_mic_low.DoubleClick += pot_mic_low_DoubleClick;
             // 
             // btn_micOnOff
             // 
@@ -356,6 +367,7 @@ namespace iRANE_62
             pot_low_ch1.TabIndex = 3;
             pot_low_ch1.Value = 0D;
             pot_low_ch1.ValueChanged += low_odt1_ValueChanged;
+            pot_low_ch1.DoubleClick += pot_low_ch1_DoubleClick;
             // 
             // chBox_flexfx_ch1
             // 
@@ -845,7 +857,7 @@ namespace iRANE_62
             // 
             panel_phones.BorderStyle = BorderStyle.FixedSingle;
             panel_phones.Controls.Add(chBox_phones_split);
-            panel_phones.Controls.Add(pot_phones_level);
+            panel_phones.Controls.Add(pot_headphones_gain);
             panel_phones.Controls.Add(pot_phones_pan);
             panel_phones.Location = new Point(901, 628);
             panel_phones.Margin = new Padding(2);
@@ -864,16 +876,17 @@ namespace iRANE_62
             chBox_phones_split.Text = "SPLIT CUE";
             chBox_phones_split.UseVisualStyleBackColor = true;
             // 
-            // pot_phones_level
+            // pot_headphones_gain
             // 
-            pot_phones_level.Location = new Point(11, 23);
-            pot_phones_level.Margin = new Padding(4, 5, 4, 5);
-            pot_phones_level.Maximum = 1D;
-            pot_phones_level.Minimum = 0D;
-            pot_phones_level.Name = "pot_phones_level";
-            pot_phones_level.Size = new Size(43, 55);
-            pot_phones_level.TabIndex = 3;
-            pot_phones_level.Value = 0.5D;
+            pot_headphones_gain.Location = new Point(11, 23);
+            pot_headphones_gain.Margin = new Padding(4, 5, 4, 5);
+            pot_headphones_gain.Maximum = 1D;
+            pot_headphones_gain.Minimum = 0D;
+            pot_headphones_gain.Name = "pot_headphones_gain";
+            pot_headphones_gain.Size = new Size(43, 55);
+            pot_headphones_gain.TabIndex = 3;
+            pot_headphones_gain.Value = 0.5D;
+            pot_headphones_gain.DoubleClick += pot_headphones_gain_DoubleClick;
             // 
             // pot_phones_pan
             // 
@@ -885,6 +898,7 @@ namespace iRANE_62
             pot_phones_pan.Size = new Size(43, 55);
             pot_phones_pan.TabIndex = 3;
             pot_phones_pan.Value = 0.5D;
+            pot_phones_pan.DoubleClick += pot_phones_pan_DoubleClick;
             // 
             // panel_mic
             // 
@@ -1070,7 +1084,7 @@ namespace iRANE_62
         private CheckBox chBox_cue_ch1;
         private CheckBox chBox_cue_ch2;
         private Panel panel_phones;
-        private NAudio.Gui.Pot pot_phones_level;
+        private NAudio.Gui.Pot pot_headphones_gain;
         private NAudio.Gui.Pot pot_phones_pan;
         private CheckBox chBox_phones_split;
         private NumericUpDown cross_fader;

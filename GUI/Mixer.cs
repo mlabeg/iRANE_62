@@ -559,6 +559,39 @@ namespace iRANE_62
 
         #endregion
 
+        #region GUI doubleClick
+        private void doubleClick(Pot pot)
+        {
+            pot.Value = 0.5f;
+        }
 
+        private void pot_mic_level_DoubleClick(object sender, EventArgs e) => doubleClick((Pot)sender);
+
+        private void pot_mic_high_DoubleClick(object sender, EventArgs e) => doubleClick((Pot)sender);
+
+        private void pot_mic_low_DoubleClick(object sender, EventArgs e) => doubleClick((Pot)sender);
+
+        private void pot_gain_ch1_Load(object sender, EventArgs e) => doubleClick((Pot)sender);
+
+        private void pot_high_ch1_Load(object sender, EventArgs e) => doubleClick((Pot)sender);
+
+        private void pot_mid_ch1_DoubleClick(object sender, EventArgs e) => doubleClick((Pot)sender);
+
+        private void pot_low_ch1_DoubleClick(object sender, EventArgs e) => doubleClick((Pot)sender);
+
+        private void pot_gain_ch2_DoubleClick(object sender, EventArgs e) => doubleClick((Pot)sender);
+
+        private void pot_high_ch2_DoubleClick(object sender, EventArgs e) => doubleClick((Pot)sender);
+
+        private void pot_mid_ch2_DoubleClick(object sender, EventArgs e) => doubleClick((Pot)sender);
+
+        private void pot_low_ch2_DoubleClick(object sender, EventArgs e) => doubleClick((Pot)sender);
+
+        private void pot_filter_ch2_DoubleClick(object sender, EventArgs e) => doubleClick((Pot)sender);
+
+        private void pot_headphones_gain_DoubleClick(object sender, EventArgs e) => doubleClick((Pot)sender);
+
+        private void pot_phones_pan_DoubleClick(object sender, EventArgs e) => doubleClick((Pot)sender);
+        #endregion
     }
 }
