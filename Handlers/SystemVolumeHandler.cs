@@ -13,19 +13,29 @@ namespace iRANE_62.Handlers
         private readonly AudioEndpointVolume speakersVolume;
         private readonly AudioEndpointVolume headphonesVolume;
 
+        public string HeadphonesDeviceId => headphones.ID;
+        public string SpeakersDeviceId => speakers.ID;
+
+
 
         public SystemVolumeHandler()
         {
             try
             {
                 deviceEnumerator = new MMDeviceEnumerator();
-               
-                var mmDeviceCollection= deviceEnumerator.EnumerateAudioEndPoints(DataFlow.Render,DeviceState.Active);
-                headphones = deviceEnumerator.GetDevice(mmDeviceCollection[0].ID);
-                speakers = deviceEnumerator.GetDevice(mmDeviceCollection[1].ID);
+
+                var devices = deviceEnumerator.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active).ToList();
+
+                if (devices.Count < 2)
+                {
+                    throw new InvalidOperationException("At least two audio devices (speakers and headphones) are required.");
+                }
+
+                headphones = devices[0];//można pomyśleć o zabezpieczeniu przed wypadkiem jeśli żande z dwóch urządzeń nie jest słuchawkami;
+                speakers = devices[1];
 
                 headphonesVolume = headphones.AudioEndpointVolume;
-                speakersVolume= speakers.AudioEndpointVolume;
+                speakersVolume = speakers.AudioEndpointVolume;
             }
             catch (Exception ex)
             {

@@ -2,6 +2,7 @@ using iRANE_62.Handlers;
 using iRANE_62.Models;
 using NAudio.Extras;
 using NAudio.Gui;
+using NAudio.Utils;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using System.ComponentModel;
@@ -15,12 +16,17 @@ namespace iRANE_62
         private readonly AudioSourceHandler audioSource1;
         private readonly AudioSourceHandler audioSource2;
         private readonly MicrophoneHandler microphoneHandler;
-        private readonly AudioOutputHandler audioOutputHandler;
+        //private readonly AudioOutputHandler audioOutputHandler;
         private readonly SystemVolumeHandler systemVolumeHandler;
-        private readonly HeadphonesOutputHandler headphonesOutputHandler;
+        //private readonly HeadphonesOutputHandler headphonesOutputHandler;
 
         public readonly ChannelVolumeHandler Channel1VolumeHandler;
         public readonly ChannelVolumeHandler Channel2VolumeHandler;
+
+        public readonly WaveOutEvent speakersOutput;
+        public readonly WaveOutEvent headphonesOutput;
+        private readonly MixingSampleProvider speakersMixer;
+        private readonly MixingSampleProvider headphonesMixer;
 
         public event Action<AudioSourceHandler, TimeSpan, Color> CuePointAdded;
 
@@ -29,14 +35,28 @@ namespace iRANE_62
 
         public Mixer() { }
 
-        public Mixer(ref AudioSourceHandler player1, ref AudioSourceHandler player2, AudioOutputHandler audioOutputHandler) : this()
+        public Mixer(ref AudioSourceHandler player1, ref AudioSourceHandler player2/*, AudioOutputHandler audioOutputHandler*/) : this()
         {
             this.audioSource1 = player1 ?? throw new ArgumentNullException(nameof(player1));
             this.audioSource2 = player2 ?? throw new ArgumentNullException(nameof(player2));
-            this.audioOutputHandler = audioOutputHandler ?? throw new ArgumentNullException(nameof(audioOutputHandler));
+            //this.audioOutputHandler = audioOutputHandler ?? throw new ArgumentNullException(nameof(audioOutputHandler));
             microphoneHandler = new MicrophoneHandler();
             systemVolumeHandler = new SystemVolumeHandler();
-            headphonesOutputHandler = new HeadphonesOutputHandler();
+
+            //g³oœniki
+            speakersMixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
+            speakersOutput = new WaveOutEvent();
+            //speakersOutput.SetDeviceById(systemVolumeHandler.SpeakersDeviceId);
+            speakersOutput.DeviceNumber = 1;
+            speakersOutput.Init(speakersMixer);
+
+            //s³uchawki
+            headphonesMixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
+            headphonesOutput = new WaveOutEvent();
+            headphonesOutput.DeviceNumber = 0;
+            headphonesOutput.Init(headphonesMixer);
+
+            //headphonesOutputHandler = new HeadphonesOutputHandler();
             InitializeComponent();
 
             Channel1VolumeHandler = new ChannelVolumeHandler(audioSource1, pot_gain_ch1, verticalVolumeSlider_ch1, pot_systemVolume);
@@ -45,35 +65,60 @@ namespace iRANE_62
             InitializeMixer();
         }
 
+
         private void InitializeMixer()
         {
-
             efxCheckedChangedEventHandler();
             blockCueButtons();
             SetupMicrophoneControls();
             SetupVolumeMeters();
             SetupSystemVolume();
             SetupCrossfader();
-            UpdateHeadphonesOutput();
+            SetupAudioOutputs();
+
+            //UpdateHeadphonesOutput();
             microphoneHandler.IsActiveChanged += UpdateMicrophoneOutput;
+            speakersOutput.Play();
+            headphonesOutput.Play();
 
         }
 
-        public void UpdateHeadphonesOutput()
+        private void SetupAudioOutputs()
         {
-            headphonesOutputHandler.RemoveSource(audioSource1);
-            headphonesOutputHandler.RemoveSource(audioSource2);
+            UpdateAudioOutputs();
+        }
 
-            float volume = (float)pot_headphones_gain.Value;
-            if (chBox_cue_ch1.Checked && audioSource1.AudioFileReader != null)
+        public void UpdateAudioOutputs()
+        {
+            speakersMixer.RemoveAllMixerInputs();
+            headphonesMixer.RemoveAllMixerInputs();
+
+            if (audioSource1.AudioFileReader != null)
             {
-                headphonesOutputHandler.AddSource(audioSource1, audioSource1.OutputProvider, volume);
+                speakersMixer.AddMixerInput(audioSource1.OutputProvider); // Chanel1 to speakers
             }
-            else if (chBox_cue_ch2.Checked && audioSource2.AudioFileReader != null)
+            if (audioSource2.AudioFileReader != null)
             {
-                headphonesOutputHandler.AddSource(audioSource2, audioSource2.OutputProvider, volume);
+                headphonesMixer.AddMixerInput(audioSource2.OutputProvider); // Chanel2 to headphones
             }
         }
+
+        /*
+public void UpdateHeadphonesOutput()
+{
+   headphonesOutputHandler.RemoveSource(audioSource1);
+   headphonesOutputHandler.RemoveSource(audioSource2);
+
+   float volume = (float)pot_headphones_gain.Value;
+   if (chBox_cue_ch1.Checked && audioSource1.AudioFileReader != null)
+   {
+       headphonesOutputHandler.AddSource(audioSource1, audioSource1.OutputProvider, volume);
+   }
+   else if (chBox_cue_ch2.Checked && audioSource2.AudioFileReader != null)
+   {
+       headphonesOutputHandler.AddSource(audioSource2, audioSource2.OutputProvider, volume);
+   }
+}*/
 
         #region FX
 
@@ -447,11 +492,13 @@ namespace iRANE_62
         {
             if (isActive)
             {
-                audioOutputHandler.AddSource(microphoneHandler, microphoneHandler.GetMeteringSampleProvider());
+                speakersMixer.AddMixerInput(microphoneHandler.GetMeteringSampleProvider());
+               // audioOutputHandler.AddSource(microphoneHandler, microphoneHandler.GetMeteringSampleProvider());
             }
             else
             {
-                audioOutputHandler.RemoveSource(microphoneHandler);
+                speakersMixer.RemoveMixerInput(microphoneHandler.GetMeteringSampleProvider());
+               // audioOutputHandler.RemoveSource(microphoneHandler);
 
             }
         }
@@ -635,7 +682,7 @@ namespace iRANE_62
                 else if (changedBox == chBox_cue_ch2)
                     chBox_cue_ch1.Checked = false;
 
-                UpdateHeadphonesOutput();
+                //UpdateHeadphonesOutput();
             }
         }
 
@@ -645,7 +692,10 @@ namespace iRANE_62
         {
             base.OnFormClosing(e);
             microphoneHandler?.Dispose();
-            headphonesOutputHandler?.Dispose();
+            speakersOutput?.Dispose();
+            headphonesOutput?.Dispose();
+            systemVolumeHandler?.Dispose();
+            //headphonesOutputHandler?.Dispose();
         }
     }
 }

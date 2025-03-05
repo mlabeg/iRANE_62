@@ -83,7 +83,7 @@ namespace iRANE_62.Handlers
             if (AudioFileReader == null) throw new InvalidOperationException("Brak wybranego pliku do odtworzenia.");
             if (!isPlaying)
             {
-                outputManager.AddSource(this, outputProvider);
+                //outputManager.AddSource(this, outputProvider);
                 isPlaying = true;
             }
         }
@@ -92,7 +92,7 @@ namespace iRANE_62.Handlers
         {
             if (isPlaying)
             {
-                outputManager.RemoveSource(this);
+               // outputManager.RemoveSource(this);
                 isPlaying = false;
                 leftChanelVolumeLevel = 0f;
                 rightChanelVolumeLevel = 0f;

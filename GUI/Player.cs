@@ -1,10 +1,6 @@
-﻿using iRANE_62.Extensions;
-using iRANE_62.Handlers;
+﻿using iRANE_62.Handlers;
 using iRANE_62.Models;
-using NAudio.Dmo.Effect;
-using NAudio.Extras;
 using NAudio.Wave;
-using NAudio.Wave.SampleProviders;
 using NAudio.WaveFormRenderer;
 
 
@@ -17,7 +13,7 @@ namespace iRANE_62
         private AudioSourceHandler chanel1;
         private AudioSourceHandler chanel2;
 
-        private readonly AudioOutputHandler audioOutputHandler;
+        //private readonly AudioOutputHandler audioOutputHandler;
         private readonly WaveFormRenderer waveFormRenderer;
 
         public Player()
@@ -29,8 +25,8 @@ namespace iRANE_62
 
             chanel1 = new AudioSourceHandler(1);
             chanel2 = new AudioSourceHandler(2);
-            audioOutputHandler = new AudioOutputHandler();
-            mixer = new Mixer(ref chanel1, ref chanel2, audioOutputHandler);
+           // audioOutputHandler = new AudioOutputHandler();
+            mixer = new Mixer(ref chanel1, ref chanel2/*, audioOutputHandler*/);
 
             waveFormRenderer = new WaveFormRenderer();
 
@@ -66,15 +62,18 @@ namespace iRANE_62
             {
                 if (audioSource.IsPlaying)
                 {
-                    audioSource.Pause(audioOutputHandler);
+                    audioSource.Pause(null);
+                    mixer.speakersOutput.Stop();
+                    mixer.headphonesOutput.Stop();
                 }
                 else
                 {
+                    audioSource.Play(null); // No longer needs AudioOutputHandler
                     mixer.Channel1VolumeHandler.UpdateVolume();
                     mixer.Channel2VolumeHandler.UpdateVolume();
-                    mixer.UpdateHeadphonesOutput();
-
-                    audioSource.Play(audioOutputHandler);
+                    mixer.UpdateAudioOutputs();
+                    mixer.speakersOutput.Play();
+                    mixer.headphonesOutput.Play();
                     timer1.Enabled = true;
                 }
             }
@@ -351,7 +350,7 @@ namespace iRANE_62
 
         private void Stop(ref AudioSourceHandler player)
         {
-            player.Stop(audioOutputHandler);
+           // player.Stop(audioOutputHandler);
         }
 
         #endregion
@@ -363,7 +362,7 @@ namespace iRANE_62
 
         private void Pause(ref AudioSourceHandler player)
         {
-            player.Pause(audioOutputHandler);
+           // player.Pause(audioOutputHandler);
         }
 
         #endregion
@@ -483,7 +482,7 @@ namespace iRANE_62
         {
             chanel1.Dispose();
             chanel2.Dispose();
-            audioOutputHandler.Dispose();
+            //audioOutputHandler.Dispose();
         }
 
         void OnTimerTick(object sender, EventArgs e)
