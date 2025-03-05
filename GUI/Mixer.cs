@@ -532,12 +532,12 @@ namespace iRANE_62
 
         private void pot_mainVolume_ValueChanged(object sender, EventArgs e)
         {
-            systemVolumeHandler.Volume = (float)pot_systemVolume.Value;
+            systemVolumeHandler.SpeakersVolume = (float)pot_systemVolume.Value;
         }
 
         private void SetupSystemVolume()
         {
-            pot_systemVolume.Value = systemVolumeHandler.Volume;
+            pot_systemVolume.Value = systemVolumeHandler.SpeakersVolume;
         }
 
         private void SetupVolumeMeters()
@@ -613,11 +613,7 @@ namespace iRANE_62
 
         private void pot_headphones_gain_ValueChanged(object sender, EventArgs e)
         {
-            float volume = (float)pot_headphones_gain.Value;
-            if (chBox_cue_ch1.Checked)
-                headphonesOutputHandler.SetVolume(audioSource1, volume);
-            else if (chBox_cue_ch2.Checked)
-                headphonesOutputHandler.SetVolume(audioSource2, volume);
+            systemVolumeHandler.HeadphonesVolume=(float)pot_headphones_gain.Value;
         }
 
         private void chBox_cue_ch1_CheckedChanged(object sender, EventArgs e)

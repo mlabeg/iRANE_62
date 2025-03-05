@@ -8,43 +8,74 @@ namespace iRANE_62.Handlers
     {
         private readonly MMDeviceEnumerator deviceEnumerator;
         private readonly MMDevice defaultDevice;
-        private readonly AudioEndpointVolume endpointVolume;
+        private readonly MMDevice headphones;
+        private readonly MMDevice speakers;
+        private readonly AudioEndpointVolume speakersVolume;
+        private readonly AudioEndpointVolume headphonesVolume;
+
 
         public SystemVolumeHandler()
         {
             try
             {
                 deviceEnumerator = new MMDeviceEnumerator();
-                defaultDevice = deviceEnumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
-                endpointVolume = defaultDevice.AudioEndpointVolume;
+               
+                var mmDeviceCollection= deviceEnumerator.EnumerateAudioEndPoints(DataFlow.Render,DeviceState.Active);
+                headphones = deviceEnumerator.GetDevice(mmDeviceCollection[0].ID);
+                speakers = deviceEnumerator.GetDevice(mmDeviceCollection[1].ID);
+
+                headphonesVolume = headphones.AudioEndpointVolume;
+                speakersVolume= speakers.AudioEndpointVolume;
             }
             catch (Exception ex)
             {
                 throw new InvalidOperationException("Failed to initialize system volume control.", ex);
+                //TODO zaprogramować przypadke, kiedy słuchawki nie są podłączone:
+                // - powiadomić  użytkownika, że nie ma słuchawek i niech je lepiej podłączy, albo to nie bedzie działać i puścić to przez DefaultDevice
+                // - zablokowac pokrętło pot_headphones_gain
             }
         }
 
-        public float Volume
+        public float SpeakersVolume
         {
-            get => endpointVolume.MasterVolumeLevelScalar;
+            get => speakersVolume.MasterVolumeLevelScalar;
             set
             {
                 if (value < 0.0f || value > 1.0f)
                     throw new ArgumentOutOfRangeException(nameof(value), "Volume must be between 0.0 and 1.0.");
-                endpointVolume.MasterVolumeLevelScalar = value;
+                speakersVolume.MasterVolumeLevelScalar = value;
             }
         }
 
-        public bool IsMuted
+        public float HeadphonesVolume
         {
-            get => endpointVolume.Mute;
-            set => endpointVolume.Mute = value;
+            get => headphonesVolume.MasterVolumeLevelScalar;
+            set
+            {
+                if (value < 0.0f || value > 1.0f)
+                    throw new ArgumentOutOfRangeException(nameof(value), "Volume must be between 0.0 and 1.0.");
+                headphonesVolume.MasterVolumeLevelScalar = value;
+            }
+        }
+
+
+        public bool AreMutedHeadphones
+        {
+            get => headphonesVolume.Mute;
+            set => headphonesVolume.Mute = value;
+        }
+        public bool AreMutedSpeakers
+        {
+            get => speakersVolume.Mute;
+            set => speakersVolume.Mute = value;
         }
 
         public void Dispose()
         {
-            endpointVolume?.Dispose();
-            defaultDevice?.Dispose();
+            speakersVolume?.Dispose();
+            headphonesVolume?.Dispose();
+            headphones?.Dispose();
+            speakers?.Dispose();
             deviceEnumerator?.Dispose();
         }
     }
