@@ -146,14 +146,22 @@ namespace iRANE_62.Handlers
             // Add Reverb if enabled
             /*if (reverbEnabled)
             {*/
-            reverbEffect = new DmoWavesReverb();
+           
+            /*reverbEffect = new DmoWavesReverb();
             var reverbEffectParams = reverbEffect.EffectParams;
             reverbEffectParams.InGain = 0f;       // Input gain (dB)
             reverbEffectParams.ReverbMix = -10f;  // Reverb mix (dB)
             reverbEffectParams.ReverbTime = 1000f; // Reverb time (ms)
             reverbEffectParams.HighFreqRtRatio = 0.001f; // High frequency reverb time ratio
-
+            */
             effectWaveProvider = new DmoEffectWaveProvider<DmoWavesReverb, DmoWavesReverb.Params>(Equalizer.equalizer.ToWaveProvider());
+
+            var reverbEffectParams = effectWaveProvider.EffectParams;
+
+            reverbEffectParams.InGain = 0f;       // Input gain (dB)
+            reverbEffectParams.ReverbMix = -10f;  // Reverb mix (dB)
+            reverbEffectParams.ReverbTime = 1000f; // Reverb time (ms)
+            reverbEffectParams.HighFreqRtRatio = 0.001f; // High frequency reverb time ratio
 
             outputProvider = new MeteringSampleProvider(effectWaveProvider.ToSampleProvider());
 
