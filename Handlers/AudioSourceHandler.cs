@@ -1,5 +1,6 @@
 ﻿using iRANE_62.Extensions;
 using iRANE_62.Models;
+using NAudio.Dmo.Effect;
 using NAudio.Dsp;
 using NAudio.Extras;
 using NAudio.Wave;
@@ -34,6 +35,10 @@ namespace iRANE_62.Handlers
 
         private EventHandler<StreamVolumeEventArgs> volumeMeteredHandlers;
 
+        private DmoEffectWaveProvider<DmoWavesReverb, DmoWavesReverb.Params> effectWaveProvider;
+        private DmoWavesReverb reverbEffect;
+        private bool reverbEnabled = true;
+
 
         public AudioSourceHandler(int id)
         {
@@ -41,6 +46,19 @@ namespace iRANE_62.Handlers
             Equalizer = new Eq();
             Loop = new Loop();
             CurrentPlaybackPosition = 0;
+        }
+
+        public bool ReverbEnabled
+        {
+            get => reverbEnabled;
+            set
+            {
+                if (reverbEnabled != value)
+                {
+                    reverbEnabled = value;
+                    SetupAudioChain(); // Rebuild chain to include/exclude reverb
+                }
+            }
         }
 
         public bool IsPlaying => isPlaying;
@@ -116,7 +134,7 @@ namespace iRANE_62.Handlers
             SetVolumeDelegate?.Invoke(volume);
         }
 
-        private void SetupAudioChain()
+        private void SetupAudioChain()//TODO pomyśleć o stworzeniu klasy AddToAudioChain(ISampleProvider sampleProvider), która będzie zarządzać łańcuchem dźwięku
         {
             var sampleChannel = new SampleChannel(AudioFileReader, true);
             SetVolumeDelegate = vol => sampleChannel.Volume = vol;
@@ -125,7 +143,19 @@ namespace iRANE_62.Handlers
             Equalizer.PanningProvider = new StereoPanningSampleProvider(Equalizer.FilterSampleProvider);
             Equalizer.equalizer = new Equalizer(Equalizer.PanningProvider, Equalizer.Bands);
 
-            outputProvider = new MeteringSampleProvider(Equalizer.equalizer);
+            // Add Reverb if enabled
+            /*if (reverbEnabled)
+            {*/
+            reverbEffect = new DmoWavesReverb();
+            var reverbEffectParams = reverbEffect.EffectParams;
+            reverbEffectParams.InGain = 0f;       // Input gain (dB)
+            reverbEffectParams.ReverbMix = -10f;  // Reverb mix (dB)
+            reverbEffectParams.ReverbTime = 1000f; // Reverb time (ms)
+            reverbEffectParams.HighFreqRtRatio = 0.001f; // High frequency reverb time ratio
+
+            effectWaveProvider = new DmoEffectWaveProvider<DmoWavesReverb, DmoWavesReverb.Params>(Equalizer.equalizer.ToWaveProvider());
+
+            outputProvider = new MeteringSampleProvider(effectWaveProvider.ToSampleProvider());
 
             if (volumeMeteredHandlers != null)
             {
@@ -136,16 +166,16 @@ namespace iRANE_62.Handlers
                 leftChanelVolumeLevel = e.MaxSampleValues[0];
                 rightChanelVolumeLevel = e.MaxSampleValues[1];
             };
+            // }
         }
-
-        public void Dispose()
-        {
-            if (outputProvider != null)
+            public void Dispose()
             {
-                ((MeteringSampleProvider)outputProvider).StreamVolume -= volumeMeteredHandlers;
+                if (outputProvider != null)
+                {
+                    ((MeteringSampleProvider)outputProvider).StreamVolume -= volumeMeteredHandlers;
+                }
+                AudioFileReader?.Dispose();
+                AudioFileReader = null;
             }
-            AudioFileReader?.Dispose();
-            AudioFileReader = null;
         }
     }
-}
