@@ -59,7 +59,6 @@ namespace iRANE_62
                 BeginPlayback(audioSource);
             }
         }
-
         private void BeginPlayback(AudioSourceHandler audioSource)
         {
             try
@@ -87,21 +86,6 @@ namespace iRANE_62
         {
             audioSource.SetVolume(audioSource.Id == 1 ? (float)mixer.pot_gain_ch1.Value : (float)mixer.pot_gain_ch2.Value);
         }
-
-
-        // ten kawałek kodu może być potrzebny później przy dodaniu obsługi słuchawek
-        /* private IWavePlayer CreateWavePlayer()//możesz to dodać jako menu rozwijane z paska u góry
-         {
-             switch (comboBoxOutputDriver.SelectedIndex)
-             {
-                 case 2:
-                     return new WaveOutEvent();
-                 case 1:
-                     return new WaveOut(WaveCallbackInfo.FunctionCallback());
-                 default:
-                     return new WaveOut();
-             }
-         }*/
 
         #endregion
 
@@ -408,7 +392,6 @@ namespace iRANE_62
                 }
 
                 BeginInvoke((Action)(() => FinishedRender(image, player)));
-
             }
             catch (Exception e)
             {
@@ -420,7 +403,6 @@ namespace iRANE_62
         {
             if (player.Id == 1)
             {
-
                 labelRendering1.Visible = false;
                 waveform_ch1.Image = image;
                 Enabled = true;
@@ -430,7 +412,6 @@ namespace iRANE_62
                 labelRendering2.Visible = false;
                 waveform_ch2.Image = image;
                 Enabled = true;
-
             }
         }
 
@@ -464,7 +445,6 @@ namespace iRANE_62
             {
                 if (cuePoint.TotalSeconds >= 0 && cuePoint < player.AudioFileReader.TotalTime)
                 {
-                    // Obliczamy pozycję X na waveformie
                     int xPos = (int)(waveform.Width * (cuePoint.TotalSeconds / player.AudioFileReader.TotalTime.TotalSeconds));
 
                     using (Pen pen = new Pen(color, 3))
@@ -474,7 +454,7 @@ namespace iRANE_62
                 }
             }
 
-            waveform.Invalidate(); // Odświeżenie kontrolki, aby wyświetlić nową linię
+            waveform.Invalidate();
         }
 
         #endregion

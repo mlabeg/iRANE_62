@@ -593,5 +593,18 @@ namespace iRANE_62
 
         private void pot_phones_pan_DoubleClick(object sender, EventArgs e) => doubleClick((Pot)sender);
         #endregion
+
+        private void chBox_efx_on_CheckedChanged(object sender, EventArgs e)
+        {
+            if (audioSource1.AudioFileReader != null)
+            {
+                audioSource1.ReverbEnabled = !audioSource1.ReverbEnabled;
+            }
+            /*if (audioSource2.AudioFileReader != null)
+            {
+                audioSource2.ReverbEnabled = !audioSource2.ReverbEnabled;
+            }*/
+
+        }
     }
 }

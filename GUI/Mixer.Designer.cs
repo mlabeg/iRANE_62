@@ -591,6 +591,8 @@ namespace iRANE_62
             // chBox_efx_on
             // 
             chBox_efx_on.AutoSize = true;
+            chBox_efx_on.Checked = true;
+            chBox_efx_on.CheckState = CheckState.Checked;
             chBox_efx_on.Location = new Point(437, 99);
             chBox_efx_on.Margin = new Padding(2);
             chBox_efx_on.Name = "chBox_efx_on";
@@ -598,6 +600,7 @@ namespace iRANE_62
             chBox_efx_on.TabIndex = 5;
             chBox_efx_on.Text = "ON";
             chBox_efx_on.UseVisualStyleBackColor = true;
+            chBox_efx_on.CheckedChanged += chBox_efx_on_CheckedChanged;
             // 
             // chBox_efx_cue
             // 

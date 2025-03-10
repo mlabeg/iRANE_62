@@ -15,7 +15,7 @@ namespace iRANE_62.Handlers
         {
             try
             {
-                mainMixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2))
+                mainMixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(48000, 2))
                 {
                     ReadFully = true
                 };

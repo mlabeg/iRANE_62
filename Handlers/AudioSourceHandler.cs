@@ -37,7 +37,7 @@ namespace iRANE_62.Handlers
 
         private DmoEffectWaveProvider<DmoWavesReverb, DmoWavesReverb.Params> effectWaveProvider;
         private DmoWavesReverb reverbEffect;
-        private bool reverbEnabled = true;
+        private bool reverbEnabled=true;
 
 
         public AudioSourceHandler(int id)
@@ -56,7 +56,7 @@ namespace iRANE_62.Handlers
                 if (reverbEnabled != value)
                 {
                     reverbEnabled = value;
-                    SetupAudioChain(); // Rebuild chain to include/exclude reverb
+                    SetupAudioChain();
                 }
             }
         }
@@ -101,6 +101,8 @@ namespace iRANE_62.Handlers
             if (AudioFileReader == null) throw new InvalidOperationException("Brak wybranego pliku do odtworzenia.");
             if (!isPlaying)
             {
+                leftChanelVolumeLevel = 0.5f;
+                rightChanelVolumeLevel = 0.5f;
                 outputManager.AddSource(this, outputProvider);
                 isPlaying = true;
             }
@@ -142,28 +144,30 @@ namespace iRANE_62.Handlers
             Equalizer.FilterSampleProvider = new FilterSampleProvider(sampleChannel, AudioFileReader.WaveFormat.SampleRate);
             Equalizer.PanningProvider = new StereoPanningSampleProvider(Equalizer.FilterSampleProvider);
             Equalizer.equalizer = new Equalizer(Equalizer.PanningProvider, Equalizer.Bands);
-
+            
             // Add Reverb if enabled
-            /*if (reverbEnabled)
-            {*/
-           
-            /*reverbEffect = new DmoWavesReverb();
-            var reverbEffectParams = reverbEffect.EffectParams;
-            reverbEffectParams.InGain = 0f;       // Input gain (dB)
-            reverbEffectParams.ReverbMix = -10f;  // Reverb mix (dB)
-            reverbEffectParams.ReverbTime = 1000f; // Reverb time (ms)
-            reverbEffectParams.HighFreqRtRatio = 0.001f; // High frequency reverb time ratio
-            */
-            effectWaveProvider = new DmoEffectWaveProvider<DmoWavesReverb, DmoWavesReverb.Params>(Equalizer.equalizer.ToWaveProvider());
+            if (reverbEnabled)
+            {
+                var waveProvider = new SampleToWaveProvider16(Equalizer.equalizer);
 
-            var reverbEffectParams = effectWaveProvider.EffectParams;
+                effectWaveProvider = new DmoEffectWaveProvider<DmoWavesReverb, DmoWavesReverb.Params>(waveProvider);
 
-            reverbEffectParams.InGain = 0f;       // Input gain (dB)
-            reverbEffectParams.ReverbMix = -10f;  // Reverb mix (dB)
-            reverbEffectParams.ReverbTime = 1000f; // Reverb time (ms)
-            reverbEffectParams.HighFreqRtRatio = 0.001f; // High frequency reverb time ratio
+                var reverbEffectParams = effectWaveProvider.EffectParams;
 
-            outputProvider = new MeteringSampleProvider(effectWaveProvider.ToSampleProvider());
+                reverbEffectParams.InGain = 0f;       // Input gain (dB)
+                reverbEffectParams.ReverbMix = 0f;  // Reverb mix (dB)
+                reverbEffectParams.ReverbTime = 1000f; // Reverb time (ms)
+                reverbEffectParams.HighFreqRtRatio = 0.1f; // High frequency reverb time ratio
+
+                var sampleProvider = new Wave16ToFloatProvider(effectWaveProvider);
+                var sP1 = new WaveToSampleProvider(sampleProvider);
+
+                outputProvider = new MeteringSampleProvider(sP1);
+            }
+            else
+            {
+                outputProvider = new MeteringSampleProvider(Equalizer.equalizer);
+            }
 
             if (volumeMeteredHandlers != null)
             {
@@ -174,16 +178,16 @@ namespace iRANE_62.Handlers
                 leftChanelVolumeLevel = e.MaxSampleValues[0];
                 rightChanelVolumeLevel = e.MaxSampleValues[1];
             };
-            // }
         }
-            public void Dispose()
+
+        public void Dispose()
+        {
+            if (outputProvider != null)
             {
-                if (outputProvider != null)
-                {
-                    ((MeteringSampleProvider)outputProvider).StreamVolume -= volumeMeteredHandlers;
-                }
-                AudioFileReader?.Dispose();
-                AudioFileReader = null;
+                ((MeteringSampleProvider)outputProvider).StreamVolume -= volumeMeteredHandlers;
             }
+            AudioFileReader?.Dispose();
+            AudioFileReader = null;
         }
     }
+}
