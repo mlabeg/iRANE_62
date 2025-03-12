@@ -23,11 +23,6 @@ namespace iRANE_62
 
         public event Action<AudioSourceHandler, TimeSpan, Color> CuePointAdded;
 
-        private float chanel1OriginalVolume = 0.5f;
-        private float chanel2OriginalVolume = 0.5f;
-        private bool isMicOverActive = false;
-
-
         public Mixer() { }
 
         public Mixer(ref AudioSourceHandler player1, ref AudioSourceHandler player2, AudioOutputHandler audioOutputHandler) : this()
@@ -437,7 +432,7 @@ namespace iRANE_62
             microphoneHandler.VolumeIndicator += OnMicrophoneVolumeMeter;
             microphoneHandler.Volume = (float)pot_mic_level.Value;
             btn_micOnOff.BackColor = microphoneHandler.IsActive ? Color.Green : SystemColors.Control;
-            btn_micOver.BackColor = isMicOverActive ? Color.Green : SystemColors.Control;
+            btn_micOver.BackColor = microphoneHandler.IsMicOverActive ? Color.Green : SystemColors.Control;
             if (microphoneHandler.IsActive)
                 UpdateMicrophoneOutput(true);
         }
@@ -459,11 +454,11 @@ namespace iRANE_62
         {
             if (!microphoneHandler.IsActive) return;
 
-            isMicOverActive = !isMicOverActive;
+            microphoneHandler.IsMicOverActive = !microphoneHandler.IsMicOverActive;
 
-            Channel1VolumeHandler.IsMicOverActive = isMicOverActive;
-            Channel2VolumeHandler.IsMicOverActive = isMicOverActive;
-            btn_micOver.BackColor = isMicOverActive ? Color.Green : SystemColors.Control;
+            Channel1VolumeHandler.IsMicOverActive = microphoneHandler.IsMicOverActive;
+            Channel2VolumeHandler.IsMicOverActive = microphoneHandler.IsMicOverActive;
+            btn_micOver.BackColor = microphoneHandler.IsMicOverActive ? Color.Green : SystemColors.Control;
         }
 
         private void mic_level_ValueChanged(object sender, EventArgs e)
