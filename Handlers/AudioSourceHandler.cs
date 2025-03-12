@@ -31,30 +31,12 @@ namespace iRANE_62.Handlers
 
         private EventHandler<StreamVolumeEventArgs> volumeMeteredHandlers;
 
-        private DmoEffectWaveProvider<DmoWavesReverb, DmoWavesReverb.Params> effectWaveProvider;
-        private DmoWavesReverb reverbEffect;
-        private bool reverbEnabled = true;
-
-
         public AudioSourceHandler(int id)
         {
             Id = id;
             Equalizer = new Eq();
             Loop = new Loop();
             CurrentPlaybackPosition = 0;
-        }
-
-        public bool ReverbEnabled
-        {
-            get => reverbEnabled;
-            set
-            {
-                if (reverbEnabled != value)
-                {
-                    reverbEnabled = value;
-                    SetupAudioChain();
-                }
-            }
         }
 
         public bool IsPlaying => isPlaying;
