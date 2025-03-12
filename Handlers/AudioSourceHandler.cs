@@ -16,7 +16,7 @@ namespace iRANE_62.Handlers
         public AudioFileReader AudioFileReader { get; private set; }
         public string FileName { get; private set; }
         public Song? Song { get; set; }
-        public Eq Equalizer { get; set; }
+        public EqSectionHandler Equalizer { get; set; }
         public Loop Loop { get; set; }
 
         public int CurrentPlaybackPosition { get; set; }
@@ -34,7 +34,7 @@ namespace iRANE_62.Handlers
         public AudioSourceHandler(int id)
         {
             Id = id;
-            Equalizer = new Eq();
+            Equalizer = new EqSectionHandler();
             Loop = new Loop();
             CurrentPlaybackPosition = 0;
         }
@@ -119,9 +119,9 @@ namespace iRANE_62.Handlers
 
             Equalizer.FilterSampleProvider = new FilterSampleProvider(sampleChannel, AudioFileReader.WaveFormat.SampleRate);
             Equalizer.PanningProvider = new StereoPanningSampleProvider(Equalizer.FilterSampleProvider);
-            Equalizer.equalizer = new Equalizer(Equalizer.PanningProvider, Equalizer.Bands);
+            Equalizer.Equalizer = new Equalizer(Equalizer.PanningProvider, Equalizer.Bands);
 
-            var echoEffect=new EchoEffectSampleProvider(Equalizer.equalizer, 825, 0.35f, 0.25f);
+            var echoEffect=new EchoEffectSampleProvider(Equalizer.Equalizer, 825, 0.35f, 0.25f);
 
             outputProvider = new MeteringSampleProvider(echoEffect);
 

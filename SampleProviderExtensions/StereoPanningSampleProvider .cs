@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace iRANE_62.Extensions
+namespace iRANE_62.SampleProviderExtensions
 {
     public class StereoPanningSampleProvider : ISampleProvider
     {
