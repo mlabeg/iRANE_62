@@ -1,5 +1,6 @@
 ﻿using iRANE_62.Extensions;
 using iRANE_62.Models;
+using iRANE_62.SampleProviderExtensions;
 using NAudio.Dmo;
 using NAudio.Dmo.Effect;
 using NAudio.Dsp;
@@ -138,24 +139,9 @@ namespace iRANE_62.Handlers
             Equalizer.PanningProvider = new StereoPanningSampleProvider(Equalizer.FilterSampleProvider);
             Equalizer.equalizer = new Equalizer(Equalizer.PanningProvider, Equalizer.Bands);
 
-            if (reverbEnabled)
-            {
-                effectWaveProvider = new DmoEffectWaveProvider<DmoWavesReverb, DmoWavesReverb.Params>(Equalizer.equalizer.ToWaveProvider());
+            var echoEffect=new EchoEffectSampleProvider(Equalizer.equalizer, 825, 0.35f, 0.25f);
 
-                var reverbEffectParams = effectWaveProvider.EffectParams;
-                reverbEffectParams.InGain = 0f;
-                reverbEffectParams.ReverbMix = 0f;
-                reverbEffectParams.ReverbTime = 1000f;
-                reverbEffectParams.HighFreqRtRatio = 0.001f;
-
-                var tmp = new WaveToSampleProvider(effectWaveProvider);
-
-                outputProvider = new MeteringSampleProvider(effectWaveProvider.ToSampleProvider());
-            }
-            else
-            {
-                outputProvider = new MeteringSampleProvider(Equalizer.equalizer);
-            }
+            outputProvider = new MeteringSampleProvider(echoEffect);
 
             if (volumeMeteredHandlers != null)
             {
