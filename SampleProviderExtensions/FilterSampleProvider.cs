@@ -2,16 +2,16 @@
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using System;
+using System.Runtime.CompilerServices;
 
 namespace iRANE_62.SampleProviderExtensions
 {
-    public class FilterSampleProvider : ISampleProvider
+    public class FilterSampleProvider :IEffectSampleProvider
     {
         private readonly ISampleProvider source;
         private readonly BiQuadFilter lowPassFilter;
         private readonly BiQuadFilter highPassFilter;
         private float filterValue = 0.0f;
-
 
         public FilterSampleProvider(ISampleProvider source, int sampleRate)
         {

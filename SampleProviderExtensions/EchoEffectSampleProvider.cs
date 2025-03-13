@@ -14,7 +14,6 @@ namespace iRANE_62.SampleProviderExtensions
         private float echoGain;
         private float delay;
         private float[] delayBuffer;
-
         private int position;
 
         public EchoEffectSampleProvider(ISampleProvider source, int echoDelayInMilliseconds, float echoGain, float delay)

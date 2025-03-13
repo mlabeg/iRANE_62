@@ -1,5 +1,4 @@
-﻿using iRANE_62.Extensions;
-using iRANE_62.Models;
+﻿using iRANE_62.Models;
 using iRANE_62.SampleProviderExtensions;
 using NAudio.Dmo;
 using NAudio.Dmo.Effect;
@@ -28,6 +27,8 @@ namespace iRANE_62.Handlers
 
         private ISampleProvider outputProvider;
         private bool isPlaying;
+
+        private IEffectSampleProvider effectSampleProvider;
 
         private EventHandler<StreamVolumeEventArgs> volumeMeteredHandlers;
 
