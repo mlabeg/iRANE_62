@@ -125,7 +125,7 @@ namespace iRANE_62
                 audioSource1.Equalizer.Band9 = (float)pot_high_ch1.Value;
                 audioSource1.Equalizer.Band8 = (float)pot_high_ch1.Value;
                 audioSource1.Equalizer.Band7 = (float)(pot_high_ch1.Value + pot_mid_ch1.Value) / 2;
-                audioSource1.Equalizer.equalizer.Update();
+                audioSource1.Equalizer.Equalizer.Update();
             }
         }
 
@@ -136,7 +136,7 @@ namespace iRANE_62
                 audioSource1.Equalizer.Band6 = (float)(pot_mid_ch1.Value + pot_high_ch1.Value) / 2;
                 audioSource1.Equalizer.Band5 = (float)pot_mid_ch1.Value;
                 audioSource1.Equalizer.Band4 = (float)(pot_mid_ch1.Value + pot_low_ch1.Value) / 2;
-                audioSource1.Equalizer.equalizer.Update();
+                audioSource1.Equalizer.Equalizer.Update();
             }
         }
 
@@ -147,7 +147,7 @@ namespace iRANE_62
                 audioSource1.Equalizer.Band3 = (float)(pot_low_ch1.Value + pot_mid_ch1.Value) / 2;
                 audioSource1.Equalizer.Band2 = (float)pot_low_ch1.Value;
                 audioSource1.Equalizer.Band1 = (float)pot_low_ch1.Value;
-                audioSource1.Equalizer.equalizer.Update();
+                audioSource1.Equalizer.Equalizer.Update();
             }
         }
 
@@ -158,7 +158,7 @@ namespace iRANE_62
                 audioSource2.Equalizer.Band7 = (float)pot_high_ch2.Value;
                 audioSource2.Equalizer.Band9 = (float)pot_high_ch2.Value;
                 audioSource2.Equalizer.Band8 = (float)pot_high_ch2.Value;
-                audioSource2.Equalizer.equalizer.Update();
+                audioSource2.Equalizer.Equalizer.Update();
             }
         }
 
@@ -169,7 +169,7 @@ namespace iRANE_62
                 audioSource2.Equalizer.Band4 = (float)pot_mid_ch2.Value;
                 audioSource2.Equalizer.Band5 = (float)pot_mid_ch2.Value;
                 audioSource2.Equalizer.Band6 = (float)pot_mid_ch2.Value;
-                audioSource2.Equalizer.equalizer.Update();
+                audioSource2.Equalizer.Equalizer.Update();
             }
         }
 
@@ -180,7 +180,7 @@ namespace iRANE_62
                 audioSource2.Equalizer.Band1 = (float)pot_low_ch2.Value;
                 audioSource2.Equalizer.Band2 = (float)pot_low_ch2.Value;
                 audioSource2.Equalizer.Band3 = (float)pot_low_ch2.Value;
-                audioSource2.Equalizer.equalizer.Update();
+                audioSource2.Equalizer.Equalizer.Update();
             }
         }
 
@@ -488,7 +488,7 @@ namespace iRANE_62
                 microphoneHandler.Equalizer.Bands[6].Gain = highValue;
                 microphoneHandler.Equalizer.Bands[7].Gain = highValue;
                 microphoneHandler.Equalizer.Bands[8].Gain = highValue;
-                microphoneHandler.Equalizer.equalizer.Update();
+                microphoneHandler.Equalizer.Equalizer.Update();
             }
         }
 
@@ -500,7 +500,7 @@ namespace iRANE_62
                 microphoneHandler.Equalizer.Bands[0].Gain = lowValue;
                 microphoneHandler.Equalizer.Bands[1].Gain = lowValue;
                 microphoneHandler.Equalizer.Bands[2].Gain = lowValue;
-                microphoneHandler.Equalizer.equalizer.Update();
+                microphoneHandler.Equalizer.Equalizer.Update();
             }
         }
         #endregion
@@ -591,14 +591,6 @@ namespace iRANE_62
 
         private void chBox_efx_on_CheckedChanged(object sender, EventArgs e)
         {
-            if (audioSource1.AudioFileReader != null)
-            {
-                audioSource1.ReverbEnabled = !audioSource1.ReverbEnabled;
-            }
-            /*if (audioSource2.AudioFileReader != null)
-            {
-                audioSource2.ReverbEnabled = !audioSource2.ReverbEnabled;
-            }*/
 
         }
     }

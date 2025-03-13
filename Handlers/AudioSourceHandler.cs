@@ -1,16 +1,11 @@
-﻿using iRANE_62.Extensions;
-using iRANE_62.Models;
+﻿using iRANE_62.Models;
+using iRANE_62.SampleProviderExtensions;
+using NAudio.Dmo;
 using NAudio.Dmo.Effect;
 using NAudio.Dsp;
 using NAudio.Extras;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace iRANE_62.Handlers
 {
@@ -20,7 +15,7 @@ namespace iRANE_62.Handlers
         public AudioFileReader AudioFileReader { get; private set; }
         public string FileName { get; private set; }
         public Song? Song { get; set; }
-        public Eq Equalizer { get; set; }
+        public EqSectionHandler Equalizer { get; set; }
         public Loop Loop { get; set; }
 
         public int CurrentPlaybackPosition { get; set; }
@@ -33,32 +28,16 @@ namespace iRANE_62.Handlers
         private ISampleProvider outputProvider;
         private bool isPlaying;
 
+        private IEffectSampleProvider effectSampleProvider;
+
         private EventHandler<StreamVolumeEventArgs> volumeMeteredHandlers;
-
-        private DmoEffectWaveProvider<DmoWavesReverb, DmoWavesReverb.Params> effectWaveProvider;
-        private DmoWavesReverb reverbEffect;
-        private bool reverbEnabled=true;
-
 
         public AudioSourceHandler(int id)
         {
             Id = id;
-            Equalizer = new Eq();
+            Equalizer = new EqSectionHandler();
             Loop = new Loop();
             CurrentPlaybackPosition = 0;
-        }
-
-        public bool ReverbEnabled
-        {
-            get => reverbEnabled;
-            set
-            {
-                if (reverbEnabled != value)
-                {
-                    reverbEnabled = value;
-                    SetupAudioChain();
-                }
-            }
         }
 
         public bool IsPlaying => isPlaying;
@@ -101,8 +80,6 @@ namespace iRANE_62.Handlers
             if (AudioFileReader == null) throw new InvalidOperationException("Brak wybranego pliku do odtworzenia.");
             if (!isPlaying)
             {
-                leftChanelVolumeLevel = 0.5f;
-                rightChanelVolumeLevel = 0.5f;
                 outputManager.AddSource(this, outputProvider);
                 isPlaying = true;
             }
@@ -143,31 +120,11 @@ namespace iRANE_62.Handlers
 
             Equalizer.FilterSampleProvider = new FilterSampleProvider(sampleChannel, AudioFileReader.WaveFormat.SampleRate);
             Equalizer.PanningProvider = new StereoPanningSampleProvider(Equalizer.FilterSampleProvider);
-            Equalizer.equalizer = new Equalizer(Equalizer.PanningProvider, Equalizer.Bands);
-            
-            // Add Reverb if enabled
-            if (reverbEnabled)
-            {
-                var waveProvider = new SampleToWaveProvider16(Equalizer.equalizer);
+            Equalizer.Equalizer = new Equalizer(Equalizer.PanningProvider, Equalizer.Bands);
 
-                effectWaveProvider = new DmoEffectWaveProvider<DmoWavesReverb, DmoWavesReverb.Params>(waveProvider);
+            var echoEffect=new EchoEffectSampleProvider(Equalizer.Equalizer, 825, 0.35f, 0.25f);
 
-                var reverbEffectParams = effectWaveProvider.EffectParams;
-
-                reverbEffectParams.InGain = 0f;       // Input gain (dB)
-                reverbEffectParams.ReverbMix = 0f;  // Reverb mix (dB)
-                reverbEffectParams.ReverbTime = 1000f; // Reverb time (ms)
-                reverbEffectParams.HighFreqRtRatio = 0.1f; // High frequency reverb time ratio
-
-                var sampleProvider = new Wave16ToFloatProvider(effectWaveProvider);
-                var sP1 = new WaveToSampleProvider(sampleProvider);
-
-                outputProvider = new MeteringSampleProvider(sP1);
-            }
-            else
-            {
-                outputProvider = new MeteringSampleProvider(Equalizer.equalizer);
-            }
+            outputProvider = new MeteringSampleProvider(echoEffect);
 
             if (volumeMeteredHandlers != null)
             {

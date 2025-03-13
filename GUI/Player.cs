@@ -18,7 +18,8 @@ namespace iRANE_62
         private AudioSourceHandler chanel2;
 
         private readonly AudioOutputHandler audioOutputHandler;
-        private readonly WaveFormRenderer waveFormRenderer;
+        private readonly WaveFormRenderer waveFormRenderer;//TODO można pomyśleć o wydzielieniu oddzielnej klasy
+
 
         public Player()
         {

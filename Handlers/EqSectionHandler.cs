@@ -1,30 +1,20 @@
-﻿using iRANE_62.Extensions;
+﻿using iRANE_62.SampleProviderExtensions;
 using NAudio.Extras;
-using NAudio.Wave.SampleProviders;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace iRANE_62.Models
+namespace iRANE_62.Handlers
 {
-    public class Eq
+    public class EqSectionHandler
     {
-        public Equalizer equalizer;
-
+        public Equalizer Equalizer;
         public EqualizerBand[] Bands { get; }
+        public StereoPanningSampleProvider PanningProvider { get; set; }
+        public FilterSampleProvider FilterSampleProvider { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public StereoPanningSampleProvider PanningProvider { get; set; }
 
-        public FilterSampleProvider FilterSampleProvider { get; set; }
-
-
-
-        public Eq()
+        public EqSectionHandler()
         {
             Bands = CreateBands();
 
