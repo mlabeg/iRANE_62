@@ -71,8 +71,12 @@ namespace iRANE_62
             chBox_efx_echo = new CheckBox();
             chBox_efx_reverb = new CheckBox();
             chBox_efx_robot = new CheckBox();
-            chBox_efx_tap = new Button();
-            chBox_efx_wyswietlacz = new Panel();
+            btn_fx_tap = new Button();
+            panel_efx_wyswietlacz = new Panel();
+            label_Effect_Name = new Label();
+            label_Bpm_count = new Label();
+            label_Bpm_text = new Label();
+            label_Effect_text = new Label();
             chBox_efx_on = new CheckBox();
             chBox_efx_cue = new CheckBox();
             pot_efx_depth = new NAudio.Gui.Pot();
@@ -92,13 +96,6 @@ namespace iRANE_62
             btn_cue4_ch2 = new Button();
             btn_cue5_ch2 = new Button();
             panel_cue = new Panel();
-            chBox_cue_samples = new CheckBox();
-            chBox_cue_ch1 = new CheckBox();
-            chBox_cue_ch2 = new CheckBox();
-            panel_phones = new Panel();
-            chBox_phones_split = new CheckBox();
-            pot_headphones_gain = new NAudio.Gui.Pot();
-            pot_phones_pan = new NAudio.Gui.Pot();
             panel_mic = new Panel();
             chBox_mic_flexfx = new CheckBox();
             panel_volume = new Panel();
@@ -108,10 +105,10 @@ namespace iRANE_62
             panel_chanel1.SuspendLayout();
             panel_chanel2.SuspendLayout();
             panel_loops1.SuspendLayout();
+            panel_efx_wyswietlacz.SuspendLayout();
             panel_efx.SuspendLayout();
             panel_loops2.SuspendLayout();
             panel_cue.SuspendLayout();
-            panel_phones.SuspendLayout();
             panel_mic.SuspendLayout();
             panel_volume.SuspendLayout();
             SuspendLayout();
@@ -570,23 +567,69 @@ namespace iRANE_62
             chBox_efx_robot.UseVisualStyleBackColor = true;
             chBox_efx_robot.CheckedChanged += efx_robot_CheckedChanged;
             // 
-            // chBox_efx_tap
+            // btn_fx_tap
             // 
-            chBox_efx_tap.Location = new Point(114, 99);
-            chBox_efx_tap.Margin = new Padding(2);
-            chBox_efx_tap.Name = "chBox_efx_tap";
-            chBox_efx_tap.Size = new Size(43, 26);
-            chBox_efx_tap.TabIndex = 4;
-            chBox_efx_tap.Text = "TAP";
-            chBox_efx_tap.UseVisualStyleBackColor = true;
+            btn_fx_tap.Location = new Point(114, 99);
+            btn_fx_tap.Margin = new Padding(2);
+            btn_fx_tap.Name = "btn_fx_tap";
+            btn_fx_tap.Size = new Size(43, 26);
+            btn_fx_tap.TabIndex = 4;
+            btn_fx_tap.Text = "TAP";
+            btn_fx_tap.UseVisualStyleBackColor = true;
+            btn_fx_tap.Click += btn_fx_tap_Click;
             // 
-            // chBox_efx_wyswietlacz
+            // panel_efx_wyswietlacz
             // 
-            chBox_efx_wyswietlacz.Location = new Point(198, 61);
-            chBox_efx_wyswietlacz.Margin = new Padding(2);
-            chBox_efx_wyswietlacz.Name = "chBox_efx_wyswietlacz";
-            chBox_efx_wyswietlacz.Size = new Size(208, 107);
-            chBox_efx_wyswietlacz.TabIndex = 9;
+            panel_efx_wyswietlacz.Controls.Add(label_Effect_Name);
+            panel_efx_wyswietlacz.Controls.Add(label_Bpm_count);
+            panel_efx_wyswietlacz.Controls.Add(label_Bpm_text);
+            panel_efx_wyswietlacz.Controls.Add(label_Effect_text);
+            panel_efx_wyswietlacz.Location = new Point(198, 61);
+            panel_efx_wyswietlacz.Margin = new Padding(2);
+            panel_efx_wyswietlacz.Name = "panel_efx_wyswietlacz";
+            panel_efx_wyswietlacz.Size = new Size(208, 107);
+            panel_efx_wyswietlacz.TabIndex = 9;
+            // 
+            // label_Effect_Name
+            // 
+            label_Effect_Name.AutoSize = true;
+            label_Effect_Name.BorderStyle = BorderStyle.FixedSingle;
+            label_Effect_Name.Location = new Point(126, 23);
+            label_Effect_Name.Name = "label_Effect_Name";
+            label_Effect_Name.Size = new Size(17, 22);
+            label_Effect_Name.TabIndex = 0;
+            label_Effect_Name.Text = "-";
+            // 
+            // label_Bpm_count
+            // 
+            label_Bpm_count.AutoSize = true;
+            label_Bpm_count.BorderStyle = BorderStyle.FixedSingle;
+            label_Bpm_count.Location = new Point(126, 56);
+            label_Bpm_count.Name = "label_Bpm_count";
+            label_Bpm_count.Size = new Size(17, 22);
+            label_Bpm_count.TabIndex = 0;
+            label_Bpm_count.Text = "-";
+            // 
+            // label_Bpm_text
+            // 
+            label_Bpm_text.AutoSize = true;
+            label_Bpm_text.BorderStyle = BorderStyle.FixedSingle;
+            label_Bpm_text.Location = new Point(38, 56);
+            label_Bpm_text.Name = "label_Bpm_text";
+            label_Bpm_text.Size = new Size(48, 22);
+            label_Bpm_text.TabIndex = 0;
+            label_Bpm_text.Text = "BPM: ";
+            // 
+            // label_Effect_text
+            // 
+            label_Effect_text.AutoSize = true;
+            label_Effect_text.BorderStyle = BorderStyle.FixedSingle;
+            label_Effect_text.FlatStyle = FlatStyle.Flat;
+            label_Effect_text.Location = new Point(38, 23);
+            label_Effect_text.Name = "label_Effect_text";
+            label_Effect_text.Size = new Size(52, 22);
+            label_Effect_text.TabIndex = 0;
+            label_Effect_text.Text = "Effect:";
             // 
             // chBox_efx_on
             // 
@@ -627,11 +670,11 @@ namespace iRANE_62
             // panel_efx
             // 
             panel_efx.BorderStyle = BorderStyle.FixedSingle;
-            panel_efx.Controls.Add(chBox_efx_tap);
+            panel_efx.Controls.Add(btn_fx_tap);
             panel_efx.Controls.Add(chBox_efx_on);
             panel_efx.Controls.Add(chBox_efx_cue);
             panel_efx.Controls.Add(pot_efx_depth);
-            panel_efx.Controls.Add(chBox_efx_wyswietlacz);
+            panel_efx.Controls.Add(panel_efx_wyswietlacz);
             panel_efx.Location = new Point(84, 366);
             panel_efx.Margin = new Padding(2);
             panel_efx.Name = "panel_efx";
@@ -806,7 +849,6 @@ namespace iRANE_62
             // panel_cue
             // 
             panel_cue.BorderStyle = BorderStyle.FixedSingle;
-            panel_cue.Controls.Add(chBox_cue_samples);
             panel_cue.Controls.Add(btn_cue5_ch1);
             panel_cue.Controls.Add(btn_cue5_ch2);
             panel_cue.Controls.Add(btn_cue4_ch2);
@@ -822,86 +864,6 @@ namespace iRANE_62
             panel_cue.Name = "panel_cue";
             panel_cue.Size = new Size(802, 83);
             panel_cue.TabIndex = 7;
-            // 
-            // chBox_cue_samples
-            // 
-            chBox_cue_samples.AutoSize = true;
-            chBox_cue_samples.Location = new Point(343, 23);
-            chBox_cue_samples.Margin = new Padding(2);
-            chBox_cue_samples.Name = "chBox_cue_samples";
-            chBox_cue_samples.Size = new Size(101, 24);
-            chBox_cue_samples.TabIndex = 5;
-            chBox_cue_samples.Text = "checkBox1";
-            chBox_cue_samples.UseVisualStyleBackColor = true;
-            // 
-            // chBox_cue_ch1
-            // 
-            chBox_cue_ch1.AutoSize = true;
-            chBox_cue_ch1.Location = new Point(203, 683);
-            chBox_cue_ch1.Margin = new Padding(2);
-            chBox_cue_ch1.Name = "chBox_cue_ch1";
-            chBox_cue_ch1.Size = new Size(105, 24);
-            chBox_cue_ch1.TabIndex = 5;
-            chBox_cue_ch1.Text = "CUE PGM 1";
-            chBox_cue_ch1.UseVisualStyleBackColor = true;
-            // 
-            // chBox_cue_ch2
-            // 
-            chBox_cue_ch2.AutoSize = true;
-            chBox_cue_ch2.Location = new Point(701, 683);
-            chBox_cue_ch2.Margin = new Padding(2);
-            chBox_cue_ch2.Name = "chBox_cue_ch2";
-            chBox_cue_ch2.Size = new Size(105, 24);
-            chBox_cue_ch2.TabIndex = 5;
-            chBox_cue_ch2.Text = "CUE PGM 2";
-            chBox_cue_ch2.UseVisualStyleBackColor = true;
-            // 
-            // panel_phones
-            // 
-            panel_phones.BorderStyle = BorderStyle.FixedSingle;
-            panel_phones.Controls.Add(chBox_phones_split);
-            panel_phones.Controls.Add(pot_headphones_gain);
-            panel_phones.Controls.Add(pot_phones_pan);
-            panel_phones.Location = new Point(901, 628);
-            panel_phones.Margin = new Padding(2);
-            panel_phones.Name = "panel_phones";
-            panel_phones.Size = new Size(70, 215);
-            panel_phones.TabIndex = 10;
-            // 
-            // chBox_phones_split
-            // 
-            chBox_phones_split.AutoSize = true;
-            chBox_phones_split.Location = new Point(15, 171);
-            chBox_phones_split.Margin = new Padding(2);
-            chBox_phones_split.Name = "chBox_phones_split";
-            chBox_phones_split.Size = new Size(97, 24);
-            chBox_phones_split.TabIndex = 5;
-            chBox_phones_split.Text = "SPLIT CUE";
-            chBox_phones_split.UseVisualStyleBackColor = true;
-            // 
-            // pot_headphones_gain
-            // 
-            pot_headphones_gain.Location = new Point(11, 23);
-            pot_headphones_gain.Margin = new Padding(4, 5, 4, 5);
-            pot_headphones_gain.Maximum = 1D;
-            pot_headphones_gain.Minimum = 0D;
-            pot_headphones_gain.Name = "pot_headphones_gain";
-            pot_headphones_gain.Size = new Size(43, 55);
-            pot_headphones_gain.TabIndex = 3;
-            pot_headphones_gain.Value = 0.5D;
-            pot_headphones_gain.DoubleClick += pot_headphones_gain_DoubleClick;
-            // 
-            // pot_phones_pan
-            // 
-            pot_phones_pan.Location = new Point(11, 88);
-            pot_phones_pan.Margin = new Padding(4, 5, 4, 5);
-            pot_phones_pan.Maximum = 1D;
-            pot_phones_pan.Minimum = 0D;
-            pot_phones_pan.Name = "pot_phones_pan";
-            pot_phones_pan.Size = new Size(43, 55);
-            pot_phones_pan.TabIndex = 3;
-            pot_phones_pan.Value = 0.5D;
-            pot_phones_pan.DoubleClick += pot_phones_pan_DoubleClick;
             // 
             // panel_mic
             // 
@@ -989,8 +951,6 @@ namespace iRANE_62
             Controls.Add(chBox_efx_robot);
             Controls.Add(chBox_efx_filter);
             Controls.Add(chBox_efx_reverb);
-            Controls.Add(chBox_cue_ch2);
-            Controls.Add(chBox_cue_ch1);
             Controls.Add(chBox_efx_flanger);
             Controls.Add(chBox_efx_echo);
             Controls.Add(pot_low_ch2);
@@ -1009,7 +969,6 @@ namespace iRANE_62
             Controls.Add(panel_cue);
             Controls.Add(panel_mic);
             Controls.Add(panel_chanel1);
-            Controls.Add(panel_phones);
             Controls.Add(panel_volume);
             Margin = new Padding(2);
             Name = "Mixer";
@@ -1019,13 +978,12 @@ namespace iRANE_62
             panel_chanel2.ResumeLayout(false);
             panel_chanel2.PerformLayout();
             panel_loops1.ResumeLayout(false);
+            panel_efx_wyswietlacz.ResumeLayout(false);
+            panel_efx_wyswietlacz.PerformLayout();
             panel_efx.ResumeLayout(false);
             panel_efx.PerformLayout();
             panel_loops2.ResumeLayout(false);
             panel_cue.ResumeLayout(false);
-            panel_cue.PerformLayout();
-            panel_phones.ResumeLayout(false);
-            panel_phones.PerformLayout();
             panel_mic.ResumeLayout(false);
             panel_mic.PerformLayout();
             panel_volume.ResumeLayout(false);
@@ -1063,8 +1021,8 @@ namespace iRANE_62
         private CheckBox chBox_efx_echo;
         private CheckBox chBox_efx_reverb;
         private CheckBox chBox_efx_robot;
-        private Button chBox_efx_tap;
-        private Panel chBox_efx_wyswietlacz;
+        private Button btn_fx_tap;
+        private Panel panel_efx_wyswietlacz;
         private CheckBox chBox_efx_on;
         private CheckBox chBox_efx_cue;
         private NAudio.Gui.Pot pot_efx_depth;
@@ -1084,12 +1042,6 @@ namespace iRANE_62
         private Button btn_cue4_ch2;
         private Button btn_cue5_ch2;
         private Panel panel_cue;
-        private CheckBox chBox_cue_ch1;
-        private CheckBox chBox_cue_ch2;
-        private Panel panel_phones;
-        private NAudio.Gui.Pot pot_headphones_gain;
-        private NAudio.Gui.Pot pot_phones_pan;
-        private CheckBox chBox_phones_split;
         private NumericUpDown cross_fader;
         private NAudio.Gui.Pot pot_low_ch1;
         private CheckBox chBox_flexfx_ch1;
@@ -1099,7 +1051,6 @@ namespace iRANE_62
         private NAudio.Gui.VolumeMeter volumeMeter_mainRight;
         private NAudio.Gui.VolumeMeter volumeMeter_mainLeft;
         private NAudio.Gui.VolumeMeter volumeMeter_ch2;
-        private CheckBox chBox_cue_samples;
         private NAudio.Gui.VolumeMeter volumeMeter_ch1;
         internal NAudio.Gui.Pot pot_gain_ch1;
         internal NAudio.Gui.Pot pot_gain_ch2;
@@ -1107,5 +1058,12 @@ namespace iRANE_62
         private Controls.VerticalVolumeSlider verticalVolumeSlider_ch2;
         private Controls.VerticalVolumeSlider verticalVolumeSlider_ch1;
         private Controls.CrossfaderSlider crossfaderSlider;
+        private Label fect_time_ms;
+        private Label Effect_time;
+        private Label Effect_freq;
+        private Label label_Bpm_count;
+        private Label label_Bpm_text;
+        private Label label_Effect_text;
+        private Label label_Effect_Name;
     }
 }

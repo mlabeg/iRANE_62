@@ -17,6 +17,7 @@ namespace iRANE_62
         private readonly MicrophoneHandler microphoneHandler;
         private readonly AudioOutputHandler audioOutputHandler;
         private readonly SystemVolumeHandler systemVolumeHandler;
+        private readonly BpmCounterHandler bpmCounterHandler;
 
         public readonly ChannelVolumeHandler Channel1VolumeHandler;
         public readonly ChannelVolumeHandler Channel2VolumeHandler;
@@ -32,6 +33,7 @@ namespace iRANE_62
             this.audioOutputHandler = audioOutputHandler ?? throw new ArgumentNullException(nameof(audioOutputHandler));
             microphoneHandler = new MicrophoneHandler();
             systemVolumeHandler = new SystemVolumeHandler();
+            bpmCounterHandler = new BpmCounterHandler();
             InitializeComponent();
 
             Channel1VolumeHandler = new ChannelVolumeHandler(audioSource1, pot_gain_ch1, verticalVolumeSlider_ch1, pot_systemVolume);
@@ -592,6 +594,16 @@ namespace iRANE_62
         private void chBox_efx_on_CheckedChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void btn_fx_tap_Click(object sender, EventArgs e)
+        {
+            bpmCounterHandler.AddTap();
+
+            if (bpmCounterHandler.Bpm != 0)
+            {
+
+            }
         }
     }
 }
