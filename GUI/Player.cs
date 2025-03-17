@@ -1,10 +1,6 @@
-﻿using iRANE_62.Extensions;
-using iRANE_62.Handlers;
+﻿using iRANE_62.Handlers;
 using iRANE_62.Models;
-using NAudio.Dmo.Effect;
-using NAudio.Extras;
 using NAudio.Wave;
-using NAudio.Wave.SampleProviders;
 using NAudio.WaveFormRenderer;
 
 
@@ -18,7 +14,7 @@ namespace iRANE_62
         private AudioSourceHandler chanel2;
 
         private readonly AudioOutputHandler audioOutputHandler;
-        private readonly WaveFormRenderer waveFormRenderer;//TODO można pomyśleć o wydzielieniu oddzielnej klasy
+        private readonly WaveFormRenderer waveFormRenderer;
 
 
         public Player()
@@ -102,7 +98,7 @@ namespace iRANE_62
                 UpadteTotalSongTime(player, player.Song);
                 EnableGuiOnChanel(player.Id);
                 mixer.CueColorClear(player.Id);//TODO2 zmienić to na sprawdzanie czy dany utwór ma zapisane CuePointy
-                                               //nie używać pola mkxer w ten sposób
+                                               //"nie używać pola mkxer w ten sposób"
             }
             catch (Exception ex)
             {
@@ -123,7 +119,6 @@ namespace iRANE_62
             var fileName = SelectInputFile();
             if (fileName != String.Empty)
             {
-                //player.LoadFile(fileName);
                 LoadTrack(player, fileName);
                 AddToPlaylist(player.Song);
             }
@@ -364,7 +359,7 @@ namespace iRANE_62
         {
             if (player.FileName == null) return;
 
-            var settings = new StandardWaveFormRendererSettings()//nie powinieneś hardcodować tego
+            var settings = new StandardWaveFormRendererSettings()
             {
                 BackgroundColor = Color.Black,
                 TopPeakPen = new Pen(Color.White),
