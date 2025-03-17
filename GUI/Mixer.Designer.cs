@@ -634,8 +634,6 @@ namespace iRANE_62
             // chBox_efx_on
             // 
             chBox_efx_on.AutoSize = true;
-            chBox_efx_on.Checked = true;
-            chBox_efx_on.CheckState = CheckState.Checked;
             chBox_efx_on.Location = new Point(437, 99);
             chBox_efx_on.Margin = new Padding(2);
             chBox_efx_on.Name = "chBox_efx_on";

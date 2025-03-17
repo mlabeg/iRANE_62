@@ -49,7 +49,6 @@ namespace iRANE_62
         }
 
         #region FX
-
         private void efxCheckedChangedEventHandler()
         {
             chBox_efx_echo.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
@@ -70,10 +69,6 @@ namespace iRANE_62
 
         private void efx_reverb_CheckedChanged(object sender, EventArgs e) { }
 
-        private void efx_ext_insert_CheckedChanged(object sender, EventArgs e) { }
-
-        private void efx_insert_CheckedChanged(object sender, EventArgs e) { }
-
         private void efx_filter_CheckedChanged(object sender, EventArgs e) { }
 
         private void Efx_CheckBox_Change(object? sender, EventArgs e)
@@ -92,10 +87,21 @@ namespace iRANE_62
             }
         }
 
-        private void efx_time_Scroll(object sender, ScrollEventArgs e)
+        private void chBox_efx_on_CheckedChanged(object sender, EventArgs e)
         {
 
         }
+
+        private void btn_fx_tap_Click(object sender, EventArgs e)
+        {
+            bpmCounterHandler.AddTap();
+
+            if (bpmCounterHandler.Bpm != 0)
+            {
+                label_Bpm_count.Text = bpmCounterHandler.Bpm.ToString();
+            }
+        }
+
         #endregion
 
         #region Eq
@@ -591,19 +597,6 @@ namespace iRANE_62
         private void pot_phones_pan_DoubleClick(object sender, EventArgs e) => doubleClick((Pot)sender);
         #endregion
 
-        private void chBox_efx_on_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btn_fx_tap_Click(object sender, EventArgs e)
-        {
-            bpmCounterHandler.AddTap();
-
-            if (bpmCounterHandler.Bpm != 0)
-            {
-
-            }
-        }
+       
     }
 }
