@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace iRANE_62.SampleProviderExtensions
 {
-    internal interface IEffectSampleProvider :ISampleProvider
+    public interface IEffectSampleProvider : ISampleProvider
     {
+
     }
 }

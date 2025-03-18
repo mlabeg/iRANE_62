@@ -16,6 +16,12 @@ namespace iRANE_62.SampleProviderExtensions
         private float[] delayBuffer;
         private int position;
 
+        public float EchoGain
+        {
+            get => echoGain;
+            set => echoGain = value;
+        }
+
         public EchoEffectSampleProvider(ISampleProvider source, int echoDelayInMilliseconds, float echoGain, float delay)
         {
             this.source = source;
@@ -27,8 +33,8 @@ namespace iRANE_62.SampleProviderExtensions
 
         public int EchoInSamples
         {
-            get => this.echoDelayInSamples;
-            set=> this.echoDelayInSamples=value;
+            get => echoDelayInSamples;
+            set => echoDelayInSamples = value;
         }
 
         public void EchoDelayInBpm(int bpm)
@@ -46,14 +52,12 @@ namespace iRANE_62.SampleProviderExtensions
             {
                 float inputSample = buffer[offset + i];
 
-                // Apply echo effect with decay
                 float echoSample = delayBuffer[position];
                 delayBuffer[position] = inputSample + echoSample * echoGain;
                 buffer[offset + i] += echoSample;
 
-                // Apply decay to echoed sample
                 delayBuffer[position] *= delay;
-                
+
 
                 position++;
                 if (position >= echoDelayInSamples)
