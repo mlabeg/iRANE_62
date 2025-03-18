@@ -11,26 +11,27 @@ namespace iRANE_62.Handlers
 {
     public class AudioSourceHandler
     {
+        private float leftChanelVolumeLevel;
+        private float rightChanelVolumeLevel;
+        private ISampleProvider outputProvider;
+        private bool isPlaying;
+        private bool effectsEnabled;
+        private string effectName;
+
+        private EventHandler<StreamVolumeEventArgs> volumeMeteredHandlers;
+
         public int Id { get; set; }
         public AudioFileReader AudioFileReader { get; private set; }
         public string FileName { get; private set; }
         public Song? Song { get; set; }
         public EqSectionHandler Equalizer { get; set; }
         public Loop Loop { get; set; }
-
         public int CurrentPlaybackPosition { get; set; }
 
+        public EffectsHandler EffectsHandler { get; private set; }
+
+
         public Action<float> SetVolumeDelegate;
-
-        private float leftChanelVolumeLevel;
-        private float rightChanelVolumeLevel;
-
-        private ISampleProvider outputProvider;
-        private bool isPlaying;
-
-        private IEffectSampleProvider effectSampleProvider;
-
-        private EventHandler<StreamVolumeEventArgs> volumeMeteredHandlers;
 
         public AudioSourceHandler(int id)
         {
@@ -38,11 +39,13 @@ namespace iRANE_62.Handlers
             Equalizer = new EqSectionHandler();
             Loop = new Loop();
             CurrentPlaybackPosition = 0;
+            EffectsHandler = new EffectsHandler();
         }
 
         public bool IsPlaying => isPlaying;
         public float LeftChanelVolumeLevel => leftChanelVolumeLevel;
         public float RightChanelVolumeLevel => rightChanelVolumeLevel;
+
 
 
         public event EventHandler<StreamVolumeEventArgs> VolumeMetered
@@ -113,7 +116,7 @@ namespace iRANE_62.Handlers
             SetVolumeDelegate?.Invoke(volume);
         }
 
-        private void SetupAudioChain()//TODO pomyśleć o stworzeniu klasy AddToAudioChain(ISampleProvider sampleProvider), która będzie zarządzać łańcuchem dźwięku
+        private void SetupAudioChain()
         {
             var sampleChannel = new SampleChannel(AudioFileReader, true);
             SetVolumeDelegate = vol => sampleChannel.Volume = vol;
@@ -122,9 +125,9 @@ namespace iRANE_62.Handlers
             Equalizer.PanningProvider = new StereoPanningSampleProvider(Equalizer.FilterSampleProvider);
             Equalizer.Equalizer = new Equalizer(Equalizer.PanningProvider, Equalizer.Bands);
 
-            var echoEffect=new EchoEffectSampleProvider(Equalizer.Equalizer, 825, 0.35f, 0.25f);
+            EffectsHandler = new EffectsHandler(Equalizer.Equalizer, EffectsHandler);
 
-            outputProvider = new MeteringSampleProvider(echoEffect);
+            outputProvider = new MeteringSampleProvider(EffectsHandler.GetOutputProvider());
 
             if (volumeMeteredHandlers != null)
             {

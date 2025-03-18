@@ -79,7 +79,7 @@ namespace iRANE_62
             label_Effect_text = new Label();
             chBox_efx_on = new CheckBox();
             chBox_efx_cue = new CheckBox();
-            pot_efx_depth = new NAudio.Gui.Pot();
+            Pot_fx_gain = new NAudio.Gui.Pot();
             panel_efx = new Panel();
             panel_loops2 = new Panel();
             btn_exitLoop_ch2 = new Button();
@@ -97,7 +97,7 @@ namespace iRANE_62
             btn_cue5_ch2 = new Button();
             panel_cue = new Panel();
             panel_mic = new Panel();
-            chBox_mic_flexfx = new CheckBox();
+            ChBox_mic_fx = new CheckBox();
             panel_volume = new Panel();
             verticalVolumeSlider_ch2 = new Controls.VerticalVolumeSlider();
             verticalVolumeSlider_ch1 = new Controls.VerticalVolumeSlider();
@@ -654,16 +654,17 @@ namespace iRANE_62
             chBox_efx_cue.Text = "CUE";
             chBox_efx_cue.UseVisualStyleBackColor = true;
             // 
-            // pot_efx_depth
+            // Pot_fx_gain
             // 
-            pot_efx_depth.Location = new Point(655, 84);
-            pot_efx_depth.Margin = new Padding(4, 5, 4, 5);
-            pot_efx_depth.Maximum = 10D;
-            pot_efx_depth.Minimum = 0D;
-            pot_efx_depth.Name = "pot_efx_depth";
-            pot_efx_depth.Size = new Size(43, 55);
-            pot_efx_depth.TabIndex = 3;
-            pot_efx_depth.Value = 0D;
+            Pot_fx_gain.Location = new Point(655, 84);
+            Pot_fx_gain.Margin = new Padding(4, 5, 4, 5);
+            Pot_fx_gain.Maximum = 1D;
+            Pot_fx_gain.Minimum = 0D;
+            Pot_fx_gain.Name = "Pot_fx_gain";
+            Pot_fx_gain.Size = new Size(43, 55);
+            Pot_fx_gain.TabIndex = 3;
+            Pot_fx_gain.Value = 0D;
+            Pot_fx_gain.ValueChanged += Pot_fx_gain_ValueChanged;
             // 
             // panel_efx
             // 
@@ -671,7 +672,7 @@ namespace iRANE_62
             panel_efx.Controls.Add(btn_fx_tap);
             panel_efx.Controls.Add(chBox_efx_on);
             panel_efx.Controls.Add(chBox_efx_cue);
-            panel_efx.Controls.Add(pot_efx_depth);
+            panel_efx.Controls.Add(Pot_fx_gain);
             panel_efx.Controls.Add(panel_efx_wyswietlacz);
             panel_efx.Location = new Point(84, 366);
             panel_efx.Margin = new Padding(2);
@@ -867,7 +868,7 @@ namespace iRANE_62
             // 
             panel_mic.BorderStyle = BorderStyle.FixedSingle;
             panel_mic.Controls.Add(volumeMeter_mic_volume);
-            panel_mic.Controls.Add(chBox_mic_flexfx);
+            panel_mic.Controls.Add(ChBox_mic_fx);
             panel_mic.Controls.Add(btn_micOver);
             panel_mic.Controls.Add(btn_micOnOff);
             panel_mic.Controls.Add(pot_mic_level);
@@ -877,16 +878,16 @@ namespace iRANE_62
             panel_mic.Size = new Size(135, 319);
             panel_mic.TabIndex = 7;
             // 
-            // chBox_mic_flexfx
+            // ChBox_mic_fx
             // 
-            chBox_mic_flexfx.AutoSize = true;
-            chBox_mic_flexfx.Location = new Point(21, 279);
-            chBox_mic_flexfx.Margin = new Padding(2);
-            chBox_mic_flexfx.Name = "chBox_mic_flexfx";
-            chBox_mic_flexfx.Size = new Size(78, 24);
-            chBox_mic_flexfx.TabIndex = 5;
-            chBox_mic_flexfx.Text = "FLEXFX";
-            chBox_mic_flexfx.UseVisualStyleBackColor = true;
+            ChBox_mic_fx.AutoSize = true;
+            ChBox_mic_fx.Location = new Point(21, 279);
+            ChBox_mic_fx.Margin = new Padding(2);
+            ChBox_mic_fx.Name = "ChBox_mic_fx";
+            ChBox_mic_fx.Size = new Size(78, 24);
+            ChBox_mic_fx.TabIndex = 5;
+            ChBox_mic_fx.Text = "FLEXFX";
+            ChBox_mic_fx.UseVisualStyleBackColor = true;
             // 
             // panel_volume
             // 
@@ -1023,7 +1024,7 @@ namespace iRANE_62
         private Panel panel_efx_wyswietlacz;
         private CheckBox chBox_efx_on;
         private CheckBox chBox_efx_cue;
-        private NAudio.Gui.Pot pot_efx_depth;
+        private NAudio.Gui.Pot Pot_fx_gain;
         private Panel panel_efx;
         private Panel panel_loops2;
         private Button btn_exitLoop_ch2;
@@ -1040,11 +1041,11 @@ namespace iRANE_62
         private Button btn_cue4_ch2;
         private Button btn_cue5_ch2;
         private Panel panel_cue;
-        private NumericUpDown cross_fader;
+        //private NumericUpDown cross_fader;
         private NAudio.Gui.Pot pot_low_ch1;
         private CheckBox chBox_flexfx_ch1;
         private Panel panel_mic;
-        private CheckBox chBox_mic_flexfx;
+        private CheckBox ChBox_mic_fx;
         private NAudio.Gui.VolumeMeter volumeMeter_mic_volume;
         private NAudio.Gui.VolumeMeter volumeMeter_mainRight;
         private NAudio.Gui.VolumeMeter volumeMeter_mainLeft;
@@ -1056,9 +1057,9 @@ namespace iRANE_62
         private Controls.VerticalVolumeSlider verticalVolumeSlider_ch2;
         private Controls.VerticalVolumeSlider verticalVolumeSlider_ch1;
         private Controls.CrossfaderSlider crossfaderSlider;
-        private Label fect_time_ms;
-        private Label Effect_time;
-        private Label Effect_freq;
+        //private Label fect_time_ms;
+        //private Label Effect_time;
+        //private Label Effect_freq;
         private Label label_Bpm_count;
         private Label label_Bpm_text;
         private Label label_Effect_text;

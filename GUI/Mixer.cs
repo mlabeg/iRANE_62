@@ -12,12 +12,12 @@ namespace iRANE_62
 {
     public partial class Mixer : Form
     {
+        private readonly MicrophoneHandler microphoneHandler;
+        private readonly BpmCounterHandler bpmCounterHandler;
         private readonly AudioSourceHandler audioSource1;
         private readonly AudioSourceHandler audioSource2;
-        private readonly MicrophoneHandler microphoneHandler;
         private readonly AudioOutputHandler audioOutputHandler;
         private readonly SystemVolumeHandler systemVolumeHandler;
-        private readonly BpmCounterHandler bpmCounterHandler;
 
         public readonly ChannelVolumeHandler Channel1VolumeHandler;
         public readonly ChannelVolumeHandler Channel2VolumeHandler;
@@ -63,7 +63,19 @@ namespace iRANE_62
 
         private void efx_phaser_CheckedChanged(object sender, EventArgs e) { }
 
-        private void efx_echo_CheckedChanged(object sender, EventArgs e) { }
+        private void efx_echo_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chBox_efx_echo.Checked == true)
+            {
+                audioSource1.EffectsHandler.ActiveEffectName = "Echo";
+                audioSource2.EffectsHandler.ActiveEffectName = "Echo";
+            }
+            else
+            {
+                audioSource1.EffectsHandler.ActiveEffectName = String.Empty;
+                audioSource2.EffectsHandler.ActiveEffectName = String.Empty;
+            }
+        }
 
         private void efx_robot_CheckedChanged(object sender, EventArgs e) { }
 
@@ -89,7 +101,15 @@ namespace iRANE_62
 
         private void chBox_efx_on_CheckedChanged(object sender, EventArgs e)
         {
+            audioSource1.EffectsHandler.EffectsEnabled = true;
+            audioSource2.EffectsHandler.EffectsEnabled = true;
+        }
 
+        private void Pot_fx_gain_ValueChanged(object sender, EventArgs e)
+        {
+            float gain = (float)Pot_fx_gain.Value;
+            audioSource1.EffectsHandler.EffectGain = gain;
+            audioSource2.EffectsHandler.EffectGain = gain;
         }
 
         private void btn_fx_tap_Click(object sender, EventArgs e)
@@ -597,6 +617,7 @@ namespace iRANE_62
         private void pot_phones_pan_DoubleClick(object sender, EventArgs e) => doubleClick((Pot)sender);
         #endregion
 
-       
+
+
     }
 }
