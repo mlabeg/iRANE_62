@@ -1,51 +1,51 @@
-﻿using iRANE_62.Extensions;
-using iRANE_62.Models;
+﻿using iRANE_62.Models;
+using iRANE_62.SampleProviderExtensions;
+using NAudio.Dmo;
+using NAudio.Dmo.Effect;
 using NAudio.Dsp;
 using NAudio.Extras;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace iRANE_62.Handlers
 {
     public class AudioSourceHandler
     {
+        private float leftChanelVolumeLevel;
+        private float rightChanelVolumeLevel;
+        private ISampleProvider outputProvider;
+        private bool isPlaying;
+        private bool effectsEnabled;
+        private string effectName;
+
+        private EventHandler<StreamVolumeEventArgs> volumeMeteredHandlers;
+
         public int Id { get; set; }
         public AudioFileReader AudioFileReader { get; private set; }
         public string FileName { get; private set; }
         public Song? Song { get; set; }
-        public Eq Equalizer { get; set; }
+        public EqSectionHandler Equalizer { get; set; }
         public Loop Loop { get; set; }
-
         public int CurrentPlaybackPosition { get; set; }
 
+        public EffectsHandler EffectsHandler { get; private set; }
+
+
         public Action<float> SetVolumeDelegate;
-
-        private float leftChanelVolumeLevel;
-        private float rightChanelVolumeLevel;
-
-        private ISampleProvider outputProvider;
-        private bool isPlaying;
-
-        private EventHandler<StreamVolumeEventArgs> volumeMeteredHandlers;
-
 
         public AudioSourceHandler(int id)
         {
             Id = id;
-            Equalizer = new Eq();
+            Equalizer = new EqSectionHandler();
             Loop = new Loop();
             CurrentPlaybackPosition = 0;
+            EffectsHandler = new EffectsHandler();
         }
 
         public bool IsPlaying => isPlaying;
         public float LeftChanelVolumeLevel => leftChanelVolumeLevel;
         public float RightChanelVolumeLevel => rightChanelVolumeLevel;
+
 
 
         public event EventHandler<StreamVolumeEventArgs> VolumeMetered
@@ -123,9 +123,11 @@ namespace iRANE_62.Handlers
 
             Equalizer.FilterSampleProvider = new FilterSampleProvider(sampleChannel, AudioFileReader.WaveFormat.SampleRate);
             Equalizer.PanningProvider = new StereoPanningSampleProvider(Equalizer.FilterSampleProvider);
-            Equalizer.equalizer = new Equalizer(Equalizer.PanningProvider, Equalizer.Bands);
+            Equalizer.Equalizer = new Equalizer(Equalizer.PanningProvider, Equalizer.Bands);
 
-            outputProvider = new MeteringSampleProvider(Equalizer.equalizer);
+            EffectsHandler = new EffectsHandler(Equalizer.Equalizer, EffectsHandler);
+
+            outputProvider = new MeteringSampleProvider(EffectsHandler.GetOutputProvider());
 
             if (volumeMeteredHandlers != null)
             {

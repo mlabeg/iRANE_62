@@ -1,5 +1,4 @@
-﻿// SystemVolumeController.cs
-using NAudio.CoreAudioApi;
+﻿using NAudio.CoreAudioApi;
 using System;
 
 namespace iRANE_62.Handlers

@@ -1,5 +1,4 @@
-﻿using iRANE_62.Models;
-using NAudio.Extras;
+﻿using NAudio.Extras;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using System;
@@ -15,7 +14,7 @@ namespace iRANE_62.Handlers
         private MixingSampleProvider mixerProvider;
         private MeteringSampleProvider meteringProvider;
         private VolumeSampleProvider volumeProvider;
-        private Eq equalizer;
+        private EqSectionHandler equalizer;
 
         private bool isActive;
         private bool isMicOverActive;
@@ -91,7 +90,7 @@ namespace iRANE_62.Handlers
             }
         }
 
-        public Eq Equalizer => equalizer;
+        public EqSectionHandler Equalizer => equalizer;
 
         public MeteringSampleProvider GetMeteringSampleProvider()
         {
@@ -121,10 +120,10 @@ namespace iRANE_62.Handlers
                         Volume = Volume
                     };
 
-                    equalizer = new Eq();
-                    equalizer.equalizer = new Equalizer(volumeProvider, equalizer.Bands);
+                    equalizer = new EqSectionHandler();
+                    equalizer.Equalizer = new Equalizer(volumeProvider, equalizer.Bands);
 
-                    meteringProvider = new MeteringSampleProvider(equalizer.equalizer);
+                    meteringProvider = new MeteringSampleProvider(equalizer.Equalizer);
                     meteringProvider.StreamVolume += (s, e) => VolumeIndicator?.Invoke(this, e);
 
                     mixerProvider.AddMixerInput(meteringProvider);

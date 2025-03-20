@@ -304,7 +304,7 @@
         }
 
         #endregion
-        private NAudio.Gui.WaveViewer waveViewer_2;
+        //private NAudio.Gui.WaveViewer waveViewer_2;
         private Button btnOpen_ch1;
         private Button btnPlay_ch1;
         private Button btnPause_ch1;

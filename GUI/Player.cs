@@ -1,10 +1,6 @@
-﻿using iRANE_62.Extensions;
-using iRANE_62.Handlers;
+﻿using iRANE_62.Handlers;
 using iRANE_62.Models;
-using NAudio.Dmo.Effect;
-using NAudio.Extras;
 using NAudio.Wave;
-using NAudio.Wave.SampleProviders;
 using NAudio.WaveFormRenderer;
 
 
@@ -19,6 +15,7 @@ namespace iRANE_62
 
         private readonly AudioOutputHandler audioOutputHandler;
         private readonly WaveFormRenderer waveFormRenderer;
+
 
         public Player()
         {
@@ -59,7 +56,6 @@ namespace iRANE_62
                 BeginPlayback(audioSource);
             }
         }
-
         private void BeginPlayback(AudioSourceHandler audioSource)
         {
             try
@@ -88,21 +84,6 @@ namespace iRANE_62
             audioSource.SetVolume(audioSource.Id == 1 ? (float)mixer.pot_gain_ch1.Value : (float)mixer.pot_gain_ch2.Value);
         }
 
-
-        // ten kawałek kodu może być potrzebny później przy dodaniu obsługi słuchawek
-        /* private IWavePlayer CreateWavePlayer()//możesz to dodać jako menu rozwijane z paska u góry
-         {
-             switch (comboBoxOutputDriver.SelectedIndex)
-             {
-                 case 2:
-                     return new WaveOutEvent();
-                 case 1:
-                     return new WaveOut(WaveCallbackInfo.FunctionCallback());
-                 default:
-                     return new WaveOut();
-             }
-         }*/
-
         #endregion
 
         #region Open button
@@ -117,7 +98,7 @@ namespace iRANE_62
                 UpadteTotalSongTime(player, player.Song);
                 EnableGuiOnChanel(player.Id);
                 mixer.CueColorClear(player.Id);//TODO2 zmienić to na sprawdzanie czy dany utwór ma zapisane CuePointy
-                                               //nie używać pola mkxer w ten sposób
+                                               //"nie używać pola mkxer w ten sposób"
             }
             catch (Exception ex)
             {
@@ -138,7 +119,6 @@ namespace iRANE_62
             var fileName = SelectInputFile();
             if (fileName != String.Empty)
             {
-                //player.LoadFile(fileName);
                 LoadTrack(player, fileName);
                 AddToPlaylist(player.Song);
             }
@@ -379,7 +359,7 @@ namespace iRANE_62
         {
             if (player.FileName == null) return;
 
-            var settings = new StandardWaveFormRendererSettings()//nie powinieneś hardcodować tego
+            var settings = new StandardWaveFormRendererSettings()
             {
                 BackgroundColor = Color.Black,
                 TopPeakPen = new Pen(Color.White),
@@ -408,7 +388,6 @@ namespace iRANE_62
                 }
 
                 BeginInvoke((Action)(() => FinishedRender(image, player)));
-
             }
             catch (Exception e)
             {
@@ -420,7 +399,6 @@ namespace iRANE_62
         {
             if (player.Id == 1)
             {
-
                 labelRendering1.Visible = false;
                 waveform_ch1.Image = image;
                 Enabled = true;
@@ -430,7 +408,6 @@ namespace iRANE_62
                 labelRendering2.Visible = false;
                 waveform_ch2.Image = image;
                 Enabled = true;
-
             }
         }
 
@@ -464,7 +441,6 @@ namespace iRANE_62
             {
                 if (cuePoint.TotalSeconds >= 0 && cuePoint < player.AudioFileReader.TotalTime)
                 {
-                    // Obliczamy pozycję X na waveformie
                     int xPos = (int)(waveform.Width * (cuePoint.TotalSeconds / player.AudioFileReader.TotalTime.TotalSeconds));
 
                     using (Pen pen = new Pen(color, 3))
@@ -474,7 +450,7 @@ namespace iRANE_62
                 }
             }
 
-            waveform.Invalidate(); // Odświeżenie kontrolki, aby wyświetlić nową linię
+            waveform.Invalidate();
         }
 
         #endregion

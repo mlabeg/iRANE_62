@@ -13,13 +13,10 @@ namespace iRANE_62.Models
     {
         public string Path { get; set; }
         public string Name { get; set; }
-        public string? Title { get; set; }
-        public string? Author { get; set; }
-        public string? Album { get; set; }
+        public TimeSpan SongSpan { get; set; }
 
         public CuePoint[] CuePoints = new CuePoint[5];
 
-        public TimeSpan SongSpan { get; set; }
 
         public override string ToString()
         {

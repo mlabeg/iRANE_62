@@ -7,7 +7,7 @@ namespace iRANE_62.Handlers
 {
     public class AudioOutputHandler : IDisposable
     {
-        private readonly WaveOutEvent mainOutput;
+        private readonly WasapiOut mainOutput;
         private readonly MixingSampleProvider mainMixer;
         private readonly Dictionary<object, ISampleProvider> activeSources;
 
@@ -20,7 +20,7 @@ namespace iRANE_62.Handlers
                     ReadFully = true
                 };
                 activeSources = new Dictionary<object, ISampleProvider>();
-                mainOutput = new WaveOutEvent();
+                mainOutput = new WasapiOut();
                 mainOutput.Init(mainMixer);
                 mainOutput.Play();
             }
