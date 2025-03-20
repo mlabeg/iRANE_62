@@ -167,30 +167,28 @@ namespace iRANE_62
 
         private void EnableGuiOnChanel(int playerId)
         {
-            EnableWaveformOnChanel(playerId);
+            enableWaveformOnChanel(playerId);
             mixer.EnableCuePoints(playerId);
-            EnableButtonsOnChanel(playerId);
+            enableButtonsOnChanel(playerId);
         }
 
-        private void EnableButtonsOnChanel(int playerId)
+        private void enableButtonsOnChanel(int playerId)
         {
             if (playerId == 1)
             {
-                btnOpen_ch1.Enabled = true;
                 btnPlay_ch1.Enabled = true;
                 btnPause_ch1.Enabled = true;
                 btnStop_ch1.Enabled = true;
             }
             else
             {
-                btnOpen_ch2.Enabled = true;
                 btnPlay_ch2.Enabled = true;
                 btnPause_ch2.Enabled = true;
                 btnStop_ch2.Enabled = true;
             }
         }
 
-        private void EnableWaveformOnChanel(int playerId)
+        private void enableWaveformOnChanel(int playerId)
         {
             if (playerId == 1)
             {

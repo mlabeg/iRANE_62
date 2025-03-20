@@ -56,7 +56,6 @@
             // 
             // btnOpen_ch1
             // 
-            btnOpen_ch1.Enabled = false;
             btnOpen_ch1.Location = new Point(25, 58);
             btnOpen_ch1.Margin = new Padding(2);
             btnOpen_ch1.Name = "btnOpen_ch1";
@@ -69,6 +68,7 @@
             // 
             // btnPlay_ch1
             // 
+            btnPlay_ch1.Enabled = false;
             btnPlay_ch1.Location = new Point(98, 58);
             btnPlay_ch1.Margin = new Padding(2);
             btnPlay_ch1.Name = "btnPlay_ch1";
@@ -81,6 +81,7 @@
             // 
             // btnPause_ch1
             // 
+            btnPause_ch1.Enabled = false;
             btnPause_ch1.Location = new Point(163, 58);
             btnPause_ch1.Margin = new Padding(2);
             btnPause_ch1.Name = "btnPause_ch1";
@@ -92,6 +93,7 @@
             // 
             // btnStop_ch1
             // 
+            btnStop_ch1.Enabled = false;
             btnStop_ch1.Location = new Point(231, 58);
             btnStop_ch1.Margin = new Padding(2);
             btnStop_ch1.Name = "btnStop_ch1";
@@ -115,6 +117,7 @@
             // 
             // btnPlay_ch2
             // 
+            btnPlay_ch2.Enabled = false;
             btnPlay_ch2.Location = new Point(648, 58);
             btnPlay_ch2.Margin = new Padding(2);
             btnPlay_ch2.Name = "btnPlay_ch2";
@@ -127,6 +130,7 @@
             // 
             // btnPause_ch2
             // 
+            btnPause_ch2.Enabled = false;
             btnPause_ch2.Location = new Point(710, 58);
             btnPause_ch2.Margin = new Padding(2);
             btnPause_ch2.Name = "btnPause_ch2";
@@ -138,6 +142,7 @@
             // 
             // btnStop_ch2
             // 
+            btnStop_ch2.Enabled = false;
             btnStop_ch2.Location = new Point(778, 58);
             btnStop_ch2.Margin = new Padding(2);
             btnStop_ch2.Name = "btnStop_ch2";
