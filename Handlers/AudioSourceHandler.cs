@@ -1,8 +1,5 @@
 ﻿using iRANE_62.Models;
 using iRANE_62.SampleProviderExtensions;
-using NAudio.Dmo;
-using NAudio.Dmo.Effect;
-using NAudio.Dsp;
 using NAudio.Extras;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
@@ -15,8 +12,6 @@ namespace iRANE_62.Handlers
         private float rightChanelVolumeLevel;
         private ISampleProvider outputProvider;
         private bool isPlaying;
-        private bool effectsEnabled;
-        private string effectName;
 
         private EventHandler<StreamVolumeEventArgs> volumeMeteredHandlers;
 
@@ -118,7 +113,15 @@ namespace iRANE_62.Handlers
 
         private void SetupAudioChain()
         {
-            var sampleChannel = new SampleChannel(AudioFileReader, true);
+            if (AudioFileReader == null) return;
+
+            var targetWaveFormat = WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
+            var resampler = new MediaFoundationResampler(AudioFileReader, targetWaveFormat)
+            {
+                ResamplerQuality = 60
+            };
+
+            var sampleChannel = new SampleChannel(resampler, true);
             SetVolumeDelegate = vol => sampleChannel.Volume = vol;
 
             Equalizer.FilterSampleProvider = new FilterSampleProvider(sampleChannel, AudioFileReader.WaveFormat.SampleRate);
