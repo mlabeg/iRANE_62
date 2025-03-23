@@ -461,9 +461,9 @@ namespace iRANE_62
             }
             else
             {
-                cuePoint.StartTime = currentTime;
+                cuePoint.StartTime = currentTime-TimeSpan.FromMilliseconds(700);
 
-                CuePointAdded?.Invoke(player, currentTime, cuePoint.Color);
+                CuePointAdded?.Invoke(player, (TimeSpan)cuePoint.StartTime, cuePoint.Color);
             }
 
         }
