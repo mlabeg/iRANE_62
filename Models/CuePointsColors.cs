@@ -8,13 +8,13 @@ namespace iRANE_62.Models
 {
     public static class CuePointsColors
     {
-        public static readonly Color[] Colors = new Color[]
-    {
-        Color.Bisque,
-        Color.CadetBlue,
-        Color.Thistle,
-        Color.Khaki,
-        Color.Fuchsia
-    };
+        public static readonly Color[] Colors =
+    [
+        Color.Yellow,
+        Color.Lime,
+        Color.Cyan,
+        Color.Fuchsia,
+        Color.DarkViolet
+    ];
     }
 }
