@@ -167,12 +167,13 @@ namespace iRANE_62
 
         private void EnableGuiOnChanel(int playerId)
         {
-            enableWaveformOnChanel(playerId);
+            EnableWaveformOnChanel(playerId);
+            EnableButtonsOnChanel(playerId);
             mixer.EnableCuePoints(playerId);
-            enableButtonsOnChanel(playerId);
+            mixer.EableLoopButtons(playerId);
         }
 
-        private void enableButtonsOnChanel(int playerId)
+        private void EnableButtonsOnChanel(int playerId)
         {
             if (playerId == 1)
             {
@@ -188,7 +189,7 @@ namespace iRANE_62
             }
         }
 
-        private void enableWaveformOnChanel(int playerId)
+        private void EnableWaveformOnChanel(int playerId)
         {
             if (playerId == 1)
             {
