@@ -336,6 +336,7 @@ namespace iRANE_62
         private void Stop(ref AudioSourceHandler player)
         {
             player.Stop(audioOutputHandler);
+            mixer.CleanLoop(player);
         }
 
         #endregion

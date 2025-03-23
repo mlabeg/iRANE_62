@@ -255,37 +255,50 @@ namespace iRANE_62
         private void loopOut_ch1_Click(object sender, EventArgs e)
         {
             audioSource1.Loop.SetLoopOut(audioSource1.AudioFileReader.CurrentTime);
+            btn_loopOut_ch1.BackColor = Color.YellowGreen;
         }
 
         private void loopIn_ch1_Click(object sender, EventArgs e)
         {
             audioSource1.Loop.SetLoopIn(audioSource1.AudioFileReader.CurrentTime);
             audioSource1.Loop.LoopActive = true;
+            btn_loopIn_ch1.BackColor = Color.YellowGreen;
         }
 
         private void exitLoop_ch1_Click(object sender, EventArgs e)
         {
             audioSource1.Loop.LoopActive = false;
-            audioSource1.Loop.LoopIn = TimeSpan.Zero;
-            audioSource1.Loop.LoopOut = TimeSpan.Zero;
+            CleanLoop(audioSource1);
+
+            btn_loopIn_ch1.BackColor = Color.White;
+            btn_loopOut_ch1.BackColor = Color.White;
         }
 
         private void loopOut_ch2_Click(object sender, EventArgs e)
         {
             audioSource2.Loop.SetLoopOut(audioSource2.AudioFileReader.CurrentTime);
+            btn_loopOut_ch2.BackColor = Color.YellowGreen;
         }
 
         private void loopIn_ch2_Click(object sender, EventArgs e)
         {
             audioSource2.Loop.SetLoopIn(audioSource2.AudioFileReader.CurrentTime);
             audioSource2.Loop.LoopActive = true;
+            btn_loopIn_ch2.BackColor = Color.YellowGreen;
         }
 
         private void exitLoop_ch2_Click(object sender, EventArgs e)
         {
             audioSource2.Loop.LoopActive = false;
-            audioSource2.Loop.LoopIn = TimeSpan.Zero;
-            audioSource2.Loop.LoopOut = TimeSpan.Zero;
+            CleanLoop(audioSource2);
+
+            btn_loopIn_ch2.BackColor = Color.White;
+            btn_loopOut_ch2.BackColor = Color.White;
+        }
+
+        public void CleanLoop(AudioSourceHandler audioSource)
+        {
+            audioSource.Loop.CleanLoop();
         }
 
         private void BlockLoopButtons()
