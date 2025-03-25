@@ -15,8 +15,7 @@ namespace iRANE_62.Models
 
         public Loop()
         {
-            LoopIn = TimeSpan.Zero;
-            LoopOut = TimeSpan.Zero;
+            CleanLoop();
         }
 
         public void SetLoopIn(TimeSpan time)
@@ -27,6 +26,12 @@ namespace iRANE_62.Models
         public void SetLoopOut(TimeSpan time)
         {
             LoopOut = time;
+        }
+
+        public void CleanLoop()
+        {
+            LoopIn = TimeSpan.Zero;
+            LoopOut = TimeSpan.Zero;
         }
     }
 }
