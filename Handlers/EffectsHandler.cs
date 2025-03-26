@@ -1,4 +1,5 @@
-﻿using iRANE_62.SampleProviderExtensions;
+﻿using iRANE_62.Models;
+using iRANE_62.SampleProviderExtensions;
 using NAudio.Extras;
 using NAudio.Wave;
 using System;
@@ -20,7 +21,7 @@ namespace iRANE_62.Handlers
 
         public EffectsEnum Effect{
             get=>effect;
-            set=>effect;
+            set=>effect=value;
         }
 
         private EffectsHandler()
