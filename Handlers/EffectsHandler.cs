@@ -35,12 +35,14 @@ namespace iRANE_62.Handlers
             sourceProvider = source ?? throw new ArgumentNullException(nameof(source));
         }
 
-        public EffectsHandler(ISampleProvider source, EffectsHandler currentEffectHandler) : this(source)
+        public EffectsHandler(ISampleProvider source, MixerEffectHolder effectHolder) : this(source)
         {
-            activeEffect = currentEffectHandler.activeEffect;
-            effectsEnabled = currentEffectHandler.EffectsEnabled;
-            effectGain = currentEffectHandler.effectGain;
-            effect = currentEffectHandler.effect;
+            effect=effectHolder.effect;
+            effectGain=effectHolder.gain;
+            effectsEnabled=effectHolder.effectEnabled;
+
+            SetActiveEffect(currentEffectHandler.activeEffectName);
+            
         }
 
 
@@ -104,7 +106,7 @@ namespace iRANE_62.Handlers
 
             switch (effect)
             {
-                case EffectsEnum.Echo:
+                case "Echo":
                     activeEffect = new EchoEffectSampleProvider(sourceProvider, 825, effectGain, 0.25f);
                     break;
                 // Add cases for other effects here, e.g.:
