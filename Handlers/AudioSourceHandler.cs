@@ -24,9 +24,12 @@ namespace iRANE_62.Handlers
         public int CurrentPlaybackPosition { get; set; }
 
         public EffectsHandler EffectsHandler { get; private set; }
+        public MixerEffectHolder MixerEffectHolder { get; set; }
+        public ISampleProvider tmpProvider;
 
 
         public Action<float> SetVolumeDelegate;
+        public Action<ISampleProvider> UpdateEffectsDelegate;
 
         public AudioSourceHandler(int id)
         {
@@ -34,7 +37,15 @@ namespace iRANE_62.Handlers
             Equalizer = new EqSectionHandler();
             Loop = new Loop();
             CurrentPlaybackPosition = 0;
-            EffectsHandler = new EffectsHandler();
+            EffectsHandler = new EffectsHandler(this);
+            EffectsHandler.EffectsChanged += OnEffectsChanged;
+        }
+
+        private void OnEffectsChanged(ISampleProvider newProvider)
+        {
+            tmpProvider = newProvider;
+            SetupMeteringProvider();
+            UpdateEffectsDelegate?.Invoke(newProvider);
         }
 
         public bool IsPlaying => isPlaying;
@@ -62,8 +73,6 @@ namespace iRANE_62.Handlers
                 }
             }
         }
-
-        public ISampleProvider OutputProvider => outputProvider;
 
         public void LoadFile(string fileName)
         {
@@ -125,16 +134,14 @@ namespace iRANE_62.Handlers
             Equalizer.PanningProvider = new StereoPanningSampleProvider(Equalizer.FilterSampleProvider);
             Equalizer.Equalizer = new Equalizer(Equalizer.PanningProvider, Equalizer.Bands);
 
-            EffectsHandler = new EffectsHandler(Equalizer.Equalizer, );
-
-            EffectsHandler.EffectsChanged += SetupMeteringProvider;
+            EffectsHandler.UpdateSourceProvider(Equalizer.Equalizer);
+            tmpProvider = EffectsHandler.GetOutputProvider();
             SetupMeteringProvider();
-            
         }
 
         private void SetupMeteringProvider()
-        {
-            outputProvider = new MeteringSampleProvider(EffectsHandler.GetOutputProvider());
+         {
+            outputProvider = new MeteringSampleProvider(tmpProvider);
 
             if (volumeMeteredHandlers != null)
             {

@@ -41,7 +41,7 @@ namespace iRANE_62
 
             Channel1VolumeHandler = new ChannelVolumeHandler(audioSource1, pot_gain_ch1, verticalVolumeSlider_ch1, pot_systemVolume);
             Channel2VolumeHandler = new ChannelVolumeHandler(audioSource2, pot_gain_ch2, verticalVolumeSlider_ch2, pot_systemVolume);
-            mixerEffectHolder=new MixerEffectHolder(EffectsEnum.Disabled,chBox_efx_on, Pot_fx_gain);
+            //mixerEffectHolder=new MixerEffectHolder(EffectsEnum.Disabled,chBox_efx_on.Checked, (float)Pot_fx_gain.Value);
 
             efxCheckedChangedEventHandler();
             BlockCueButtons();
@@ -72,13 +72,15 @@ namespace iRANE_62
         {
             if (chBox_efx_echo.Checked == true)
             {
-                mixerEffectHolder.Effect=EffectsEnum.Echo;
-                label_Effect_Name=EffectsEnum.Echo;
+                    audioSource1.EffectsHandler.Effect = EffectsEnum.Echo;
+               // mixerEffectHolder.Effect=EffectsEnum.Echo;
+                label_Effect_Name.Text=EffectsEnum.Echo.ToString();
             }
             else
             {
-                mixerEffectHolder.Effect=EffectsEnum.Disabled;
-                label_Effect_Name=EffectsEnum.Disabled;
+                audioSource1.EffectsHandler.Effect = EffectsEnum.Disabled;
+                //mixerEffectHolder.Effect=EffectsEnum.Disabled;
+                label_Effect_Name.Text = EffectsEnum.Disabled.ToString();
             }
         }
 
@@ -106,15 +108,16 @@ namespace iRANE_62
 
         private void chBox_efx_on_CheckedChanged(object sender, EventArgs e)
         {
-            audioSource1.EffectsHandler.EffectsEnabled = true;
-            audioSource2.EffectsHandler.EffectsEnabled = true;
+            audioSource1.EffectsHandler.EffectsEnabled = chBox_efx_on.Checked;
+            //audioSource2.EffectsHandler.EffectsEnabled = chBox_efx_on.Checked;
         }
 
         private void Pot_fx_gain_ValueChanged(object sender, EventArgs e)
         {
             float gain = (float)Pot_fx_gain.Value;
+
             audioSource1.EffectsHandler.EffectGain = gain;
-            audioSource2.EffectsHandler.EffectGain = gain;
+            //audioSource2.EffectsHandler.EffectGain = gain;
         }
 
         private void btn_fx_tap_Click(object sender, EventArgs e)
@@ -464,7 +467,7 @@ namespace iRANE_62
             }
             else
             {
-                cuePoint.StartTime = currentTime-TimeSpan.FromMilliseconds(700);
+                cuePoint.StartTime = currentTime - TimeSpan.FromMilliseconds(700);
 
                 CuePointAdded?.Invoke(player, (TimeSpan)cuePoint.StartTime, cuePoint.Color);
             }
