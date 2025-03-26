@@ -1,4 +1,5 @@
-﻿using iRANE_62.SampleProviderExtensions;
+﻿using iRANE_62.Models;
+using iRANE_62.SampleProviderExtensions;
 using NAudio.Extras;
 using NAudio.Wave;
 using System;
@@ -13,52 +14,46 @@ namespace iRANE_62.Handlers
     {
         private readonly ISampleProvider sourceProvider;
         private IEffectSampleProvider activeEffect;
-        private bool effectsEnabled = false;
-        private float effectGain = 0f;
-        private string activeEffectName = String.Empty;
+        private bool effectsEnabled;
+        private float effectGain;
+        private EffectsEnum effect;
+
+        public event Action EffectsChanged;
 
         public EffectsHandler()
         {
+            //effect = EffectsEnum.Disabled;
+        }
+
+        private void SetupEffects()
+        {
+
         }
 
         public EffectsHandler(ISampleProvider source) : this()
         {
             sourceProvider = source ?? throw new ArgumentNullException(nameof(source));
         }
+
         public EffectsHandler(ISampleProvider source, EffectsHandler currentEffectHandler) : this(source)
         {
             activeEffect = currentEffectHandler.activeEffect;
             effectsEnabled = currentEffectHandler.EffectsEnabled;
             effectGain = currentEffectHandler.effectGain;
-            if (currentEffectHandler.activeEffectName != String.Empty)
-            {
-                SetActiveEffect(currentEffectHandler.activeEffectName);
-            }
+            effect = currentEffectHandler.effect;
         }
-        /*
+
+
         public EffectsHandler(ISampleProvider source, bool effectEnabled) : this(source)
         {
             effectsEnabled = effectEnabled;
         }
 
-        public EffectsHandler(ISampleProvider source, bool effectEnabled, string? effectName) : this(source, effectEnabled)
+        public EffectsHandler(ISampleProvider source, bool effectEnabled, EffectsEnum effect) : this(source, effectEnabled)
         {
-            if (effectName != null)
+            if (effect != null)
             {
-                SetActiveEffect(effectName);
-            }
-        }*/
-
-        public string ActiveEffectName
-        {
-            get => activeEffectName;
-            set
-            {
-                activeEffectName = value;
-                if (activeEffectName != String.Empty)
-                {
-                    SetActiveEffect(ActiveEffectName);
-                }
+                SetActiveEffect(effect);
             }
         }
 
@@ -70,6 +65,7 @@ namespace iRANE_62.Handlers
                 if (effectsEnabled != value)
                 {
                     effectsEnabled = value;
+                    SetActiveEffect(effect);
                 }
             }
         }
@@ -84,19 +80,31 @@ namespace iRANE_62.Handlers
                 {
                     echo.EchoGain = effectGain;
                 }
+                SetActiveEffect(effect);
             }
         }
 
-        public void SetActiveEffect(string effectName)
+        public EffectsEnum Effect
+        {
+            get => effect;
+            set
+            {
+                effect = value;
+                SetActiveEffect(effect);
+            }
+        }
+
+
+        public void SetActiveEffect(EffectsEnum effect)
         {
             if (sourceProvider == null)
             {
                 return;
             }
 
-            switch (effectName)
+            switch (effect)
             {
-                case "Echo":
+                case EffectsEnum.Echo:
                     activeEffect = new EchoEffectSampleProvider(sourceProvider, 825, effectGain, 0.25f);
                     break;
                 // Add cases for other effects here, e.g.:
@@ -107,6 +115,7 @@ namespace iRANE_62.Handlers
                     activeEffect = null;
                     break;
             }
+            EffectsChanged?.Invoke();
         }
 
         public ISampleProvider GetOutputProvider()

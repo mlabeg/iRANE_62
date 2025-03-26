@@ -69,13 +69,13 @@ namespace iRANE_62
         {
             if (chBox_efx_echo.Checked == true)
             {
-                audioSource1.EffectsHandler.ActiveEffectName = "Echo";
-                audioSource2.EffectsHandler.ActiveEffectName = "Echo";
+                audioSource1.EffectsHandler.Effect = EffectsEnum.Echo;
+                audioSource2.EffectsHandler.Effect = EffectsEnum.Echo;
             }
             else
             {
-                audioSource1.EffectsHandler.ActiveEffectName = String.Empty;
-                audioSource2.EffectsHandler.ActiveEffectName = String.Empty;
+                audioSource1.EffectsHandler.Effect = EffectsEnum.Disabled;
+                audioSource2.EffectsHandler.Effect = EffectsEnum.Disabled;
             }
         }
 
@@ -103,13 +103,14 @@ namespace iRANE_62
 
         private void chBox_efx_on_CheckedChanged(object sender, EventArgs e)
         {
-            audioSource1.EffectsHandler.EffectsEnabled = true;
-            audioSource2.EffectsHandler.EffectsEnabled = true;
+            audioSource1.EffectsHandler.EffectsEnabled = chBox_efx_on.Checked;
+            audioSource2.EffectsHandler.EffectsEnabled = chBox_efx_on.Checked;
         }
 
         private void Pot_fx_gain_ValueChanged(object sender, EventArgs e)
         {
             float gain = (float)Pot_fx_gain.Value;
+
             audioSource1.EffectsHandler.EffectGain = gain;
             audioSource2.EffectsHandler.EffectGain = gain;
         }
@@ -461,7 +462,7 @@ namespace iRANE_62
             }
             else
             {
-                cuePoint.StartTime = currentTime-TimeSpan.FromMilliseconds(700);
+                cuePoint.StartTime = currentTime - TimeSpan.FromMilliseconds(700);
 
                 CuePointAdded?.Invoke(player, (TimeSpan)cuePoint.StartTime, cuePoint.Color);
             }

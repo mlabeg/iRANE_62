@@ -35,6 +35,7 @@ namespace iRANE_62.Handlers
             Loop = new Loop();
             CurrentPlaybackPosition = 0;
             EffectsHandler = new EffectsHandler();
+            EffectsHandler.EffectsChanged += SetupMeteringProvider;
         }
 
         public bool IsPlaying => isPlaying;
@@ -62,8 +63,6 @@ namespace iRANE_62.Handlers
                 }
             }
         }
-
-        public ISampleProvider OutputProvider => outputProvider;
 
         public void LoadFile(string fileName)
         {
@@ -125,8 +124,15 @@ namespace iRANE_62.Handlers
             Equalizer.PanningProvider = new StereoPanningSampleProvider(Equalizer.FilterSampleProvider);
             Equalizer.Equalizer = new Equalizer(Equalizer.PanningProvider, Equalizer.Bands);
 
-            EffectsHandler = new EffectsHandler(Equalizer.Equalizer, EffectsHandler);
+            EffectsHandler = new EffectsHandler(Equalizer.Equalizer);
+            EffectsHandler.EffectsChanged += SetupMeteringProvider;
 
+            SetupMeteringProvider();
+
+        }
+
+        private void SetupMeteringProvider()
+        {
             outputProvider = new MeteringSampleProvider(EffectsHandler.GetOutputProvider());
 
             if (volumeMeteredHandlers != null)
