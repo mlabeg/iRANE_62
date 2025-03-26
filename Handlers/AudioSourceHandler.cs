@@ -96,14 +96,11 @@ namespace iRANE_62.Handlers
 
         public void Stop(AudioOutputHandler outputManager)
         {
-            if (AudioFileReader != null)
-            {
-                outputManager.RemoveSource(this);
-                AudioFileReader.Position = 0;
-                isPlaying = false;
-                leftChanelVolumeLevel = 0f;
-                rightChanelVolumeLevel = 0f;
-            }
+            outputManager.RemoveSource(this);
+            AudioFileReader.Position = 0;
+            isPlaying = false;
+            leftChanelVolumeLevel = 0f;
+            rightChanelVolumeLevel = 0f;
         }
 
         public void SetVolume(float volume)

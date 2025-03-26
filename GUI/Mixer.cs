@@ -31,6 +31,7 @@ namespace iRANE_62
             this.audioSource1 = player1 ?? throw new ArgumentNullException(nameof(player1));
             this.audioSource2 = player2 ?? throw new ArgumentNullException(nameof(player2));
             this.audioOutputHandler = audioOutputHandler ?? throw new ArgumentNullException(nameof(audioOutputHandler));
+
             microphoneHandler = new MicrophoneHandler();
             systemVolumeHandler = new SystemVolumeHandler();
             bpmCounterHandler = new BpmCounterHandler();
@@ -40,7 +41,8 @@ namespace iRANE_62
             Channel2VolumeHandler = new ChannelVolumeHandler(audioSource2, pot_gain_ch2, verticalVolumeSlider_ch2, pot_systemVolume);
 
             efxCheckedChangedEventHandler();
-            blockCueButtons();
+            BlockCueButtons();
+            BlockLoopButtons();
             SetupMicrophoneControls();
             SetupVolumeMeters();
             SetupSystemVolume();
@@ -252,56 +254,84 @@ namespace iRANE_62
         #region Loop
         private void loopOut_ch1_Click(object sender, EventArgs e)
         {
-            if (audioSource1.IsPlaying)
-            {
-                audioSource1.Loop.SetLoopOut(audioSource1.AudioFileReader.CurrentTime);
-            }
+            audioSource1.Loop.SetLoopOut(audioSource1.AudioFileReader.CurrentTime);
+            btn_loopOut_ch1.BackColor = Color.YellowGreen;
         }
 
         private void loopIn_ch1_Click(object sender, EventArgs e)
         {
-            if (audioSource1.IsPlaying)
-            {
-                audioSource1.Loop.SetLoopIn(audioSource1.AudioFileReader.CurrentTime);
-                audioSource1.Loop.LoopActive = true;
-            }
+            audioSource1.Loop.SetLoopIn(audioSource1.AudioFileReader.CurrentTime);
+            audioSource1.Loop.LoopActive = true;
+            btn_loopIn_ch1.BackColor = Color.YellowGreen;
         }
 
         private void exitLoop_ch1_Click(object sender, EventArgs e)
         {
             audioSource1.Loop.LoopActive = false;
-            audioSource1.Loop.LoopIn = TimeSpan.Zero;
-            audioSource1.Loop.LoopOut = TimeSpan.Zero;
+            CleanLoop(audioSource1);
+
+            btn_loopIn_ch1.BackColor = Color.White;
+            btn_loopOut_ch1.BackColor = Color.White;
         }
 
         private void loopOut_ch2_Click(object sender, EventArgs e)
         {
-            if (audioSource2.IsPlaying)
-            {
-                audioSource2.Loop.SetLoopOut(audioSource2.AudioFileReader.CurrentTime);
-            }
+            audioSource2.Loop.SetLoopOut(audioSource2.AudioFileReader.CurrentTime);
+            btn_loopOut_ch2.BackColor = Color.YellowGreen;
         }
 
         private void loopIn_ch2_Click(object sender, EventArgs e)
         {
-            if (audioSource2.IsPlaying)
-            {
-                audioSource2.Loop.SetLoopIn(audioSource2.AudioFileReader.CurrentTime);
-                audioSource2.Loop.LoopActive = true;
-            }
+            audioSource2.Loop.SetLoopIn(audioSource2.AudioFileReader.CurrentTime);
+            audioSource2.Loop.LoopActive = true;
+            btn_loopIn_ch2.BackColor = Color.YellowGreen;
         }
 
         private void exitLoop_ch2_Click(object sender, EventArgs e)
         {
             audioSource2.Loop.LoopActive = false;
-            audioSource2.Loop.LoopIn = TimeSpan.Zero;
-            audioSource2.Loop.LoopOut = TimeSpan.Zero;
+            CleanLoop(audioSource2);
+
+            btn_loopIn_ch2.BackColor = Color.White;
+            btn_loopOut_ch2.BackColor = Color.White;
         }
+
+        public void CleanLoop(AudioSourceHandler audioSource)
+        {
+            audioSource.Loop.CleanLoop();
+        }
+
+        private void BlockLoopButtons()
+        {
+            btn_loopIn_ch1.Enabled = false;
+            btn_loopOut_ch1.Enabled = false;
+            btn_exitLoop_ch1.Enabled = false;
+            btn_loopIn_ch2.Enabled = false;
+            btn_loopOut_ch2.Enabled = false;
+            btn_exitLoop_ch2.Enabled = false;
+        }
+
+        public void EableLoopButtons(int playerId)
+        {
+            if (playerId == 1)
+            {
+                btn_loopIn_ch1.Enabled = true;
+                btn_loopOut_ch1.Enabled = true;
+                btn_exitLoop_ch1.Enabled = true;
+            }
+            else
+            {
+                btn_loopIn_ch2.Enabled = true;
+                btn_loopOut_ch2.Enabled = true;
+                btn_exitLoop_ch2.Enabled = true;
+            }
+        }
+
         #endregion
 
         #region CuePoint
 
-        private void blockCueButtons()
+        private void BlockCueButtons()
         {
             btn_cue1_ch1.Enabled = false;
             btn_cue2_ch1.Enabled = false;
@@ -431,9 +461,9 @@ namespace iRANE_62
             }
             else
             {
-                cuePoint.StartTime = currentTime;
+                cuePoint.StartTime = currentTime-TimeSpan.FromMilliseconds(700);
 
-                CuePointAdded?.Invoke(player, currentTime, cuePoint.Color);
+                CuePointAdded?.Invoke(player, (TimeSpan)cuePoint.StartTime, cuePoint.Color);
             }
 
         }

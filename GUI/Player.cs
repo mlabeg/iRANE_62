@@ -21,7 +21,7 @@ namespace iRANE_62
         {
             InitializeComponent();
             Disposed += PlaybackPanel_Disposed;
-            timer1.Interval = 250;
+            timer1.Interval = 10;
             timer1.Tick += OnTimerTick;
 
             chanel1 = new AudioSourceHandler(1);
@@ -78,12 +78,6 @@ namespace iRANE_62
                 MessageBox.Show($"Błąd odtwarzacza: {ex.Message}");
             }
         }
-
-        private void SetVolumeFromMixerLevel(AudioSourceHandler audioSource)
-        {
-            audioSource.SetVolume(audioSource.Id == 1 ? (float)mixer.pot_gain_ch1.Value : (float)mixer.pot_gain_ch2.Value);
-        }
-
         #endregion
 
         #region Open button
@@ -95,10 +89,9 @@ namespace iRANE_62
                 player.LoadFile(fileName);
                 LabelTrackUpdate(player);
                 RenderWaveform(player);
-                UpadteTotalSongTime(player, player.Song);
+                UpadteTotalSongTime(player);
                 EnableGuiOnChanel(player.Id);
-                mixer.CueColorClear(player.Id);//TODO2 zmienić to na sprawdzanie czy dany utwór ma zapisane CuePointy
-                                               //"nie używać pola mkxer w ten sposób"
+                mixer.CueColorClear(player.Id);
             }
             catch (Exception ex)
             {
@@ -129,9 +122,9 @@ namespace iRANE_62
             LoadTrack(player, song.Path);
         }
 
-        private void UpadteTotalSongTime(AudioSourceHandler player, Song song)
+        private void UpadteTotalSongTime(AudioSourceHandler player)
         {
-            (player.Id == 1 ? labelTotalTime_1 : labelTotalTime_2).Text = FormatTimeSpan(song.SongSpan);
+            (player.Id == 1 ? labelTotalTime_1 : labelTotalTime_2).Text = FormatTimeSpan(player.Song.SongSpan);
         }
 
         private string SelectInputFile()
@@ -167,12 +160,13 @@ namespace iRANE_62
 
         private void EnableGuiOnChanel(int playerId)
         {
-            enableWaveformOnChanel(playerId);
+            EnableWaveformOnChanel(playerId);
+            EnableButtonsOnChanel(playerId);
             mixer.EnableCuePoints(playerId);
-            enableButtonsOnChanel(playerId);
+            mixer.EableLoopButtons(playerId);
         }
 
-        private void enableButtonsOnChanel(int playerId)
+        private void EnableButtonsOnChanel(int playerId)
         {
             if (playerId == 1)
             {
@@ -188,7 +182,7 @@ namespace iRANE_62
             }
         }
 
-        private void enableWaveformOnChanel(int playerId)
+        private void EnableWaveformOnChanel(int playerId)
         {
             if (playerId == 1)
             {
@@ -233,7 +227,6 @@ namespace iRANE_62
 
             if (e.KeyCode == Keys.Right && e.Shift)
             {
-
                 if (playlista.SelectedItem != null)
                 {
                     Song song = (Song)playlista.SelectedItem;
@@ -251,7 +244,6 @@ namespace iRANE_62
 
             if (e.KeyCode == Keys.Enter)
             {
-
                 if (chanel2.FileName != null)
                 {
                     BeginPlayback(chanel2);
@@ -335,6 +327,7 @@ namespace iRANE_62
         private void Stop(ref AudioSourceHandler player)
         {
             player.Stop(audioOutputHandler);
+            mixer.CleanLoop(player);
         }
 
         #endregion

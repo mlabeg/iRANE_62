@@ -212,7 +212,7 @@ namespace iRANE_62
             // 
             // pot_mid_ch2
             // 
-            pot_mid_ch2.Location = new Point(540, 194);
+            pot_mid_ch2.Location = new Point(17, 160);
             pot_mid_ch2.Margin = new Padding(4, 5, 4, 5);
             pot_mid_ch2.Maximum = 30D;
             pot_mid_ch2.Minimum = -30D;
@@ -396,6 +396,7 @@ namespace iRANE_62
             panel_chanel2.Controls.Add(panSlider_ch2);
             panel_chanel2.Controls.Add(pot_filter_ch2);
             panel_chanel2.Controls.Add(chBox_flexfx_ch2);
+            panel_chanel2.Controls.Add(pot_mid_ch2);
             panel_chanel2.Location = new Point(522, 33);
             panel_chanel2.Margin = new Padding(2);
             panel_chanel2.Name = "panel_chanel2";
@@ -953,7 +954,6 @@ namespace iRANE_62
             Controls.Add(chBox_efx_flanger);
             Controls.Add(chBox_efx_echo);
             Controls.Add(pot_low_ch2);
-            Controls.Add(pot_mid_ch2);
             Controls.Add(pot_mic_low);
             Controls.Add(pot_mid_ch1);
             Controls.Add(pot_mic_high);
