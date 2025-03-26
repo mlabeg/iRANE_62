@@ -18,9 +18,11 @@ namespace iRANE_62
         private readonly AudioSourceHandler audioSource2;
         private readonly AudioOutputHandler audioOutputHandler;
         private readonly SystemVolumeHandler systemVolumeHandler;
-
+       
         public readonly ChannelVolumeHandler Channel1VolumeHandler;
         public readonly ChannelVolumeHandler Channel2VolumeHandler;
+
+        public MixerEffectHolder mixerEffectHolder;
 
         public event Action<AudioSourceHandler, TimeSpan, Color> CuePointAdded;
 
@@ -39,6 +41,7 @@ namespace iRANE_62
 
             Channel1VolumeHandler = new ChannelVolumeHandler(audioSource1, pot_gain_ch1, verticalVolumeSlider_ch1, pot_systemVolume);
             Channel2VolumeHandler = new ChannelVolumeHandler(audioSource2, pot_gain_ch2, verticalVolumeSlider_ch2, pot_systemVolume);
+            mixerEffectHolder=new MixerEffectHolder(EffectsEnum.Disabled,chBox_efx_on, Pot_fx_gain);
 
             efxCheckedChangedEventHandler();
             BlockCueButtons();
@@ -69,13 +72,13 @@ namespace iRANE_62
         {
             if (chBox_efx_echo.Checked == true)
             {
-                audioSource1.EffectsHandler.ActiveEffectName = "Echo";
-                audioSource2.EffectsHandler.ActiveEffectName = "Echo";
+                mixerEffectHolder.Effect=EffectsEnum.Echo;
+                label_Effect_Name=EffectsEnum.Echo;
             }
             else
             {
-                audioSource1.EffectsHandler.ActiveEffectName = String.Empty;
-                audioSource2.EffectsHandler.ActiveEffectName = String.Empty;
+                mixerEffectHolder.Effect=EffectsEnum.Disabled;
+                label_Effect_Name=EffectsEnum.Disabled;
             }
         }
 
@@ -149,7 +152,7 @@ namespace iRANE_62
         }
 
         private void high_odt1_ValueChanged(object sender, EventArgs e)
-        {//doda³em bardziej ³agodne przejœcie miêdzy bandami, na studyjnych nie s³ychaæ fuzej ró¿nicy, bêdzie móg³ usun¹æ jak oka¿e siê, ¿e program jest za wolny   
+        {//dodaï¿½em bardziej ï¿½agodne przejï¿½cie miï¿½dzy bandami, na studyjnych nie sï¿½ychaï¿½ fuzej rï¿½nicy, bï¿½dzie mï¿½gï¿½ usunï¿½ï¿½ jak okaï¿½e siï¿½, ï¿½e program jest za wolny   
             if (audioSource1.AudioFileReader != null)
             {
                 audioSource1.Equalizer.Band9 = (float)pot_high_ch1.Value;

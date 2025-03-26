@@ -125,8 +125,15 @@ namespace iRANE_62.Handlers
             Equalizer.PanningProvider = new StereoPanningSampleProvider(Equalizer.FilterSampleProvider);
             Equalizer.Equalizer = new Equalizer(Equalizer.PanningProvider, Equalizer.Bands);
 
-            EffectsHandler = new EffectsHandler(Equalizer.Equalizer, EffectsHandler);
+            EffectsHandler = new EffectsHandler(Equalizer.Equalizer, );
 
+            EffectsHandler.EffectsChanged += SetupMeteringProvider;
+            SetupMeteringProvider();
+            
+        }
+
+        private void SetupMeteringProvider()
+        {
             outputProvider = new MeteringSampleProvider(EffectsHandler.GetOutputProvider());
 
             if (volumeMeteredHandlers != null)

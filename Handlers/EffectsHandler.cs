@@ -15,9 +15,15 @@ namespace iRANE_62.Handlers
         private IEffectSampleProvider activeEffect;
         private bool effectsEnabled = false;
         private float effectGain = 0f;
-        private string activeEffectName = String.Empty;
+        //private string activeEffectName = String.Empty;
+        private EffectsEnum effect;
 
-        public EffectsHandler()
+        public EffectsEnum Effect{
+            get=>effect;
+            set=>effect;
+        }
+
+        private EffectsHandler()
         {
         }
 
@@ -25,15 +31,15 @@ namespace iRANE_62.Handlers
         {
             sourceProvider = source ?? throw new ArgumentNullException(nameof(source));
         }
-        public EffectsHandler(ISampleProvider source, EffectsHandler currentEffectHandler) : this(source)
+
+        public EffectsHandler(ISampleProvider source, MixerEffectHolder effectHolder) : this(source)
         {
-            activeEffect = currentEffectHandler.activeEffect;
-            effectsEnabled = currentEffectHandler.EffectsEnabled;
-            effectGain = currentEffectHandler.effectGain;
-            if (currentEffectHandler.activeEffectName != String.Empty)
-            {
-                SetActiveEffect(currentEffectHandler.activeEffectName);
-            }
+            effect=effectHolder.effect;
+            effectGain=effectHolder.gain;
+            effectsEnabled=effectHolder.effectEnabled;
+
+            SetActiveEffect(currentEffectHandler.activeEffectName);
+            
         }
         /*
         public EffectsHandler(ISampleProvider source, bool effectEnabled) : this(source)
@@ -96,6 +102,10 @@ namespace iRANE_62.Handlers
 
             switch (effectName)
             {
+                if(sourceProvider== null){
+                    return;
+                }
+
                 case "Echo":
                     activeEffect = new EchoEffectSampleProvider(sourceProvider, 825, effectGain, 0.25f);
                     break;
