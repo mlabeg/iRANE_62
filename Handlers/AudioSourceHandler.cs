@@ -25,8 +25,8 @@ namespace iRANE_62.Handlers
 
         public EffectsHandler EffectsHandler { get; private set; }
 
-
         public Action<float> SetVolumeDelegate;
+        public Action<float,bool> EffectUpdateDelegate;
 
         public AudioSourceHandler(int id)
         {
@@ -40,7 +40,6 @@ namespace iRANE_62.Handlers
         public bool IsPlaying => isPlaying;
         public float LeftChanelVolumeLevel => leftChanelVolumeLevel;
         public float RightChanelVolumeLevel => rightChanelVolumeLevel;
-
 
 
         public event EventHandler<StreamVolumeEventArgs> VolumeMetered
@@ -62,8 +61,6 @@ namespace iRANE_62.Handlers
                 }
             }
         }
-
-        public ISampleProvider OutputProvider => outputProvider;
 
         public void LoadFile(string fileName)
         {
@@ -108,6 +105,11 @@ namespace iRANE_62.Handlers
             SetVolumeDelegate?.Invoke(volume);
         }
 
+        public void UpdateEffect(float gain, bool enabled)
+        {
+            EffectUpdateDelegate?.Invoke(gain, enabled);
+        }
+
         private void SetupAudioChain()
         {
             if (AudioFileReader == null) return;
@@ -124,10 +126,11 @@ namespace iRANE_62.Handlers
             Equalizer.FilterSampleProvider = new FilterSampleProvider(sampleChannel, AudioFileReader.WaveFormat.SampleRate);
             Equalizer.PanningProvider = new StereoPanningSampleProvider(Equalizer.FilterSampleProvider);
             Equalizer.Equalizer = new Equalizer(Equalizer.PanningProvider, Equalizer.Bands);
+            
+            IEffectSampleProvider effectSampleProvider = new EchoEffectSampleProvider(Equalizer.Equalizer);
+            EffectUpdateDelegate = effectSampleProvider.EffectUpdate;
 
-            EffectsHandler = new EffectsHandler(Equalizer.Equalizer, EffectsHandler);
-
-            outputProvider = new MeteringSampleProvider(EffectsHandler.GetOutputProvider());
+            outputProvider = new MeteringSampleProvider(effectSampleProvider);
 
             if (volumeMeteredHandlers != null)
             {

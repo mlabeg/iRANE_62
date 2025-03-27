@@ -16,10 +16,34 @@ namespace iRANE_62.SampleProviderExtensions
         private float[] delayBuffer;
         private int position;
 
+        private bool enabled;
+        private int enabledFactor;
+
+        public bool Enabled
+        {
+            get => enabled;
+            set
+            {
+                enabled = value;
+                enabledFactor = value ? 1 : 0;
+            }
+        }
+
         public float EchoGain
         {
             get => echoGain;
             set => echoGain = value;
+        }
+
+        public EchoEffectSampleProvider(ISampleProvider source)
+        {
+            this.source = source;
+            int echoDelayInMilliseconds = 825;
+            echoDelayInSamples = (int)(source.WaveFormat.SampleRate * echoDelayInMilliseconds / 1000.0);
+            echoGain = 0.25f;
+            delay = 1;
+            enabledFactor = 0;
+            this.delayBuffer = new float[echoDelayInSamples];
         }
 
         public EchoEffectSampleProvider(ISampleProvider source, int echoDelayInMilliseconds, float echoGain, float delay)
@@ -29,6 +53,12 @@ namespace iRANE_62.SampleProviderExtensions
             this.echoGain = echoGain;
             this.delay = delay;
             this.delayBuffer = new float[echoDelayInSamples];
+        }
+
+        public void EffectUpdate(float effectGain, bool effectEnabled)
+        {
+            Enabled = effectEnabled;
+            EchoGain = (float)effectGain;
         }
 
         public int EchoInSamples
@@ -53,8 +83,8 @@ namespace iRANE_62.SampleProviderExtensions
                 float inputSample = buffer[offset + i];
 
                 float echoSample = delayBuffer[position];
-                delayBuffer[position] = inputSample + echoSample * echoGain;
-                buffer[offset + i] += echoSample;
+                delayBuffer[position] = inputSample + echoSample * echoGain * enabledFactor;
+                buffer[offset + i] = echoSample;
 
                 delayBuffer[position] *= delay;
 
