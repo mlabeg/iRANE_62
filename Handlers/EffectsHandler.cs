@@ -1,12 +1,6 @@
 ﻿using iRANE_62.Models;
 using iRANE_62.SampleProviderExtensions;
-using NAudio.Extras;
 using NAudio.Wave;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace iRANE_62.Handlers
 {
@@ -26,25 +20,6 @@ namespace iRANE_62.Handlers
         public EffectsHandler(ISampleProvider source)
         {
             sourceProvider = source ?? throw new ArgumentNullException(nameof(source));
-        }
-
-        public EffectsHandler(AudioSourceHandler audioSourceHandler, ISampleProvider source, EffectParametersHolder effectHolder) : this(audioSourceHandler, source)
-        {
-            effect = effectHolder.Effect;
-            effectGain = effectHolder.Gain;
-            effectsEnabled = effectHolder.EffectEnabled;
-
-            SetActiveEffect(effect);
-        }
-
-        public EffectsHandler(AudioSourceHandler audioSourceHandler, ISampleProvider source, bool effectEnabled) : this(audioSourceHandler, source)
-        {
-            effectsEnabled = effectEnabled;
-        }
-
-        public EffectsHandler(AudioSourceHandler audioSourceHandler, ISampleProvider source, bool effectEnabled, EffectsEnum effect) : this(audioSourceHandler, source, effectEnabled)
-        {
-            SetActiveEffect(effect);
         }
 
         public bool EffectsEnabled
