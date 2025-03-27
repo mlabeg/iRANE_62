@@ -17,21 +17,18 @@ namespace iRANE_62.Handlers
         private bool effectsEnabled;
         private float effectGain;
         private EffectsEnum effect;
-        private readonly AudioSourceHandler sourceHandler;
 
-        public event Action<ISampleProvider> EffectsChanged;
-
-        public EffectsHandler(AudioSourceHandler audioSourceHandler)
+        public EffectsHandler()
         {
-            sourceHandler = audioSourceHandler ?? throw new ArgumentNullException(nameof(audioSourceHandler));
+                
         }
 
-        public EffectsHandler(AudioSourceHandler audioSourceHandler, ISampleProvider source) : this(audioSourceHandler)
+        public EffectsHandler(ISampleProvider source)
         {
             sourceProvider = source ?? throw new ArgumentNullException(nameof(source));
         }
 
-        public EffectsHandler(AudioSourceHandler audioSourceHandler, ISampleProvider source, MixerEffectHolder effectHolder) : this(audioSourceHandler, source)
+        public EffectsHandler(AudioSourceHandler audioSourceHandler, ISampleProvider source, EffectParametersHolder effectHolder) : this(audioSourceHandler, source)
         {
             effect = effectHolder.Effect;
             effectGain = effectHolder.Gain;
@@ -47,10 +44,7 @@ namespace iRANE_62.Handlers
 
         public EffectsHandler(AudioSourceHandler audioSourceHandler, ISampleProvider source, bool effectEnabled, EffectsEnum effect) : this(audioSourceHandler, source, effectEnabled)
         {
-            if (effect != null)
-            {
-                SetActiveEffect(effect);
-            }
+            SetActiveEffect(effect);
         }
 
         public bool EffectsEnabled
@@ -62,7 +56,6 @@ namespace iRANE_62.Handlers
                 {
                     effectsEnabled = value;
                     SetActiveEffect(effect);
-                    EffectsChanged?.Invoke(GetOutputProvider());
                 }
             }
         }
@@ -78,7 +71,6 @@ namespace iRANE_62.Handlers
                     echo.EchoGain = effectGain;
                 }
                 SetActiveEffect(effect);
-                EffectsChanged?.Invoke(GetOutputProvider());
             }
         }
 
@@ -89,8 +81,15 @@ namespace iRANE_62.Handlers
             {
                 effect = value;
                 SetActiveEffect(effect);
-                EffectsChanged?.Invoke(GetOutputProvider());
             }
+        }
+
+        public void EffectParametesUpdate(EffectParametersHolder effectHolder)
+        {
+            effect = effectHolder.Effect;
+            effectsEnabled = effectHolder.EffectEnabled;
+            effectGain=effectHolder.Gain;
+            SetActiveEffect(effect);
         }
 
 
@@ -115,22 +114,14 @@ namespace iRANE_62.Handlers
                     break;
             }
         }
-
-        public void UpdateEffect()
-        {
-            sourceHandler.UpdateEffectsDelegate(GetOutputProvider());
-        }
-
         public ISampleProvider GetOutputProvider()
         {
             return effectsEnabled && activeEffect != null ? activeEffect : sourceProvider;
         }
 
-        internal void UpdateSourceProvider(ISampleProvider updatedSource)
+        public void SourceProviderUpdate(ISampleProvider sampleProvider)
         {
-            sourceProvider = updatedSource ?? throw new ArgumentNullException(nameof(updatedSource));
-            SetActiveEffect(Effect);
-            EffectsChanged?.Invoke(GetOutputProvider());
+            sourceProvider = sampleProvider;
         }
     }
 

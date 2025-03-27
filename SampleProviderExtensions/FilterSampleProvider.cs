@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 
 namespace iRANE_62.SampleProviderExtensions
 {
-    public class FilterSampleProvider :IEffectSampleProvider
+    public class FilterSampleProvider :ISampleProvider
     {
         private readonly ISampleProvider source;
         private readonly BiQuadFilter lowPassFilter;

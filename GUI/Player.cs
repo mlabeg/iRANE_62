@@ -68,6 +68,7 @@ namespace iRANE_62
                 {
                     mixer.Channel1VolumeHandler.UpdateVolume();
                     mixer.Channel2VolumeHandler.UpdateVolume();
+                    audioSource.UpdateEffect(mixer.effectHolder.Gain, mixer.effectHolder.EffectEnabled);
 
                     audioSource.Play(audioOutputHandler);
                     timer1.Enabled = true;
