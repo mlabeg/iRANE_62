@@ -1,4 +1,5 @@
-﻿using NAudio;
+﻿using iRANE_62.Models;
+using NAudio;
 using NAudio.Wave;
 
 namespace iRANE_62
@@ -599,7 +600,7 @@ namespace iRANE_62
             label_Effect_Name.Name = "label_Effect_Name";
             label_Effect_Name.Size = new Size(17, 22);
             label_Effect_Name.TabIndex = 0;
-            label_Effect_Name.Text = "-";
+            label_Effect_Name.Text = EffectsEnum.Disabled.ToString();
             // 
             // label_Bpm_count
             // 

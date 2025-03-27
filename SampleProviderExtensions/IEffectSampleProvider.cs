@@ -9,6 +9,6 @@ namespace iRANE_62.SampleProviderExtensions
 {
     public interface IEffectSampleProvider : ISampleProvider
     {
-
+        void EffectUpdate(float effectGain, bool effectEnabled);
     }
 }

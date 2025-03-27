@@ -24,12 +24,9 @@ namespace iRANE_62.Handlers
         public int CurrentPlaybackPosition { get; set; }
 
         public EffectsHandler EffectsHandler { get; private set; }
-        public MixerEffectHolder MixerEffectHolder { get; set; }
-        public ISampleProvider tmpProvider;
-
 
         public Action<float> SetVolumeDelegate;
-        public Action<ISampleProvider> UpdateEffectsDelegate;
+        public Action<float,bool> EffectUpdateDelegate;
 
         public AudioSourceHandler(int id)
         {
@@ -37,21 +34,12 @@ namespace iRANE_62.Handlers
             Equalizer = new EqSectionHandler();
             Loop = new Loop();
             CurrentPlaybackPosition = 0;
-            EffectsHandler = new EffectsHandler(this);
-            EffectsHandler.EffectsChanged += OnEffectsChanged;
-        }
-
-        private void OnEffectsChanged(ISampleProvider newProvider)
-        {
-            tmpProvider = newProvider;
-            SetupMeteringProvider();
-            UpdateEffectsDelegate?.Invoke(newProvider);
+            EffectsHandler = new EffectsHandler();
         }
 
         public bool IsPlaying => isPlaying;
         public float LeftChanelVolumeLevel => leftChanelVolumeLevel;
         public float RightChanelVolumeLevel => rightChanelVolumeLevel;
-
 
 
         public event EventHandler<StreamVolumeEventArgs> VolumeMetered
@@ -117,6 +105,11 @@ namespace iRANE_62.Handlers
             SetVolumeDelegate?.Invoke(volume);
         }
 
+        public void UpdateEffect(float gain, bool enabled)
+        {
+            EffectUpdateDelegate?.Invoke(gain, enabled);
+        }
+
         private void SetupAudioChain()
         {
             if (AudioFileReader == null) return;
@@ -133,15 +126,11 @@ namespace iRANE_62.Handlers
             Equalizer.FilterSampleProvider = new FilterSampleProvider(sampleChannel, AudioFileReader.WaveFormat.SampleRate);
             Equalizer.PanningProvider = new StereoPanningSampleProvider(Equalizer.FilterSampleProvider);
             Equalizer.Equalizer = new Equalizer(Equalizer.PanningProvider, Equalizer.Bands);
+            
+            IEffectSampleProvider effectSampleProvider = new EchoEffectSampleProvider(Equalizer.Equalizer);
+            EffectUpdateDelegate = effectSampleProvider.EffectUpdate;
 
-            EffectsHandler.UpdateSourceProvider(Equalizer.Equalizer);
-            tmpProvider = EffectsHandler.GetOutputProvider();
-            SetupMeteringProvider();
-        }
-
-        private void SetupMeteringProvider()
-         {
-            outputProvider = new MeteringSampleProvider(tmpProvider);
+            outputProvider = new MeteringSampleProvider(effectSampleProvider);
 
             if (volumeMeteredHandlers != null)
             {

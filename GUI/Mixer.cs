@@ -18,11 +18,11 @@ namespace iRANE_62
         private readonly AudioSourceHandler audioSource2;
         private readonly AudioOutputHandler audioOutputHandler;
         private readonly SystemVolumeHandler systemVolumeHandler;
-       
+
         public readonly ChannelVolumeHandler Channel1VolumeHandler;
         public readonly ChannelVolumeHandler Channel2VolumeHandler;
 
-        public MixerEffectHolder mixerEffectHolder;
+        public EffectParametersHolder effectHolder;
 
         public event Action<AudioSourceHandler, TimeSpan, Color> CuePointAdded;
 
@@ -41,7 +41,8 @@ namespace iRANE_62
 
             Channel1VolumeHandler = new ChannelVolumeHandler(audioSource1, pot_gain_ch1, verticalVolumeSlider_ch1, pot_systemVolume);
             Channel2VolumeHandler = new ChannelVolumeHandler(audioSource2, pot_gain_ch2, verticalVolumeSlider_ch2, pot_systemVolume);
-            //mixerEffectHolder=new MixerEffectHolder(EffectsEnum.Disabled,chBox_efx_on.Checked, (float)Pot_fx_gain.Value);
+
+            effectHolder = new EffectParametersHolder(EffectsEnum.Disabled, chBox_efx_on.Checked, (float)Pot_fx_gain.Value);
 
             efxCheckedChangedEventHandler();
             BlockCueButtons();
@@ -72,14 +73,12 @@ namespace iRANE_62
         {
             if (chBox_efx_echo.Checked == true)
             {
-                    audioSource1.EffectsHandler.Effect = EffectsEnum.Echo;
-               // mixerEffectHolder.Effect=EffectsEnum.Echo;
-                label_Effect_Name.Text=EffectsEnum.Echo.ToString();
+                effectHolder.Effect = EffectsEnum.Echo;
+                label_Effect_Name.Text = EffectsEnum.Echo.ToString();
             }
             else
             {
-                audioSource1.EffectsHandler.Effect = EffectsEnum.Disabled;
-                //mixerEffectHolder.Effect=EffectsEnum.Disabled;
+                effectHolder.Effect = EffectsEnum.Disabled;
                 label_Effect_Name.Text = EffectsEnum.Disabled.ToString();
             }
         }
@@ -108,16 +107,20 @@ namespace iRANE_62
 
         private void chBox_efx_on_CheckedChanged(object sender, EventArgs e)
         {
-            audioSource1.EffectsHandler.EffectsEnabled = chBox_efx_on.Checked;
-            //audioSource2.EffectsHandler.EffectsEnabled = chBox_efx_on.Checked;
+            var effectChecked = chBox_efx_on.Checked;
+
+            effectHolder.EffectEnabled = effectChecked;
+            audioSource1.UpdateEffect((float)Pot_fx_gain.Value, effectChecked);
+            audioSource2.UpdateEffect((float)Pot_fx_gain.Value, effectChecked);
         }
 
         private void Pot_fx_gain_ValueChanged(object sender, EventArgs e)
         {
             float gain = (float)Pot_fx_gain.Value;
 
-            audioSource1.EffectsHandler.EffectGain = gain;
-            //audioSource2.EffectsHandler.EffectGain = gain;
+            effectHolder.Gain = gain;
+            audioSource1.UpdateEffect(gain, chBox_efx_on.Checked);
+            audioSource2.UpdateEffect(gain, chBox_efx_on.Checked);
         }
 
         private void btn_fx_tap_Click(object sender, EventArgs e)
