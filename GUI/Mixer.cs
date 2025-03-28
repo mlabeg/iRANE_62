@@ -71,7 +71,7 @@ namespace iRANE_62
 
         private void efx_echo_CheckedChanged(object sender, EventArgs e)
         {
-            if (chBox_efx_echo.Checked == true)
+            if (chBox_efx_echo.Checked)
             {
                 effectHolder.Effect = EffectsEnum.Echo;
                 label_Effect_Name.Text = EffectsEnum.Echo.ToString();
@@ -85,7 +85,20 @@ namespace iRANE_62
 
         private void efx_robot_CheckedChanged(object sender, EventArgs e) { }
 
-        private void efx_reverb_CheckedChanged(object sender, EventArgs e) { }
+        private void efx_reverb_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chBox_efx_reverb.Checked)
+            {
+                effectHolder.Effect = EffectsEnum.Reverb;
+                label_Effect_Name.Text = EffectsEnum.Reverb.ToString();
+            }
+            else
+            {
+                effectHolder.Effect = EffectsEnum.Disabled;
+                label_Effect_Name.Text = EffectsEnum.Disabled.ToString();
+            }
+
+        }
 
         private void efx_filter_CheckedChanged(object sender, EventArgs e) { }
 

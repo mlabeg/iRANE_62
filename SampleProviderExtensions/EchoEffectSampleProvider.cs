@@ -29,7 +29,7 @@ namespace iRANE_62.SampleProviderExtensions
             }
         }
 
-        public float EchoGain
+        public float EffectGain
         {
             get => echoGain;
             set => echoGain = value;
@@ -58,7 +58,7 @@ namespace iRANE_62.SampleProviderExtensions
         public void EffectUpdate(float effectGain, bool effectEnabled)
         {
             Enabled = effectEnabled;
-            EchoGain = (float)effectGain;
+            EffectGain = effectGain;
         }
 
         public int EchoInSamples

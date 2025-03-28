@@ -26,7 +26,7 @@ namespace iRANE_62.Handlers
         public EffectsHandler EffectsHandler { get; private set; }
 
         public Action<float> SetVolumeDelegate;
-        public Action<float,bool> EffectUpdateDelegate;
+        public Action<float, bool> EffectUpdateDelegate;
 
         public AudioSourceHandler(int id)
         {
@@ -126,8 +126,9 @@ namespace iRANE_62.Handlers
             Equalizer.FilterSampleProvider = new FilterSampleProvider(sampleChannel, AudioFileReader.WaveFormat.SampleRate);
             Equalizer.PanningProvider = new StereoPanningSampleProvider(Equalizer.FilterSampleProvider);
             Equalizer.Equalizer = new Equalizer(Equalizer.PanningProvider, Equalizer.Bands);
-            
-            IEffectSampleProvider effectSampleProvider = new EchoEffectSampleProvider(Equalizer.Equalizer);
+
+            //IEffectSampleProvider effectSampleProvider = new EchoEffectSampleProvider(Equalizer.Equalizer);
+            IEffectSampleProvider effectSampleProvider = new ReverbEffectSampleProvider(Equalizer.Equalizer);
             EffectUpdateDelegate = effectSampleProvider.EffectUpdate;
 
             outputProvider = new MeteringSampleProvider(effectSampleProvider);
