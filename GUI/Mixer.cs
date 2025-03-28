@@ -19,9 +19,6 @@ namespace iRANE_62
         private readonly AudioOutputHandler audioOutputHandler;
         private readonly SystemVolumeHandler systemVolumeHandler;
 
-        public readonly ChannelVolumeHandler Channel1VolumeHandler;
-        public readonly ChannelVolumeHandler Channel2VolumeHandler;
-
         public EffectParametersHolder effectHolder;
 
         public event Action<AudioSourceHandler, TimeSpan, Color> CuePointAdded;
@@ -39,11 +36,9 @@ namespace iRANE_62
             bpmCounterHandler = new BpmCounterHandler();
             InitializeComponent();
 
-            Channel1VolumeHandler = new ChannelVolumeHandler(audioSource1, pot_gain_ch1, verticalVolumeSlider_ch1, pot_systemVolume);
-            Channel2VolumeHandler = new ChannelVolumeHandler(audioSource2, pot_gain_ch2, verticalVolumeSlider_ch2, pot_systemVolume);
-
             effectHolder = new EffectParametersHolder(EffectsEnum.Disabled, chBox_efx_on.Checked, (float)Pot_fx_gain.Value);
 
+            UpdateChannelsVolumeHandlers();
             efxCheckedChangedEventHandler();
             BlockCueButtons();
             BlockLoopButtons();
@@ -530,8 +525,8 @@ namespace iRANE_62
 
             microphoneHandler.IsMicOverActive = !microphoneHandler.IsMicOverActive;
 
-            Channel1VolumeHandler.IsMicOverActive = microphoneHandler.IsMicOverActive;
-            Channel2VolumeHandler.IsMicOverActive = microphoneHandler.IsMicOverActive;
+            audioSource1.ChannelVolumeHandler.IsMicOverActive = microphoneHandler.IsMicOverActive;
+            audioSource2.ChannelVolumeHandler.IsMicOverActive = microphoneHandler.IsMicOverActive;
             btn_micOver.BackColor = microphoneHandler.IsMicOverActive ? Color.Green : SystemColors.Control;
         }
 
@@ -581,6 +576,12 @@ namespace iRANE_62
 
         #region Volume + Faders
 
+        private void UpdateChannelsVolumeHandlers()
+        {
+            audioSource1.UpdateChannelVolumeHandler(pot_gain_ch1, verticalVolumeSlider_ch1, pot_systemVolume);
+            audioSource2.UpdateChannelVolumeHandler(pot_gain_ch2, verticalVolumeSlider_ch2, pot_systemVolume);
+        }
+
         private void pot_mainVolume_ValueChanged(object sender, EventArgs e)
         {
             systemVolumeHandler.Volume = (float)pot_systemVolume.Value;
@@ -622,8 +623,8 @@ namespace iRANE_62
 
         private void UpdateCrossfaderVolumes(float position)
         {
-            Channel1VolumeHandler.SetCrossfadeBalance(position);
-            Channel2VolumeHandler.SetCrossfadeBalance(position);
+            audioSource1.ChannelVolumeHandler.SetCrossfadeBalance(position);
+            audioSource2.ChannelVolumeHandler.SetCrossfadeBalance(position);
         }
 
         #endregion

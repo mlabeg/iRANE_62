@@ -1,6 +1,8 @@
-﻿using iRANE_62.Models;
+﻿using iRANE_62.Controls;
+using iRANE_62.Models;
 using iRANE_62.SampleProviderExtensions;
 using NAudio.Extras;
+using NAudio.Gui;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 
@@ -12,6 +14,7 @@ namespace iRANE_62.Handlers
         private float rightChanelVolumeLevel;
         private ISampleProvider outputProvider;
         private bool isPlaying;
+        private ChannelVolumeHandler channelVolumeHandler;
 
         private EventHandler<StreamVolumeEventArgs> volumeMeteredHandlers;
 
@@ -40,6 +43,7 @@ namespace iRANE_62.Handlers
         public bool IsPlaying => isPlaying;
         public float LeftChanelVolumeLevel => leftChanelVolumeLevel;
         public float RightChanelVolumeLevel => rightChanelVolumeLevel;
+        public ChannelVolumeHandler ChannelVolumeHandler => channelVolumeHandler;
 
 
         public event EventHandler<StreamVolumeEventArgs> VolumeMetered
@@ -126,7 +130,7 @@ namespace iRANE_62.Handlers
             Equalizer.FilterSampleProvider = new FilterSampleProvider(sampleChannel, AudioFileReader.WaveFormat.SampleRate);
             Equalizer.PanningProvider = new StereoPanningSampleProvider(Equalizer.FilterSampleProvider);
             Equalizer.Equalizer = new Equalizer(Equalizer.PanningProvider, Equalizer.Bands);
-
+            
             //IEffectSampleProvider effectSampleProvider = new EchoEffectSampleProvider(Equalizer.Equalizer);
             IEffectSampleProvider effectSampleProvider = new ReverbEffectSampleProvider(Equalizer.Equalizer);
             EffectUpdateDelegate = effectSampleProvider.EffectUpdate;
@@ -142,6 +146,11 @@ namespace iRANE_62.Handlers
                 leftChanelVolumeLevel = e.MaxSampleValues[0];
                 rightChanelVolumeLevel = e.MaxSampleValues[1];
             };
+        }
+
+        public void UpdateChannelVolumeHandler(Pot gainPot, VerticalVolumeSlider fader, Pot mainVolumePot)
+        {
+            channelVolumeHandler = new ChannelVolumeHandler(this, gainPot, fader, mainVolumePot);
         }
 
         public void Dispose()
