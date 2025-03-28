@@ -65,46 +65,40 @@ namespace iRANE_62
             chBox_efx_robot.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
         }
 
-        private void efx_flanger_CheckedChanged(object sender, EventArgs e) { }
+        private void efx_flanger_CheckedChanged(object sender, EventArgs e)
+        {
+            effectHolder.Effect = chBox_efx_flanger.Checked ? EffectsEnum.Flanger : EffectsEnum.Disabled;
+        }
 
-        private void efx_phaser_CheckedChanged(object sender, EventArgs e) { }
+        private void efx_phaser_CheckedChanged(object sender, EventArgs e)
+        {
+            effectHolder.Effect = chBox_efx_phaser.Checked ? EffectsEnum.Phaser : EffectsEnum.Disabled;
+        }
 
         private void efx_echo_CheckedChanged(object sender, EventArgs e)
         {
-            if (chBox_efx_echo.Checked)
-            {
-                effectHolder.Effect = EffectsEnum.Echo;
-                label_Effect_Name.Text = EffectsEnum.Echo.ToString();
-            }
-            else
-            {
-                effectHolder.Effect = EffectsEnum.Disabled;
-                label_Effect_Name.Text = EffectsEnum.Disabled.ToString();
-            }
+            effectHolder.Effect = chBox_efx_echo.Checked ? EffectsEnum.Echo : EffectsEnum.Disabled;
         }
 
-        private void efx_robot_CheckedChanged(object sender, EventArgs e) { }
+        private void efx_robot_CheckedChanged(object sender, EventArgs e)
+        {
+            effectHolder.Effect = chBox_efx_robot.Checked ? EffectsEnum.Robot : EffectsEnum.Disabled;
+        }
 
         private void efx_reverb_CheckedChanged(object sender, EventArgs e)
         {
-            if (chBox_efx_reverb.Checked)
-            {
-                effectHolder.Effect = EffectsEnum.Reverb;
-                label_Effect_Name.Text = EffectsEnum.Reverb.ToString();
-            }
-            else
-            {
-                effectHolder.Effect = EffectsEnum.Disabled;
-                label_Effect_Name.Text = EffectsEnum.Disabled.ToString();
-            }
-
+            effectHolder.Effect = chBox_efx_reverb.Checked ? EffectsEnum.Reverb : EffectsEnum.Disabled;
         }
 
-        private void efx_filter_CheckedChanged(object sender, EventArgs e) { }
+        private void efx_filter_CheckedChanged(object sender, EventArgs e)
+        {
+            effectHolder.Effect = chBox_efx_filter.Checked ? EffectsEnum.Filter : EffectsEnum.Disabled;
+        }
 
         private void Efx_CheckBox_Change(object? sender, EventArgs e)
         {
             CheckBox clickedCheckBox = sender as CheckBox;
+            label_Effect_Name.Text = effectHolder.Effect.ToString();
 
             if (clickedCheckBox.Checked)
             {
