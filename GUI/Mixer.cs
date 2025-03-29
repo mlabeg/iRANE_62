@@ -19,10 +19,10 @@ namespace iRANE_62
         private readonly AudioOutputHandler audioOutputHandler;
         private readonly SystemVolumeHandler systemVolumeHandler;
 
-        public readonly ChannelVolumeHandler Channel1VolumeHandler;
-        public readonly ChannelVolumeHandler Channel2VolumeHandler;
+        public EffectParametersHolder EffectHolder;
+        public EqSectionHolder EqSectionHolderChannel1;
+        public EqSectionHolder EqSectionHolderChannel2;
 
-        public EffectParametersHolder effectHolder;
 
         public event Action<AudioSourceHandler, TimeSpan, Color> CuePointAdded;
 
@@ -39,11 +39,9 @@ namespace iRANE_62
             bpmCounterHandler = new BpmCounterHandler();
             InitializeComponent();
 
-            Channel1VolumeHandler = new ChannelVolumeHandler(audioSource1, pot_gain_ch1, verticalVolumeSlider_ch1, pot_systemVolume);
-            Channel2VolumeHandler = new ChannelVolumeHandler(audioSource2, pot_gain_ch2, verticalVolumeSlider_ch2, pot_systemVolume);
 
-            effectHolder = new EffectParametersHolder(EffectsEnum.Disabled, chBox_efx_on.Checked, (float)Pot_fx_gain.Value);
-
+            InitializeHolders();
+            UpdateChannelsVolumeHandlers();
             efxCheckedChangedEventHandler();
             BlockCueButtons();
             BlockLoopButtons();
@@ -65,33 +63,40 @@ namespace iRANE_62
             chBox_efx_robot.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
         }
 
-        private void efx_flanger_CheckedChanged(object sender, EventArgs e) { }
+        private void efx_flanger_CheckedChanged(object sender, EventArgs e)
+        {
+            EffectHolder.Effect = chBox_efx_flanger.Checked ? EffectsEnum.Flanger : EffectsEnum.Disabled;
+        }
 
-        private void efx_phaser_CheckedChanged(object sender, EventArgs e) { }
+        private void efx_phaser_CheckedChanged(object sender, EventArgs e)
+        {
+            EffectHolder.Effect = chBox_efx_phaser.Checked ? EffectsEnum.Phaser : EffectsEnum.Disabled;
+        }
 
         private void efx_echo_CheckedChanged(object sender, EventArgs e)
         {
-            if (chBox_efx_echo.Checked == true)
-            {
-                effectHolder.Effect = EffectsEnum.Echo;
-                label_Effect_Name.Text = EffectsEnum.Echo.ToString();
-            }
-            else
-            {
-                effectHolder.Effect = EffectsEnum.Disabled;
-                label_Effect_Name.Text = EffectsEnum.Disabled.ToString();
-            }
+            EffectHolder.Effect = chBox_efx_echo.Checked ? EffectsEnum.Echo : EffectsEnum.Disabled;
         }
 
-        private void efx_robot_CheckedChanged(object sender, EventArgs e) { }
+        private void efx_robot_CheckedChanged(object sender, EventArgs e)
+        {
+            EffectHolder.Effect = chBox_efx_robot.Checked ? EffectsEnum.Robot : EffectsEnum.Disabled;
+        }
 
-        private void efx_reverb_CheckedChanged(object sender, EventArgs e) { }
+        private void efx_reverb_CheckedChanged(object sender, EventArgs e)
+        {
+            EffectHolder.Effect = chBox_efx_reverb.Checked ? EffectsEnum.Reverb : EffectsEnum.Disabled;
+        }
 
-        private void efx_filter_CheckedChanged(object sender, EventArgs e) { }
+        private void efx_filter_CheckedChanged(object sender, EventArgs e)
+        {
+            EffectHolder.Effect = chBox_efx_filter.Checked ? EffectsEnum.Filter : EffectsEnum.Disabled;
+        }
 
         private void Efx_CheckBox_Change(object? sender, EventArgs e)
         {
             CheckBox clickedCheckBox = sender as CheckBox;
+            label_Effect_Name.Text = EffectHolder.Effect.ToString();
 
             if (clickedCheckBox.Checked)
             {
@@ -109,7 +114,7 @@ namespace iRANE_62
         {
             var effectChecked = chBox_efx_on.Checked;
 
-            effectHolder.EffectEnabled = effectChecked;
+            EffectHolder.EffectEnabled = effectChecked;
             audioSource1.UpdateEffect((float)Pot_fx_gain.Value, effectChecked);
             audioSource2.UpdateEffect((float)Pot_fx_gain.Value, effectChecked);
         }
@@ -118,7 +123,7 @@ namespace iRANE_62
         {
             float gain = (float)Pot_fx_gain.Value;
 
-            effectHolder.Gain = gain;
+            EffectHolder.Gain = gain;
             audioSource1.UpdateEffect(gain, chBox_efx_on.Checked);
             audioSource2.UpdateEffect(gain, chBox_efx_on.Checked);
         }
@@ -136,6 +141,13 @@ namespace iRANE_62
         #endregion
 
         #region Eq
+
+        private void InitializeHolders()
+        {
+            EffectHolder = new EffectParametersHolder(EffectsEnum.Disabled, chBox_efx_on.Checked, (float)Pot_fx_gain.Value);
+            EqSectionHolderChannel1 = new EqSectionHolder(pot_low_ch1, pot_mid_ch1, pot_high_ch1, panSlider_ch1, pot_filter_ch1);
+            EqSectionHolderChannel2 = new EqSectionHolder(pot_low_ch2, pot_mid_ch2, pot_high_ch2, panSlider_ch2, pot_filter_ch2);
+        }
 
         private void pot_gain_ch1_ValueChanged(object sender, EventArgs e) { }
 
@@ -523,8 +535,8 @@ namespace iRANE_62
 
             microphoneHandler.IsMicOverActive = !microphoneHandler.IsMicOverActive;
 
-            Channel1VolumeHandler.IsMicOverActive = microphoneHandler.IsMicOverActive;
-            Channel2VolumeHandler.IsMicOverActive = microphoneHandler.IsMicOverActive;
+            audioSource1.ChannelVolumeHandler.IsMicOverActive = microphoneHandler.IsMicOverActive;
+            audioSource2.ChannelVolumeHandler.IsMicOverActive = microphoneHandler.IsMicOverActive;
             btn_micOver.BackColor = microphoneHandler.IsMicOverActive ? Color.Green : SystemColors.Control;
         }
 
@@ -574,6 +586,12 @@ namespace iRANE_62
 
         #region Volume + Faders
 
+        private void UpdateChannelsVolumeHandlers()
+        {
+            audioSource1.UpdateChannelVolumeHandler(pot_gain_ch1, verticalVolumeSlider_ch1, pot_systemVolume);
+            audioSource2.UpdateChannelVolumeHandler(pot_gain_ch2, verticalVolumeSlider_ch2, pot_systemVolume);
+        }
+
         private void pot_mainVolume_ValueChanged(object sender, EventArgs e)
         {
             systemVolumeHandler.Volume = (float)pot_systemVolume.Value;
@@ -615,8 +633,8 @@ namespace iRANE_62
 
         private void UpdateCrossfaderVolumes(float position)
         {
-            Channel1VolumeHandler.SetCrossfadeBalance(position);
-            Channel2VolumeHandler.SetCrossfadeBalance(position);
+            audioSource1.ChannelVolumeHandler.SetCrossfadeBalance(position);
+            audioSource2.ChannelVolumeHandler.SetCrossfadeBalance(position);
         }
 
         #endregion

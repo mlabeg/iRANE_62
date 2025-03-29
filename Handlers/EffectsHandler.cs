@@ -12,14 +12,9 @@ namespace iRANE_62.Handlers
         private float effectGain;
         private EffectsEnum effect;
 
-        public EffectsEnum Effect{
-            get=>effect;
-            set=>effect=value;
-        }
-
-        public EffectsHandler(AudioSourceHandler audioSourceHandler)
+        public EffectsHandler()
         {
-                
+
         }
 
         public EffectsHandler(ISampleProvider source)
@@ -48,7 +43,7 @@ namespace iRANE_62.Handlers
                 effectGain = Math.Clamp(value, 0f, 1f);
                 if (activeEffect is EchoEffectSampleProvider echo)
                 {
-                    echo.EchoGain = effectGain;
+                    echo.EffectGain = effectGain;
                 }
                 SetActiveEffect(effect);
             }
@@ -68,7 +63,7 @@ namespace iRANE_62.Handlers
         {
             effect = effectHolder.Effect;
             effectsEnabled = effectHolder.EffectEnabled;
-            effectGain=effectHolder.Gain;
+            effectGain = effectHolder.Gain;
             SetActiveEffect(effect);
         }
 
