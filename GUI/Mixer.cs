@@ -502,7 +502,6 @@ namespace iRANE_62
             else
             {
                 audioOutputHandler.RemoveSource(microphoneHandler);
-
             }
         }
 
@@ -526,7 +525,16 @@ namespace iRANE_62
                 microphoneHandler.MicLeftLevel = 0f;
                 microphoneHandler.MicRightLevel = 0f;
                 UpdateMainVolumeMeters();
+                TurnOffMicrophoneOver();
             }
+        }
+
+        private void TurnOffMicrophoneOver()
+        {
+            microphoneHandler.IsMicOverActive = false;
+            audioSource1.ChannelVolumeHandler.IsMicOverActive = false;
+            audioSource2.ChannelVolumeHandler.IsMicOverActive = false;
+            btn_micOver.BackColor = SystemColors.Control;
         }
 
         private void btn_micOver_Click(object sender, EventArgs e)
