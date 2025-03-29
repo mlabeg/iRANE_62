@@ -1,4 +1,5 @@
-﻿using iRANE_62.SampleProviderExtensions;
+﻿using iRANE_62.Models;
+using iRANE_62.SampleProviderExtensions;
 using NAudio.Extras;
 using System.ComponentModel;
 
@@ -17,7 +18,6 @@ namespace iRANE_62.Handlers
         public EqSectionHandler()
         {
             Bands = CreateBands();
-
         }
 
         protected virtual void OnPropertyChanged(string propertyName)
@@ -40,6 +40,25 @@ namespace iRANE_62.Handlers
                     new EqualizerBand { Frequency = 16000, Gain = 0f, Bandwidth = 0.8f } // Air
                 };
         }
+
+        public void UpdateEqSection(EqSectionHolder holder)
+        {
+            Band1 = holder.Low;
+            Band2 = holder.Low;
+            Band3 = holder.Low;
+            Band4 = holder.Mid;
+            Band5 = holder.Mid;
+            Band6 = holder.Mid;
+            Band7 = holder.High;
+            Band8 = holder.High;
+            Band9 = holder.High;
+            Equalizer.Update();
+
+            PanningProvider.Pan = holder.Pan;
+            FilterSampleProvider.FilterValue = holder.HighLowPassFilter;
+        }
+
+
 
         #region Bands
         public float Band1

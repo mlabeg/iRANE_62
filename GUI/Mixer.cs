@@ -19,7 +19,10 @@ namespace iRANE_62
         private readonly AudioOutputHandler audioOutputHandler;
         private readonly SystemVolumeHandler systemVolumeHandler;
 
-        public EffectParametersHolder effectHolder;
+        public EffectParametersHolder EffectHolder;
+        public EqSectionHolder EqSectionHolderChannel1;
+        public EqSectionHolder EqSectionHolderChannel2;
+
 
         public event Action<AudioSourceHandler, TimeSpan, Color> CuePointAdded;
 
@@ -36,8 +39,8 @@ namespace iRANE_62
             bpmCounterHandler = new BpmCounterHandler();
             InitializeComponent();
 
-            effectHolder = new EffectParametersHolder(EffectsEnum.Disabled, chBox_efx_on.Checked, (float)Pot_fx_gain.Value);
 
+            InitializeHolders();
             UpdateChannelsVolumeHandlers();
             efxCheckedChangedEventHandler();
             BlockCueButtons();
@@ -62,38 +65,38 @@ namespace iRANE_62
 
         private void efx_flanger_CheckedChanged(object sender, EventArgs e)
         {
-            effectHolder.Effect = chBox_efx_flanger.Checked ? EffectsEnum.Flanger : EffectsEnum.Disabled;
+            EffectHolder.Effect = chBox_efx_flanger.Checked ? EffectsEnum.Flanger : EffectsEnum.Disabled;
         }
 
         private void efx_phaser_CheckedChanged(object sender, EventArgs e)
         {
-            effectHolder.Effect = chBox_efx_phaser.Checked ? EffectsEnum.Phaser : EffectsEnum.Disabled;
+            EffectHolder.Effect = chBox_efx_phaser.Checked ? EffectsEnum.Phaser : EffectsEnum.Disabled;
         }
 
         private void efx_echo_CheckedChanged(object sender, EventArgs e)
         {
-            effectHolder.Effect = chBox_efx_echo.Checked ? EffectsEnum.Echo : EffectsEnum.Disabled;
+            EffectHolder.Effect = chBox_efx_echo.Checked ? EffectsEnum.Echo : EffectsEnum.Disabled;
         }
 
         private void efx_robot_CheckedChanged(object sender, EventArgs e)
         {
-            effectHolder.Effect = chBox_efx_robot.Checked ? EffectsEnum.Robot : EffectsEnum.Disabled;
+            EffectHolder.Effect = chBox_efx_robot.Checked ? EffectsEnum.Robot : EffectsEnum.Disabled;
         }
 
         private void efx_reverb_CheckedChanged(object sender, EventArgs e)
         {
-            effectHolder.Effect = chBox_efx_reverb.Checked ? EffectsEnum.Reverb : EffectsEnum.Disabled;
+            EffectHolder.Effect = chBox_efx_reverb.Checked ? EffectsEnum.Reverb : EffectsEnum.Disabled;
         }
 
         private void efx_filter_CheckedChanged(object sender, EventArgs e)
         {
-            effectHolder.Effect = chBox_efx_filter.Checked ? EffectsEnum.Filter : EffectsEnum.Disabled;
+            EffectHolder.Effect = chBox_efx_filter.Checked ? EffectsEnum.Filter : EffectsEnum.Disabled;
         }
 
         private void Efx_CheckBox_Change(object? sender, EventArgs e)
         {
             CheckBox clickedCheckBox = sender as CheckBox;
-            label_Effect_Name.Text = effectHolder.Effect.ToString();
+            label_Effect_Name.Text = EffectHolder.Effect.ToString();
 
             if (clickedCheckBox.Checked)
             {
@@ -111,7 +114,7 @@ namespace iRANE_62
         {
             var effectChecked = chBox_efx_on.Checked;
 
-            effectHolder.EffectEnabled = effectChecked;
+            EffectHolder.EffectEnabled = effectChecked;
             audioSource1.UpdateEffect((float)Pot_fx_gain.Value, effectChecked);
             audioSource2.UpdateEffect((float)Pot_fx_gain.Value, effectChecked);
         }
@@ -120,7 +123,7 @@ namespace iRANE_62
         {
             float gain = (float)Pot_fx_gain.Value;
 
-            effectHolder.Gain = gain;
+            EffectHolder.Gain = gain;
             audioSource1.UpdateEffect(gain, chBox_efx_on.Checked);
             audioSource2.UpdateEffect(gain, chBox_efx_on.Checked);
         }
@@ -138,6 +141,13 @@ namespace iRANE_62
         #endregion
 
         #region Eq
+
+        private void InitializeHolders()
+        {
+            EffectHolder = new EffectParametersHolder(EffectsEnum.Disabled, chBox_efx_on.Checked, (float)Pot_fx_gain.Value);
+            EqSectionHolderChannel1 = new EqSectionHolder(pot_low_ch1, pot_mid_ch1, pot_high_ch1, panSlider_ch1, pot_filter_ch1);
+            EqSectionHolderChannel2 = new EqSectionHolder(pot_low_ch2, pot_mid_ch2, pot_high_ch2, panSlider_ch2, pot_filter_ch2);
+        }
 
         private void pot_gain_ch1_ValueChanged(object sender, EventArgs e) { }
 

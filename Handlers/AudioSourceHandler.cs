@@ -30,6 +30,7 @@ namespace iRANE_62.Handlers
 
         public Action<float> SetVolumeDelegate;
         public Action<float, bool> EffectUpdateDelegate;
+        public Action<EqSectionHolder> EqUpdateDelegate;
 
         public AudioSourceHandler(int id)
         {
@@ -114,6 +115,11 @@ namespace iRANE_62.Handlers
             EffectUpdateDelegate?.Invoke(gain, enabled);
         }
 
+        public void EqUpdate(EqSectionHolder eqSectionHolder)
+        {
+            EqUpdateDelegate?.Invoke(eqSectionHolder);
+        }
+
         private void SetupAudioChain()
         {
             if (AudioFileReader == null) return;
@@ -130,7 +136,8 @@ namespace iRANE_62.Handlers
             Equalizer.FilterSampleProvider = new FilterSampleProvider(sampleChannel, AudioFileReader.WaveFormat.SampleRate);
             Equalizer.PanningProvider = new StereoPanningSampleProvider(Equalizer.FilterSampleProvider);
             Equalizer.Equalizer = new Equalizer(Equalizer.PanningProvider, Equalizer.Bands);
-            
+            EqUpdateDelegate = Equalizer.UpdateEqSection;
+
             //IEffectSampleProvider effectSampleProvider = new EchoEffectSampleProvider(Equalizer.Equalizer);
             IEffectSampleProvider effectSampleProvider = new ReverbEffectSampleProvider(Equalizer.Equalizer);
             EffectUpdateDelegate = effectSampleProvider.EffectUpdate;

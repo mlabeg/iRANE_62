@@ -60,8 +60,7 @@ namespace iRANE_62
                 }
                 else
                 {
-                    audioSource.ChannelVolumeHandler.UpdateVolume();
-                    audioSource.UpdateEffect(mixer.effectHolder.Gain, mixer.effectHolder.EffectEnabled);
+                    UpdateEqSection(audioSource);
 
                     audioSource.Play(audioOutputHandler);
                     timer1.Enabled = true;
@@ -70,6 +69,21 @@ namespace iRANE_62
             catch (Exception ex)
             {
                 MessageBox.Show($"Błąd odtwarzacza: {ex.Message}");
+            }
+        }
+
+        private void UpdateEqSection(AudioSourceHandler audioSource)
+        {
+            audioSource.ChannelVolumeHandler.UpdateVolume();
+            audioSource.UpdateEffect(mixer.EffectHolder.Gain, mixer.EffectHolder.EffectEnabled);
+
+            if (audioSource.Id == 1)
+            {
+                audioSource.EqUpdate(mixer.EqSectionHolderChannel1);
+            }
+            else
+            {
+                audioSource.EqUpdate(mixer.EqSectionHolderChannel2);
             }
         }
         #endregion
@@ -291,7 +305,7 @@ namespace iRANE_62
         private void waveform_ch1_MouseClick(object sender, MouseEventArgs e)
         {
             if (audioSource1.AudioFileReader != null)//w miejscach jak to możesz dokładnie sprawdzić czy waveform (lub inne GUI) jest zablokowane,
-                                                //żeby nie sprawdać tego w funkcji i nie zwlaniać programu
+                                                     //żeby nie sprawdać tego w funkcji i nie zwlaniać programu
             {
                 double clickPositionRatio = (double)e.X / waveform_ch1.Width;
                 audioSource1.AudioFileReader.CurrentTime = TimeSpan.FromSeconds(audioSource1.AudioFileReader.TotalTime.TotalSeconds * clickPositionRatio);
