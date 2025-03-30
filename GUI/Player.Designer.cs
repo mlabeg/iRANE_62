@@ -76,7 +76,7 @@
             btnPlay_ch1.TabIndex = 1;
             btnPlay_ch1.Text = "Play";
             btnPlay_ch1.UseVisualStyleBackColor = true;
-            btnPlay_ch1.Click += btnPlay1_Click;
+            btnPlay_ch1.Click += btnPlay_1_Click;
             btnPlay_ch1.KeyDown += Odtwarzacz_KeyDown;
             // 
             // btnPause_ch1
