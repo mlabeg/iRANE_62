@@ -14,8 +14,6 @@ namespace iRANE_62
         private AudioSourceHandler audioSource2;
 
         private readonly AudioOutputHandler audioOutputHandler;
-        private readonly WaveFormRenderer waveFormRenderer;
-
 
         public Player()
         {
@@ -27,9 +25,7 @@ namespace iRANE_62
             audioSource1 = new AudioSourceHandler(1);
             audioSource2 = new AudioSourceHandler(2);
             audioOutputHandler = new AudioOutputHandler();
-            mixer = new Mixer(ref audioSource1, ref audioSource2, audioOutputHandler);
-
-            waveFormRenderer = new WaveFormRenderer();
+            mixer = new Mixer(audioSource1, audioSource2, audioOutputHandler);
 
             mixer.CuePointAdded += DrawCuePoint;
             mixer.Show();
@@ -151,8 +147,14 @@ namespace iRANE_62
 
         #region GUI + keyboard shortcuts
 
-        private void btnPlay1_Click(object sender, EventArgs e) => Play(audioSource1);
+        private void btnPlay_1_Click(object sender, EventArgs e) => Play(audioSource1);
         private void btnPlay_2_Click(object sender, EventArgs e) => Play(audioSource2);
+        private void btnStop_1_Click(object sender, EventArgs e) => Stop(audioSource1);
+        private void btnStop_2_Click(object sender, EventArgs e) => Stop(audioSource2);
+        private void btnPause_1_Click(object sender, EventArgs e) => Pause(audioSource1);
+        private void btnPause_2_Click(object sender, EventArgs e) => Pause(audioSource2);
+        private void btnOpen_1_Click(object sender, EventArgs e) => OpenFromButton(audioSource1);
+        private void btnOpen_2_Click(object sender, EventArgs e) => OpenFromButton(audioSource2);
 
         private void Odtwarzacz_KeyDown(object sender, KeyEventArgs e)
         {
@@ -171,7 +173,7 @@ namespace iRANE_62
             EnableWaveformOnChanel(playerId);
             EnableButtonsOnChanel(playerId);
             mixer.EnableCuePoints(playerId);
-            mixer.EableLoopButtons(playerId);
+            mixer.EnableLoopButtons(playerId);
         }
 
         private void EnableButtonsOnChanel(int playerId)
@@ -205,9 +207,6 @@ namespace iRANE_62
                 waveform_ch2.Invalidate();
             }
         }
-
-        private void btnOpen_1_Click(object sender, EventArgs e) => OpenFromButton(audioSource1);
-        private void btnOpen_2_Click(object sender, EventArgs e) => OpenFromButton(audioSource2);
 
         private void btnOpen_KeyDown(object sender, KeyEventArgs e)
         {
@@ -304,50 +303,39 @@ namespace iRANE_62
 
         private void waveform_ch1_MouseClick(object sender, MouseEventArgs e)
         {
-            if (audioSource1.AudioFileReader != null)//w miejscach jak to możesz dokładnie sprawdzić czy waveform (lub inne GUI) jest zablokowane,
-                                                     //żeby nie sprawdać tego w funkcji i nie zwlaniać programu
-            {
-                double clickPositionRatio = (double)e.X / waveform_ch1.Width;
-                audioSource1.AudioFileReader.CurrentTime = TimeSpan.FromSeconds(audioSource1.AudioFileReader.TotalTime.TotalSeconds * clickPositionRatio);
-                audioSource1.CurrentPlaybackPosition = e.X;
-                waveform_ch1.Invalidate();
-            }
+            double clickPositionRatio = (double)e.X / waveform_ch1.Width;
+            audioSource1.AudioFileReader.CurrentTime = TimeSpan.FromSeconds(audioSource1.AudioFileReader.TotalTime.TotalSeconds * clickPositionRatio);
+            audioSource1.CurrentPlaybackPosition = e.X;
+            waveform_ch1.Invalidate();
         }
 
         private void waveform_ch2_MouseClick(object sender, MouseEventArgs e)
         {
-            if (audioSource2.AudioFileReader != null)
-            {
-                double clickPositionRatio = (double)e.X / waveform_ch2.Width;
-                audioSource2.AudioFileReader.CurrentTime = TimeSpan.FromSeconds(audioSource2.AudioFileReader.TotalTime.TotalSeconds * clickPositionRatio);
-                audioSource2.CurrentPlaybackPosition = e.X;
-                waveform_ch2.Invalidate();
-            }
+            double clickPositionRatio = (double)e.X / waveform_ch2.Width;
+            audioSource2.AudioFileReader.CurrentTime = TimeSpan.FromSeconds(audioSource2.AudioFileReader.TotalTime.TotalSeconds * clickPositionRatio);
+            audioSource2.CurrentPlaybackPosition = e.X;
+            waveform_ch2.Invalidate();
         }
 
         #endregion
 
         #region Stop button
 
-        private void btnStop_1_Click(object sender, EventArgs e) => Stop(ref audioSource1);
-        private void btnStop_2_Click(object sender, EventArgs e) => Stop(ref audioSource2);
-
-        private void Stop(ref AudioSourceHandler player)
+        private void Stop(AudioSourceHandler player)
         {
             player.Stop(audioOutputHandler);
             mixer.CleanLoop(player);
+            mixer.CleanVolumeMeters(player);
         }
 
         #endregion
 
         #region Pause button
 
-        private void btnPause_1_Click(object sender, EventArgs e) => Pause(ref audioSource1);
-        private void btnPause_2_Click(object sender, EventArgs e) => Pause(ref audioSource2);
-
-        private void Pause(ref AudioSourceHandler player)
+        private void Pause(AudioSourceHandler player)
         {
             player.Pause(audioOutputHandler);
+            mixer.CleanVolumeMeters(player);
         }
 
         #endregion
@@ -363,9 +351,6 @@ namespace iRANE_62
                 BackgroundColor = Color.Black,
                 TopPeakPen = new Pen(Color.White),
                 BottomPeakPen = new Pen(Color.White),
-
-                TopSpacerPen = new Pen(Color.Blue),//sprawdzić co to robi
-                BottomSpacerPen = new Pen(Color.Red),
             };
 
             if (player.Id == 1) waveform_ch1.Image = null;
@@ -378,6 +363,7 @@ namespace iRANE_62
 
         private void RenderThreadFunc(IPeakProvider peakProvider, WaveFormRendererSettings settings, AudioSourceHandler player)
         {
+            WaveFormRenderer waveFormRenderer = new WaveFormRenderer();
             Image image = null;
             try
             {
@@ -474,7 +460,8 @@ namespace iRANE_62
 
         void OnTimerTick(object sender, EventArgs e)
         {
-            if (audioSource1.AudioFileReader != null)
+            //if (audioSource1.AudioFileReader != null)
+            if (audioSource1.IsPlaying)
             {
                 labelNowTime_1.Text = FormatTimeSpan(audioSource1.AudioFileReader.CurrentTime);
 
@@ -493,7 +480,8 @@ namespace iRANE_62
                 waveform_ch1.Invalidate();
             }
 
-            if (audioSource2.AudioFileReader != null)
+            //if (audioSource2.AudioFileReader != null)
+            if (audioSource2.IsPlaying)
             {
                 labelNowTime_2.Text = FormatTimeSpan(audioSource2.AudioFileReader.CurrentTime);
 

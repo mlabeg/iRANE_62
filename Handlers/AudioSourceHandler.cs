@@ -46,7 +46,6 @@ namespace iRANE_62.Handlers
         public float RightChanelVolumeLevel => rightChanelVolumeLevel;
         public ChannelVolumeHandler ChannelVolumeHandler => channelVolumeHandler;
 
-
         public event EventHandler<StreamVolumeEventArgs> VolumeMetered
         {
             add

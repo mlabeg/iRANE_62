@@ -28,23 +28,22 @@ namespace iRANE_62
 
         public Mixer() { }
 
-        public Mixer(ref AudioSourceHandler player1, ref AudioSourceHandler player2, AudioOutputHandler audioOutputHandler) : this()
+        public Mixer(AudioSourceHandler player1, AudioSourceHandler player2, AudioOutputHandler audioOutputHandler) : this()
         {
-            this.audioSource1 = player1 ?? throw new ArgumentNullException(nameof(player1));
-            this.audioSource2 = player2 ?? throw new ArgumentNullException(nameof(player2));
-            this.audioOutputHandler = audioOutputHandler ?? throw new ArgumentNullException(nameof(audioOutputHandler));
+            audioSource1 = player1 ?? throw new ArgumentNullException(nameof(player1));
+            audioSource2 = player2 ?? throw new ArgumentNullException(nameof(player2));
+            audioOutputHandler = audioOutputHandler ?? throw new ArgumentNullException(nameof(audioOutputHandler));
 
             microphoneHandler = new MicrophoneHandler();
-            systemVolumeHandler = new SystemVolumeHandler();
             bpmCounterHandler = new BpmCounterHandler();
+            systemVolumeHandler = new SystemVolumeHandler();
             InitializeComponent();
 
-
+            BlockCueButtons();
+            BlockLoopButtons();
             InitializeHolders();
             UpdateChannelsVolumeHandlers();
             efxCheckedChangedEventHandler();
-            BlockCueButtons();
-            BlockLoopButtons();
             SetupMicrophoneControls();
             SetupVolumeMeters();
             SetupSystemVolume();
@@ -320,6 +319,7 @@ namespace iRANE_62
         public void CleanLoop(AudioSourceHandler audioSource)
         {
             audioSource.Loop.CleanLoop();
+
         }
 
         private void BlockLoopButtons()
@@ -332,7 +332,7 @@ namespace iRANE_62
             btn_exitLoop_ch2.Enabled = false;
         }
 
-        public void EableLoopButtons(int playerId)
+        public void EnableLoopButtons(int playerId)
         {
             if (playerId == 1)
             {
@@ -502,7 +502,6 @@ namespace iRANE_62
             else
             {
                 audioOutputHandler.RemoveSource(microphoneHandler);
-
             }
         }
 
@@ -526,7 +525,16 @@ namespace iRANE_62
                 microphoneHandler.MicLeftLevel = 0f;
                 microphoneHandler.MicRightLevel = 0f;
                 UpdateMainVolumeMeters();
+                TurnOffMicrophoneOver();
             }
+        }
+
+        private void TurnOffMicrophoneOver()
+        {
+            microphoneHandler.IsMicOverActive = false;
+            audioSource1.ChannelVolumeHandler.IsMicOverActive = false;
+            audioSource2.ChannelVolumeHandler.IsMicOverActive = false;
+            btn_micOver.BackColor = SystemColors.Control;
         }
 
         private void btn_micOver_Click(object sender, EventArgs e)
@@ -585,6 +593,19 @@ namespace iRANE_62
         #endregion
 
         #region Volume + Faders
+
+        public void CleanVolumeMeters(AudioSourceHandler audioSource)
+        {
+            if (audioSource.Id == 1)
+            {
+                volumeMeter_ch1.Amplitude = 0;
+            }
+            else
+            {
+                volumeMeter_ch2.Amplitude = 0;
+            }
+            UpdateMainVolumeMeters();
+        }
 
         private void UpdateChannelsVolumeHandlers()
         {
@@ -673,8 +694,5 @@ namespace iRANE_62
 
         private void pot_phones_pan_DoubleClick(object sender, EventArgs e) => doubleClick((Pot)sender);
         #endregion
-
-
-
     }
 }
