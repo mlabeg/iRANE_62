@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace iRANE_62.SampleProviderExtensions
+namespace iRANE_62.SampleProviderExtensions.EffectsSampleExtensions
 {
     internal class EchoEffectSampleProvider : IEffectSampleProvider
     {
@@ -43,16 +43,16 @@ namespace iRANE_62.SampleProviderExtensions
             echoGain = 0.25f;
             delay = 1;
             enabledFactor = 0;
-            this.delayBuffer = new float[echoDelayInSamples];
+            delayBuffer = new float[echoDelayInSamples];
         }
 
         public EchoEffectSampleProvider(ISampleProvider source, int echoDelayInMilliseconds, float echoGain, float delay)
         {
             this.source = source;
-            this.echoDelayInSamples = (int)(source.WaveFormat.SampleRate * echoDelayInMilliseconds / 1000.0);
+            echoDelayInSamples = (int)(source.WaveFormat.SampleRate * echoDelayInMilliseconds / 1000.0);
             this.echoGain = echoGain;
             this.delay = delay;
-            this.delayBuffer = new float[echoDelayInSamples];
+            delayBuffer = new float[echoDelayInSamples];
         }
 
         public void EffectUpdate(float effectGain, bool effectEnabled)

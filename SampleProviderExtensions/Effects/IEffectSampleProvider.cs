@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace iRANE_62.SampleProviderExtensions
+namespace iRANE_62.SampleProviderExtensions.EffectsSampleExtensions
 {
     public interface IEffectSampleProvider : ISampleProvider
     {
