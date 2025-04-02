@@ -326,6 +326,7 @@ namespace iRANE_62
             chBox_flexfx_ch2.TabIndex = 5;
             chBox_flexfx_ch2.Text = "FLEXFX";
             chBox_flexfx_ch2.UseVisualStyleBackColor = true;
+            chBox_flexfx_ch2.CheckedChanged += chBox_flexfx_ch2_CheckedChanged;
             // 
             // panel_chanel1
             // 
@@ -376,6 +377,7 @@ namespace iRANE_62
             chBox_flexfx_ch1.TabIndex = 5;
             chBox_flexfx_ch1.Text = "FLEX FX";
             chBox_flexfx_ch1.UseVisualStyleBackColor = true;
+            chBox_flexfx_ch1.CheckedChanged += chBox_flexfx_ch1_CheckedChanged;
             // 
             // volumeMeter_mic_volume
             // 
@@ -506,7 +508,6 @@ namespace iRANE_62
             chBox_efx_filter.TabIndex = 5;
             chBox_efx_filter.Text = "FILTER";
             chBox_efx_filter.UseVisualStyleBackColor = true;
-            chBox_efx_filter.CheckedChanged += efx_filter_CheckedChanged;
             // 
             // chBox_efx_flanger
             // 
@@ -518,7 +519,6 @@ namespace iRANE_62
             chBox_efx_flanger.TabIndex = 5;
             chBox_efx_flanger.Text = "FLANGER";
             chBox_efx_flanger.UseVisualStyleBackColor = true;
-            chBox_efx_flanger.CheckedChanged += efx_flanger_CheckedChanged;
             // 
             // chBox_efx_phaser
             // 
@@ -530,7 +530,6 @@ namespace iRANE_62
             chBox_efx_phaser.TabIndex = 5;
             chBox_efx_phaser.Text = "PHASER";
             chBox_efx_phaser.UseVisualStyleBackColor = true;
-            chBox_efx_phaser.CheckedChanged += efx_phaser_CheckedChanged;
             // 
             // chBox_efx_echo
             // 
@@ -542,7 +541,6 @@ namespace iRANE_62
             chBox_efx_echo.TabIndex = 5;
             chBox_efx_echo.Text = "ECHO";
             chBox_efx_echo.UseVisualStyleBackColor = true;
-            chBox_efx_echo.CheckedChanged += efx_echo_CheckedChanged;
             // 
             // chBox_efx_reverb
             // 
@@ -554,7 +552,6 @@ namespace iRANE_62
             chBox_efx_reverb.TabIndex = 5;
             chBox_efx_reverb.Text = "REVERB";
             chBox_efx_reverb.UseVisualStyleBackColor = true;
-            chBox_efx_reverb.CheckedChanged += efx_reverb_CheckedChanged;
             // 
             // chBox_efx_robot
             // 
@@ -566,7 +563,6 @@ namespace iRANE_62
             chBox_efx_robot.TabIndex = 5;
             chBox_efx_robot.Text = "ROBOT";
             chBox_efx_robot.UseVisualStyleBackColor = true;
-            chBox_efx_robot.CheckedChanged += efx_robot_CheckedChanged;
             // 
             // btn_fx_tap
             // 
@@ -877,6 +873,7 @@ namespace iRANE_62
             ChBox_mic_fx.TabIndex = 5;
             ChBox_mic_fx.Text = "FLEXFX";
             ChBox_mic_fx.UseVisualStyleBackColor = true;
+            ChBox_mic_fx.CheckedChanged += ChBox_mic_fx_CheckedChanged;
             // 
             // panel_volume
             // 

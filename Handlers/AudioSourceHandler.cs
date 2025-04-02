@@ -38,7 +38,6 @@ namespace iRANE_62.Handlers
             Equalizer = new EqSectionHandler();
             Loop = new Loop();
             CurrentPlaybackPosition = 0;
-            EffectsHandler = new EffectsHandler();
         }
 
         public bool IsPlaying => isPlaying;
@@ -131,17 +130,15 @@ namespace iRANE_62.Handlers
 
             var sampleChannel = new SampleChannel(resampler, true);
             SetVolumeDelegate = vol => sampleChannel.Volume = vol;
-
+            
             Equalizer.FilterSampleProvider = new FilterSampleProvider(sampleChannel, AudioFileReader.WaveFormat.SampleRate);
             Equalizer.PanningProvider = new StereoPanningSampleProvider(Equalizer.FilterSampleProvider);
             Equalizer.Equalizer = new Equalizer(Equalizer.PanningProvider, Equalizer.Bands);
             EqUpdateDelegate = Equalizer.UpdateEqSection;
 
-            //IEffectSampleProvider effectSampleProvider = new EchoEffectSampleProvider(Equalizer.Equalizer);
-            IEffectSampleProvider effectSampleProvider = new ReverbEffectSampleProvider(Equalizer.Equalizer);
-            EffectUpdateDelegate = effectSampleProvider.EffectUpdate;
+            EffectsHandler = new EffectsHandler(Equalizer.Equalizer);
 
-            outputProvider = new MeteringSampleProvider(effectSampleProvider);
+            outputProvider = new MeteringSampleProvider(EffectsHandler.GetOutputProvider());
 
             if (volumeMeteredHandlers != null)
             {

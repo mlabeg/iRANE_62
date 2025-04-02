@@ -20,19 +20,17 @@ namespace iRANE_62
         private readonly SystemVolumeHandler systemVolumeHandler;
 
         public EffectParametersHolder EffectHolder;
+        private List<CheckBox> effectCheckBoxes;
         public EqSectionHolder EqSectionHolderChannel1;
         public EqSectionHolder EqSectionHolderChannel2;
 
-
         public event Action<AudioSourceHandler, TimeSpan, Color> CuePointAdded;
 
-        public Mixer() { }
-
-        public Mixer(AudioSourceHandler player1, AudioSourceHandler player2, AudioOutputHandler audioOutputHandler) : this()
+        public Mixer(AudioSourceHandler player1, AudioSourceHandler player2, AudioOutputHandler audioOutputHandler)
         {
             audioSource1 = player1 ?? throw new ArgumentNullException(nameof(player1));
             audioSource2 = player2 ?? throw new ArgumentNullException(nameof(player2));
-            audioOutputHandler = audioOutputHandler ?? throw new ArgumentNullException(nameof(audioOutputHandler));
+            this.audioOutputHandler = audioOutputHandler ?? throw new ArgumentNullException(nameof(audioOutputHandler));
 
             microphoneHandler = new MicrophoneHandler();
             bpmCounterHandler = new BpmCounterHandler();
@@ -43,7 +41,7 @@ namespace iRANE_62
             BlockLoopButtons();
             InitializeHolders();
             UpdateChannelsVolumeHandlers();
-            efxCheckedChangedEventHandler();
+            InitializeEffectCheckBoxes();
             SetupMicrophoneControls();
             SetupVolumeMeters();
             SetupSystemVolume();
@@ -52,80 +50,93 @@ namespace iRANE_62
         }
 
         #region FX
-        private void efxCheckedChangedEventHandler()
+        private void InitializeEffectCheckBoxes()
         {
-            chBox_efx_echo.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
-            chBox_efx_flanger.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
-            chBox_efx_filter.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
-            chBox_efx_phaser.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
-            chBox_efx_reverb.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
-            chBox_efx_robot.CheckedChanged += new EventHandler(Efx_CheckBox_Change);
+            effectCheckBoxes = new List<CheckBox>
+                {
+                    chBox_efx_echo,
+                    chBox_efx_flanger,
+                    chBox_efx_filter,
+                    chBox_efx_phaser,
+                    chBox_efx_reverb,
+                    chBox_efx_robot
+                };
+
+            foreach (var checkBox in effectCheckBoxes)
+            {
+                checkBox.CheckedChanged += EffectCheckBox_CheckedChanged;
+            }
         }
 
-        private void efx_flanger_CheckedChanged(object sender, EventArgs e)
-        {
-            EffectHolder.Effect = chBox_efx_flanger.Checked ? EffectsEnum.Flanger : EffectsEnum.Disabled;
-        }
-
-        private void efx_phaser_CheckedChanged(object sender, EventArgs e)
-        {
-            EffectHolder.Effect = chBox_efx_phaser.Checked ? EffectsEnum.Phaser : EffectsEnum.Disabled;
-        }
-
-        private void efx_echo_CheckedChanged(object sender, EventArgs e)
-        {
-            EffectHolder.Effect = chBox_efx_echo.Checked ? EffectsEnum.Echo : EffectsEnum.Disabled;
-        }
-
-        private void efx_robot_CheckedChanged(object sender, EventArgs e)
-        {
-            EffectHolder.Effect = chBox_efx_robot.Checked ? EffectsEnum.Robot : EffectsEnum.Disabled;
-        }
-
-        private void efx_reverb_CheckedChanged(object sender, EventArgs e)
-        {
-            EffectHolder.Effect = chBox_efx_reverb.Checked ? EffectsEnum.Reverb : EffectsEnum.Disabled;
-        }
-
-        private void efx_filter_CheckedChanged(object sender, EventArgs e)
-        {
-            EffectHolder.Effect = chBox_efx_filter.Checked ? EffectsEnum.Filter : EffectsEnum.Disabled;
-        }
-
-        private void Efx_CheckBox_Change(object? sender, EventArgs e)
+        private void EffectCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             CheckBox clickedCheckBox = sender as CheckBox;
-            label_Effect_Name.Text = EffectHolder.Effect.ToString();
 
             if (clickedCheckBox.Checked)
             {
-                foreach (Control control in this.Controls)
+                foreach (var checkBox in effectCheckBoxes)
                 {
-                    if (control is CheckBox && control != clickedCheckBox)
-                    {
-                        ((CheckBox)control).Checked = false;
-                    }
+                    if (checkBox != clickedCheckBox)
+                        checkBox.Checked = false;
+                }
+
+                EffectHolder.Effect = GetEffectFromCheckBox(clickedCheckBox);
+            }
+            else
+            {
+                if (!effectCheckBoxes.Any(cb => cb.Checked))
+                {
+                    EffectHolder.Effect = EffectsEnum.Disabled;
                 }
             }
+
+            UpdateEffect();
+            label_Effect_Name.Text = EffectHolder.Effect.ToString();
+        }
+
+        private EffectsEnum GetEffectFromCheckBox(CheckBox checkBox)
+        {
+            return checkBox == chBox_efx_echo ? EffectsEnum.Echo :
+                   checkBox == chBox_efx_flanger ? EffectsEnum.Flanger :
+                   checkBox == chBox_efx_filter ? EffectsEnum.Filter :
+                   checkBox == chBox_efx_phaser ? EffectsEnum.Phaser :
+                   checkBox == chBox_efx_reverb ? EffectsEnum.Reverb :
+                   checkBox == chBox_efx_robot ? EffectsEnum.Robot :
+                   EffectsEnum.Disabled;
         }
 
         private void chBox_efx_on_CheckedChanged(object sender, EventArgs e)
         {
-            var effectChecked = chBox_efx_on.Checked;
-
-            EffectHolder.EffectEnabled = effectChecked;
-            audioSource1.UpdateEffect((float)Pot_fx_gain.Value, effectChecked);
-            audioSource2.UpdateEffect((float)Pot_fx_gain.Value, effectChecked);
+            EffectHolder.EffectEnabled = chBox_efx_on.Checked;
+            UpdateEffect();
         }
 
         private void Pot_fx_gain_ValueChanged(object sender, EventArgs e)
         {
-            float gain = (float)Pot_fx_gain.Value;
-
-            EffectHolder.Gain = gain;
-            audioSource1.UpdateEffect(gain, chBox_efx_on.Checked);
-            audioSource2.UpdateEffect(gain, chBox_efx_on.Checked);
+            EffectHolder.Gain = (float)Pot_fx_gain.Value;
+            UpdateEffect();
         }
+
+        private void UpdateEffect()
+        {
+            if (audioSource1.AudioFileReader != null)
+            {
+                audioSource1.EffectsHandler.UpdateEffect((float)Pot_fx_gain.Value, chBox_efx_on.Checked && chBox_flexfx_ch1.Checked, EffectHolder.Effect);
+            }
+            if (audioSource2.AudioFileReader != null)
+            {
+                audioSource2.EffectsHandler.UpdateEffect((float)Pot_fx_gain.Value, chBox_efx_on.Checked && chBox_flexfx_ch2.Checked, EffectHolder.Effect);
+            }
+            if (microphoneHandler.EffectsHandler != null)
+            {
+                microphoneHandler.EffectsHandler.UpdateEffect((float)Pot_fx_gain.Value, chBox_efx_on.Checked && ChBox_mic_fx.Checked, EffectHolder.Effect);
+            }
+        }
+        private void ChBox_mic_fx_CheckedChanged(object sender, EventArgs e) => UpdateEffect();
+
+        private void chBox_flexfx_ch1_CheckedChanged(object sender, EventArgs e) => UpdateEffect();
+
+        private void chBox_flexfx_ch2_CheckedChanged(object sender, EventArgs e) => UpdateEffect();
 
         private void btn_fx_tap_Click(object sender, EventArgs e)
         {
@@ -522,6 +533,7 @@ namespace iRANE_62
 
             if (!microphoneHandler.IsActive)
             {
+                volumeMeter_mic_volume.Amplitude = 0;
                 microphoneHandler.MicLeftLevel = 0f;
                 microphoneHandler.MicRightLevel = 0f;
                 UpdateMainVolumeMeters();
@@ -694,5 +706,6 @@ namespace iRANE_62
 
         private void pot_phones_pan_DoubleClick(object sender, EventArgs e) => doubleClick((Pot)sender);
         #endregion
+
     }
 }

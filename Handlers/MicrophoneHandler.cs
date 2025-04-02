@@ -21,6 +21,8 @@ namespace iRANE_62.Handlers
 
         private float micLeftLevel;
         private float micRightLevel;
+        
+        public EffectsHandler EffectsHandler;
 
         public event EventHandler<StreamVolumeEventArgs> VolumeIndicator;
         public event Action<bool> IsActiveChanged;
@@ -123,7 +125,9 @@ namespace iRANE_62.Handlers
                     equalizer = new EqSectionHandler();
                     equalizer.Equalizer = new Equalizer(volumeProvider, equalizer.Bands);
 
-                    meteringProvider = new MeteringSampleProvider(equalizer.Equalizer);
+                    EffectsHandler = new EffectsHandler(equalizer.Equalizer);
+
+                    meteringProvider = new MeteringSampleProvider(EffectsHandler.GetOutputProvider());
                     meteringProvider.StreamVolume += (s, e) => VolumeIndicator?.Invoke(this, e);
 
                     mixerProvider.AddMixerInput(meteringProvider);
