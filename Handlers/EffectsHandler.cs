@@ -1,105 +1,68 @@
 ﻿using iRANE_62.Models;
 using iRANE_62.SampleProviderExtensions;
+using iRANE_62.SampleProviderExtensions.EffectsSampleExtensions;
 using NAudio.Wave;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace iRANE_62.Handlers
 {
     public class EffectsHandler
     {
-        private ISampleProvider sourceProvider;
-        private IEffectSampleProvider activeEffect;
-        private bool effectsEnabled;
-        private float effectGain;
-        private EffectsEnum effect;
 
-        public EffectsHandler()
+        private ISampleProvider source;
+        private ISampleProvider outputProvider;
+
+        public Action<float, bool> EchoUpdateDelegate;
+        public Action<float, bool> ReverbUpdateDelegate;
+
+
+        public EffectsHandler(ISampleProvider sourceProvider)
         {
-
+            source = sourceProvider;
+            SetupEffectsChain();
         }
 
-        public EffectsHandler(ISampleProvider source)
+        public void SetupEffectsChain()
         {
-            sourceProvider = source ?? throw new ArgumentNullException(nameof(source));
+            var echoSampleProvider = new EchoEffectSampleProvider(source);
+            EchoUpdateDelegate = echoSampleProvider.EffectUpdate;
+
+            var reverbSampleProvider = new ReverbEffectSampleProvider(echoSampleProvider);
+            ReverbUpdateDelegate = reverbSampleProvider.EffectUpdate;
+
+            outputProvider = reverbSampleProvider;
         }
 
-        public bool EffectsEnabled
+        public void UpdateEffect(float gain, bool enabled, EffectsEnum effect)
         {
-            get => effectsEnabled;
-            set
-            {
-                if (effectsEnabled != value)
-                {
-                    effectsEnabled = value;
-                    SetActiveEffect(effect);
-                }
-            }
-        }
-
-        public float EffectGain
-        {
-            get => effectGain;
-            set
-            {
-                effectGain = Math.Clamp(value, 0f, 1f);
-                if (activeEffect is EchoEffectSampleProvider echo)
-                {
-                    echo.EffectGain = effectGain;
-                }
-                SetActiveEffect(effect);
-            }
-        }
-
-        public EffectsEnum Effect
-        {
-            get => effect;
-            set
-            {
-                effect = value;
-                SetActiveEffect(effect);
-            }
-        }
-
-        public void EffectParametesUpdate(EffectParametersHolder effectHolder)
-        {
-            effect = effectHolder.Effect;
-            effectsEnabled = effectHolder.EffectEnabled;
-            effectGain = effectHolder.Gain;
-            SetActiveEffect(effect);
-        }
-
-
-        public void SetActiveEffect(EffectsEnum effect)
-        {
-            if (sourceProvider == null)
-            {
-                return;
-            }
-
             switch (effect)
             {
                 case EffectsEnum.Echo:
-                    activeEffect = new EchoEffectSampleProvider(sourceProvider, 825, effectGain, 0.25f);
+                    EchoUpdateDelegate?.Invoke(gain, enabled);
+                    ReverbUpdateDelegate?.Invoke(gain, false);
                     break;
-                // Add cases for other effects here, e.g.:
-                // case "Reverb":
-                //     activeEffect = new ReverbEffectSampleProvider(sourceProvider, /* params */);
-                //     break;
+
+                case EffectsEnum.Reverb:
+                    ReverbUpdateDelegate?.Invoke(gain, enabled);
+                    EchoUpdateDelegate?.Invoke(gain, false);
+                    break;
+
+                case EffectsEnum.Disabled:
                 default:
-                    activeEffect = null;
+                    ReverbUpdateDelegate?.Invoke(gain, false);
+                    EchoUpdateDelegate?.Invoke(gain, false);
                     break;
+
             }
         }
+
         public ISampleProvider GetOutputProvider()
         {
-            return effectsEnabled && activeEffect != null ? activeEffect : sourceProvider;
-        }
-
-        public void SourceProviderUpdate(ISampleProvider sampleProvider)
-        {
-            sourceProvider = sampleProvider;
+            return outputProvider;
         }
     }
-
-
 }
-

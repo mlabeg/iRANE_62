@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace iRANE_62.SampleProviderExtensions
+namespace iRANE_62.SampleProviderExtensions.EffectsSampleExtensions
 {
     public class ReverbEffectSampleProvider : IEffectSampleProvider
     {
@@ -24,7 +24,7 @@ namespace iRANE_62.SampleProviderExtensions
         public ReverbEffectSampleProvider(ISampleProvider source)
         {
             this.source = source;
-           
+
 
             delayBufferLength = (int)(0.15f * source.WaveFormat.SampleRate);
             decayFactor = CalculateDecayFactor(0.15f);
@@ -33,7 +33,7 @@ namespace iRANE_62.SampleProviderExtensions
 
             delayBufferPosition = 0;
             delayBuffer = new float[delayBufferLength];
-            
+
             effectStrength = 0;
             enabled = false;
             enabledFactor = 0;
