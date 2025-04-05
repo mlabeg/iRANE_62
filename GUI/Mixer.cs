@@ -18,9 +18,9 @@ namespace iRANE_62
         private readonly AudioSourceHandler audioSource2;
         private readonly AudioOutputHandler audioOutputHandler;
         private readonly SystemVolumeHandler systemVolumeHandler;
+        private List<CheckBox> effectCheckBoxes;
 
         public EffectParametersHolder EffectHolder;
-        private List<CheckBox> effectCheckBoxes;
         public EqSectionHolder EqSectionHolderChannel1;
         public EqSectionHolder EqSectionHolderChannel2;
 
@@ -132,6 +132,7 @@ namespace iRANE_62
                 microphoneHandler.EffectsHandler.UpdateEffect((float)Pot_fx_gain.Value, chBox_efx_on.Checked && ChBox_mic_fx.Checked, EffectHolder.Effect);
             }
         }
+
         private void ChBox_mic_fx_CheckedChanged(object sender, EventArgs e) => UpdateEffect();
 
         private void chBox_flexfx_ch1_CheckedChanged(object sender, EventArgs e) => UpdateEffect();
@@ -163,12 +164,6 @@ namespace iRANE_62
 
         private void pot_gain_ch2_ValueChanged(object sender, EventArgs e) { }
 
-        public void OnPostMainVolumeMeter(object sender, StreamVolumeEventArgs e)
-        {
-            volumeMeter_mainLeft.Amplitude = e.MaxSampleValues[0];
-            volumeMeter_mainRight.Amplitude = e.MaxSampleValues[1];
-        }
-
         public void OnPostChanel1VolumeMeter(object sender, StreamVolumeEventArgs e)
         {
             volumeMeter_ch1.Amplitude = Math.Max(e.MaxSampleValues[0], e.MaxSampleValues[1]);
@@ -179,69 +174,51 @@ namespace iRANE_62
             volumeMeter_ch2.Amplitude = Math.Max(e.MaxSampleValues[0], e.MaxSampleValues[1]);
         }
 
-        private void high_odt1_ValueChanged(object sender, EventArgs e)
-        {//doda�em bardziej �agodne przej�cie mi�dzy bandami, na studyjnych nie s�ycha� fuzej r�nicy, b�dzie m�g� usun�� jak oka�e si�, �e program jest za wolny   
-            if (audioSource1.AudioFileReader != null)
-            {
-                audioSource1.Equalizer.Band9 = (float)pot_high_ch1.Value;
-                audioSource1.Equalizer.Band8 = (float)pot_high_ch1.Value;
-                audioSource1.Equalizer.Band7 = (float)(pot_high_ch1.Value + pot_mid_ch1.Value) / 2;
-                audioSource1.Equalizer.Equalizer.Update();
-            }
-        }
-
-        private void mid_odt1_ValueChanged(object sender, EventArgs e)
+        private void high_ch1_ValueChanged(object sender, EventArgs e)
         {
             if (audioSource1.AudioFileReader != null)
             {
-                audioSource1.Equalizer.Band6 = (float)(pot_mid_ch1.Value + pot_high_ch1.Value) / 2;
-                audioSource1.Equalizer.Band5 = (float)pot_mid_ch1.Value;
-                audioSource1.Equalizer.Band4 = (float)(pot_mid_ch1.Value + pot_low_ch1.Value) / 2;
-                audioSource1.Equalizer.Equalizer.Update();
+                audioSource1.Equalizer.UpdateEqHigh((float)pot_high_ch1.Value);
             }
         }
 
-        private void low_odt1_ValueChanged(object sender, EventArgs e)
+        private void mid_ch1_ValueChanged(object sender, EventArgs e)
         {
             if (audioSource1.AudioFileReader != null)
             {
-                audioSource1.Equalizer.Band3 = (float)(pot_low_ch1.Value + pot_mid_ch1.Value) / 2;
-                audioSource1.Equalizer.Band2 = (float)pot_low_ch1.Value;
-                audioSource1.Equalizer.Band1 = (float)pot_low_ch1.Value;
-                audioSource1.Equalizer.Equalizer.Update();
+                audioSource1.Equalizer.UpdateEqMid((float)pot_mid_ch1.Value);
             }
         }
 
-        private void high_odt2_ValueChanged(object sender, EventArgs e)
+        private void low_ch1_ValueChanged(object sender, EventArgs e)
         {
-            if (audioSource2.AudioFileReader != null)
+            if (audioSource1.AudioFileReader != null)
             {
-                audioSource2.Equalizer.Band7 = (float)pot_high_ch2.Value;
-                audioSource2.Equalizer.Band9 = (float)pot_high_ch2.Value;
-                audioSource2.Equalizer.Band8 = (float)pot_high_ch2.Value;
-                audioSource2.Equalizer.Equalizer.Update();
+                audioSource1.Equalizer.UpdateEqLow((float)pot_low_ch1.Value);
             }
         }
 
-        private void mid_odt2_ValueChanged(object sender, EventArgs e)
+        private void high_ch2_ValueChanged(object sender, EventArgs e)
         {
             if (audioSource2.AudioFileReader != null)
             {
-                audioSource2.Equalizer.Band4 = (float)pot_mid_ch2.Value;
-                audioSource2.Equalizer.Band5 = (float)pot_mid_ch2.Value;
-                audioSource2.Equalizer.Band6 = (float)pot_mid_ch2.Value;
-                audioSource2.Equalizer.Equalizer.Update();
+                audioSource2.Equalizer.UpdateEqHigh((float)pot_high_ch2.Value);
             }
         }
 
-        private void low_odt2_ValueChanged(object sender, EventArgs e)
+        private void mid_ch2_ValueChanged(object sender, EventArgs e)
         {
             if (audioSource2.AudioFileReader != null)
             {
-                audioSource2.Equalizer.Band1 = (float)pot_low_ch2.Value;
-                audioSource2.Equalizer.Band2 = (float)pot_low_ch2.Value;
-                audioSource2.Equalizer.Band3 = (float)pot_low_ch2.Value;
-                audioSource2.Equalizer.Equalizer.Update();
+                audioSource2.Equalizer.UpdateEqMid((float)pot_mid_ch2.Value);
+            }
+        }
+
+        private void low_ch2_ValueChanged(object sender, EventArgs e)
+        {
+            if (audioSource2.AudioFileReader != null)
+            {
+                audioSource2.Equalizer.UpdateEqLow((float)pot_low_ch2.Value);
             }
         }
 

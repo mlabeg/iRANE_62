@@ -58,6 +58,30 @@ namespace iRANE_62.Handlers
             FilterSampleProvider.FilterValue = holder.HighLowPassFilter;
         }
 
+        public void UpdateEqHigh(float value)
+        {
+            Band7 = value;
+            Band9 = value;
+            Band8 = value;
+            Equalizer.Update();
+        }
+
+        public void UpdateEqMid(float value)
+        {
+            Band4 = value;
+            Band5 = value;
+            Band6 = value;
+            Equalizer.Update();
+        }
+
+        public void UpdateEqLow(float value)
+        {
+            Band1 = value;
+            Band2 = value;
+            Band3 = value;
+            Equalizer.Update();
+        }
+
 
 
         #region Bands

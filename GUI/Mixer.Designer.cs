@@ -146,7 +146,7 @@ namespace iRANE_62
             pot_high_ch1.Size = new Size(43, 55);
             pot_high_ch1.TabIndex = 3;
             pot_high_ch1.Value = 0D;
-            pot_high_ch1.ValueChanged += high_odt1_ValueChanged;
+            pot_high_ch1.ValueChanged += high_ch1_ValueChanged;
             pot_high_ch1.Load += pot_high_ch1_Load;
             // 
             // pot_mid_ch1
@@ -159,7 +159,7 @@ namespace iRANE_62
             pot_mid_ch1.Size = new Size(43, 55);
             pot_mid_ch1.TabIndex = 3;
             pot_mid_ch1.Value = 0D;
-            pot_mid_ch1.ValueChanged += mid_odt1_ValueChanged;
+            pot_mid_ch1.ValueChanged += mid_ch1_ValueChanged;
             pot_mid_ch1.DoubleClick += pot_mid_ch1_DoubleClick;
             // 
             // pot_filter_ch1
@@ -207,7 +207,7 @@ namespace iRANE_62
             pot_high_ch2.Size = new Size(43, 55);
             pot_high_ch2.TabIndex = 3;
             pot_high_ch2.Value = 0D;
-            pot_high_ch2.ValueChanged += high_odt2_ValueChanged;
+            pot_high_ch2.ValueChanged += high_ch2_ValueChanged;
             pot_high_ch2.DoubleClick += pot_high_ch2_DoubleClick;
             // 
             // pot_mid_ch2
@@ -220,7 +220,7 @@ namespace iRANE_62
             pot_mid_ch2.Size = new Size(43, 55);
             pot_mid_ch2.TabIndex = 3;
             pot_mid_ch2.Value = 0D;
-            pot_mid_ch2.ValueChanged += mid_odt2_ValueChanged;
+            pot_mid_ch2.ValueChanged += mid_ch2_ValueChanged;
             pot_mid_ch2.DoubleClick += pot_mid_ch2_DoubleClick;
             // 
             // pot_filter_ch2
@@ -246,7 +246,7 @@ namespace iRANE_62
             pot_low_ch2.Size = new Size(43, 55);
             pot_low_ch2.TabIndex = 3;
             pot_low_ch2.Value = 0D;
-            pot_low_ch2.ValueChanged += low_odt2_ValueChanged;
+            pot_low_ch2.ValueChanged += low_ch2_ValueChanged;
             pot_low_ch2.DoubleClick += pot_low_ch2_DoubleClick;
             // 
             // pot_mic_level
@@ -364,7 +364,7 @@ namespace iRANE_62
             pot_low_ch1.Size = new Size(43, 55);
             pot_low_ch1.TabIndex = 3;
             pot_low_ch1.Value = 0D;
-            pot_low_ch1.ValueChanged += low_odt1_ValueChanged;
+            pot_low_ch1.ValueChanged += low_ch1_ValueChanged;
             pot_low_ch1.DoubleClick += pot_low_ch1_DoubleClick;
             // 
             // chBox_flexfx_ch1
