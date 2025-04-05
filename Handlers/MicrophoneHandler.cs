@@ -67,13 +67,11 @@ namespace iRANE_62.Handlers
         public float MicLeftLevel
         {
             get => micLeftLevel;
-            set => micLeftLevel = value;
         }
 
         public float MicRightLevel
         {
             get => micRightLevel;
-            set => micRightLevel = value;
         }
 
 
@@ -152,6 +150,12 @@ namespace iRANE_62.Handlers
         private void MicrophoneDataAvailable(object sender, WaveInEventArgs e)
         {
             micBuffer?.AddSamples(e.Buffer, 0, e.BytesRecorded);
+        }
+
+        public void UpdateMicLevels(float leftChannelLevel, float rightChannelLevel)
+        {
+            micLeftLevel=leftChannelLevel;
+            micRightLevel=rightChannelLevel;
         }
 
         public void Dispose()

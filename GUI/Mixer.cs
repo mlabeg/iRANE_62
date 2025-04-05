@@ -307,7 +307,6 @@ namespace iRANE_62
         public void CleanLoop(AudioSourceHandler audioSource)
         {
             audioSource.Loop.CleanLoop();
-
         }
 
         private void BlockLoopButtons()
@@ -474,7 +473,6 @@ namespace iRANE_62
 
                 CuePointAdded?.Invoke(player, (TimeSpan)cuePoint.StartTime, cuePoint.Color);
             }
-
         }
 
         #endregion
@@ -497,10 +495,11 @@ namespace iRANE_62
         {
             microphoneHandler.VolumeIndicator += OnMicrophoneVolumeMeter;
             microphoneHandler.Volume = (float)pot_mic_level.Value;
-            btn_micOnOff.BackColor = microphoneHandler.IsActive ? Color.Green : SystemColors.Control;
-            btn_micOver.BackColor = microphoneHandler.IsMicOverActive ? Color.Green : SystemColors.Control;
             if (microphoneHandler.IsActive)
                 UpdateMicrophoneOutput(true);
+
+            btn_micOnOff.BackColor = microphoneHandler.IsActive ? Color.Green : SystemColors.Control;
+            btn_micOver.BackColor = microphoneHandler.IsMicOverActive ? Color.Green : SystemColors.Control;
         }
 
         private void btn_micOnOff_Click(object sender, EventArgs e)
@@ -511,8 +510,7 @@ namespace iRANE_62
             if (!microphoneHandler.IsActive)
             {
                 volumeMeter_mic_volume.Amplitude = 0;
-                microphoneHandler.MicLeftLevel = 0f;
-                microphoneHandler.MicRightLevel = 0f;
+                microphoneHandler.UpdateMicLevels(0,0);
                 UpdateMainVolumeMeters();
                 TurnOffMicrophoneOver();
             }
@@ -542,17 +540,11 @@ namespace iRANE_62
             microphoneHandler.Volume = (float)pot_mic_level.Value;
         }
 
-        protected override void OnFormClosing(FormClosingEventArgs e)
-        {
-            base.OnFormClosing(e);
-            microphoneHandler?.Dispose();
-        }
-
         private void OnMicrophoneVolumeMeter(object sender, StreamVolumeEventArgs e)
         {
-            microphoneHandler.MicLeftLevel = e.MaxSampleValues[0];
-            microphoneHandler.MicRightLevel = e.MaxSampleValues[1];
-            volumeMeter_mic_volume.Amplitude = Math.Max(microphoneHandler.MicLeftLevel, microphoneHandler.MicRightLevel);
+            microphoneHandler.UpdateMicLevels(e.MaxSampleValues[0], e.MaxSampleValues[1]);
+
+            volumeMeter_mic_volume.Amplitude = Math.Max(e.MaxSampleValues[0], e.MaxSampleValues[1]);
             UpdateMainVolumeMeters();
         }
 
@@ -560,11 +552,7 @@ namespace iRANE_62
         {
             if (microphoneHandler.Equalizer != null)
             {
-                float highValue = (float)pot_mic_high.Value;
-                microphoneHandler.Equalizer.Bands[6].Gain = highValue;
-                microphoneHandler.Equalizer.Bands[7].Gain = highValue;
-                microphoneHandler.Equalizer.Bands[8].Gain = highValue;
-                microphoneHandler.Equalizer.Equalizer.Update();
+                microphoneHandler.Equalizer.UpdateEqHigh((float)pot_mic_high.Value);
             }
         }
 
@@ -572,11 +560,7 @@ namespace iRANE_62
         {
             if (microphoneHandler.Equalizer != null)
             {
-                float lowValue = (float)pot_mic_low.Value;
-                microphoneHandler.Equalizer.Bands[0].Gain = lowValue;
-                microphoneHandler.Equalizer.Bands[1].Gain = lowValue;
-                microphoneHandler.Equalizer.Bands[2].Gain = lowValue;
-                microphoneHandler.Equalizer.Equalizer.Update();
+                microphoneHandler.Equalizer.UpdateEqLow((float)pot_mic_low.Value);
             }
         }
         #endregion
