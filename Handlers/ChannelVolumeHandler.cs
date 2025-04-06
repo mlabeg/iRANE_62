@@ -54,11 +54,11 @@ namespace iRANE_62.Handlers
                     if (isMicOverActive)
                     {
                         originalVolume = CalculateEffectiveVolume();
-                        audioSource?.SetVolume(0.1f);
+                        audioSource?.UpdateVolume(0.1f);
                     }
                     else
                     {
-                        audioSource?.SetVolume(originalVolume);
+                        audioSource?.UpdateVolume(originalVolume);
                     }
                 }
             }
@@ -103,7 +103,7 @@ namespace iRANE_62.Handlers
             if (audioSource?.AudioFileReader != null)
             {
                 float effectiveVolume = isMicOverActive ? 0.1f : gain * faderVolume * systemVolume * crossfaderBalance;
-                audioSource.SetVolume(effectiveVolume);
+                audioSource.UpdateVolume(effectiveVolume);
                 if (!isMicOverActive) originalVolume = effectiveVolume;
             }
         }

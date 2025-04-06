@@ -36,6 +36,7 @@ namespace iRANE_62.Handlers
         {
             Id = id;
             Loop = new Loop();
+            Loop.LoopOutChanged += OnLoopOutChanged;
             Equalizer = new EqSectionHandler();
         }
 
@@ -172,6 +173,25 @@ namespace iRANE_62.Handlers
             };
 
             return resampler;
+        }
+
+        public void LoopLogic()
+        {
+            if (Loop.LoopActive && Loop.LoopOut != TimeSpan.Zero && Loop.LoopIn != TimeSpan.Zero)
+            {
+                if (AudioFileReader.CurrentTime >= Loop.LoopOut)
+                {
+                    AudioFileReader.CurrentTime = Loop.LoopIn;
+                }
+            }
+        }
+
+        public void OnLoopOutChanged(object sender, EventArgs e)
+        {
+            if(Loop.LoopIn != TimeSpan.Zero)
+            {
+                AudioFileReader.CurrentTime = Loop.LoopIn;
+            }
         }
 
         public void Dispose()

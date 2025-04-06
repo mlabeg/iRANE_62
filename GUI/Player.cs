@@ -18,13 +18,13 @@ namespace iRANE_62
         public Player()
         {
             InitializeComponent();
-            Disposed += PlaybackPanel_Disposed;
-            timer1.Interval = 10;
+            timer1.Interval = 5;
             timer1.Tick += OnTimerTick;
+            Disposed += PlaybackPanel_Disposed;
 
-            audioSource1 = new AudioSourceHandler(1);
-            audioSource2 = new AudioSourceHandler(2);
             audioOutputHandler = new AudioOutputHandler();
+            audioSource1 = new AudioSourceHandler(1, audioOutputHandler);
+            audioSource2 = new AudioSourceHandler(2, audioOutputHandler);
             mixer = new Mixer(audioSource1, audioSource2, audioOutputHandler);
 
             mixer.CuePointAdded += DrawCuePoint;
@@ -52,13 +52,13 @@ namespace iRANE_62
             {
                 if (audioSource.IsPlaying)
                 {
-                    audioSource.Pause(audioOutputHandler);
+                    audioSource.Pause();
                 }
                 else
                 {
                     UpdateEqSection(audioSource);
 
-                    audioSource.Play(audioOutputHandler);
+                    audioSource.Play();
                     timer1.Enabled = true;
                 }
             }
@@ -75,11 +75,11 @@ namespace iRANE_62
 
             if (audioSource.Id == 1)
             {
-                audioSource.EqUpdate(mixer.EqSectionHolderChannel1);
+                audioSource.UpdateEqualizer(mixer.EqSectionHolderChannel1);
             }
             else
             {
-                audioSource.EqUpdate(mixer.EqSectionHolderChannel2);
+                audioSource.UpdateEqualizer(mixer.EqSectionHolderChannel2);
             }
         }
         #endregion
@@ -323,8 +323,8 @@ namespace iRANE_62
 
         private void Stop(AudioSourceHandler player)
         {
-            player.Stop(audioOutputHandler);
-            mixer.CleanLoop(player);
+            player.Stop();
+            mixer.ExitLoop(player);
             mixer.CleanVolumeMeters(player);
         }
 
@@ -334,7 +334,7 @@ namespace iRANE_62
 
         private void Pause(AudioSourceHandler player)
         {
-            player.Pause(audioOutputHandler);
+            player.Pause();
             mixer.CleanVolumeMeters(player);
         }
 
@@ -460,45 +460,37 @@ namespace iRANE_62
 
         void OnTimerTick(object sender, EventArgs e)
         {
-            //if (audioSource1.AudioFileReader != null)
             if (audioSource1.IsPlaying)
             {
                 labelNowTime_1.Text = FormatTimeSpan(audioSource1.AudioFileReader.CurrentTime);
-
-                //Loop logic
-                if (audioSource1.Loop.LoopActive && audioSource1.Loop.LoopOut != TimeSpan.Zero && audioSource1.Loop.LoopIn != TimeSpan.Zero)
-                {
-                    if (audioSource1.AudioFileReader.CurrentTime >= audioSource1.Loop.LoopOut)
-                    {
-                        audioSource1.AudioFileReader.CurrentTime = audioSource1.Loop.LoopIn;
-                    }
-                }
-
-                //wyświetlanie linii na waveform
-                double progress = audioSource1.AudioFileReader.CurrentTime.TotalSeconds / audioSource1.AudioFileReader.TotalTime.TotalSeconds;
-                audioSource1.CurrentPlaybackPosition = (int)(waveform_ch1.Width * progress);
-                waveform_ch1.Invalidate();
+                
+                audioSource1.LoopLogic();
+                PlayingPositionLineUpdate(audioSource1);
             }
 
-            //if (audioSource2.AudioFileReader != null)
             if (audioSource2.IsPlaying)
             {
                 labelNowTime_2.Text = FormatTimeSpan(audioSource2.AudioFileReader.CurrentTime);
 
-                //Loop logic
-                if (audioSource2.Loop.LoopActive && audioSource2.Loop.LoopOut != TimeSpan.Zero && audioSource2.Loop.LoopIn != TimeSpan.Zero)
-                {
-                    if (audioSource2.AudioFileReader.CurrentTime >= audioSource2.Loop.LoopOut)
-                    {
-                        audioSource2.AudioFileReader.CurrentTime = audioSource2.Loop.LoopIn;
-                    }
-                }
+                audioSource2.LoopLogic();
+                PlayingPositionLineUpdate(audioSource2);
+            }
+        }
 
-                //wyświetlanie linii na waveform
-                double progress = audioSource2.AudioFileReader.CurrentTime.TotalSeconds / audioSource2.AudioFileReader.TotalTime.TotalSeconds;
-                audioSource2.CurrentPlaybackPosition = (int)(waveform_ch1.Width * progress);
+        private void PlayingPositionLineUpdate(AudioSourceHandler audioSource)
+        {
+            double progress = audioSource.AudioFileReader.CurrentTime.TotalSeconds / audioSource.AudioFileReader.TotalTime.TotalSeconds;
+            audioSource.CurrentPlaybackPosition = (int)(waveform_ch1.Width * progress);
+
+            if (audioSource.Id == 1)
+            {
+                waveform_ch1.Invalidate();
+            }
+            else
+            {
                 waveform_ch2.Invalidate();
             }
+
         }
 
         private static string FormatTimeSpan(TimeSpan ts)

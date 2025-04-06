@@ -12,10 +12,10 @@ namespace iRANE_62
 {
     public partial class Mixer : Form
     {
-        private readonly MicrophoneHandler microphoneHandler;
-        private readonly BpmCounterHandler bpmCounterHandler;
         private readonly AudioSourceHandler audioSource1;
         private readonly AudioSourceHandler audioSource2;
+        private readonly MicrophoneHandler microphoneHandler;
+        private readonly BpmCounterHandler bpmCounterHandler;
         private readonly AudioOutputHandler audioOutputHandler;
         private readonly SystemVolumeHandler systemVolumeHandler;
         private List<CheckBox> effectCheckBoxes;
@@ -262,21 +262,20 @@ namespace iRANE_62
         #region Loop
         private void loopOut_ch1_Click(object sender, EventArgs e)
         {
-            audioSource1.Loop.SetLoopOut(audioSource1.AudioFileReader.CurrentTime);
+            LoopOut(audioSource1);
             btn_loopOut_ch1.BackColor = Color.YellowGreen;
         }
 
         private void loopIn_ch1_Click(object sender, EventArgs e)
         {
-            audioSource1.Loop.SetLoopIn(audioSource1.AudioFileReader.CurrentTime);
-            audioSource1.Loop.LoopActive = true;
+            LoopIn(audioSource1);
             btn_loopIn_ch1.BackColor = Color.YellowGreen;
         }
 
         private void exitLoop_ch1_Click(object sender, EventArgs e)
         {
-            audioSource1.Loop.LoopActive = false;
-            CleanLoop(audioSource1);
+            //audioSource1.Loop.LoopActive = false;
+            ExitLoop(audioSource1);
 
             btn_loopIn_ch1.BackColor = Color.White;
             btn_loopOut_ch1.BackColor = Color.White;
@@ -284,29 +283,37 @@ namespace iRANE_62
 
         private void loopOut_ch2_Click(object sender, EventArgs e)
         {
-            audioSource2.Loop.SetLoopOut(audioSource2.AudioFileReader.CurrentTime);
+            LoopOut(audioSource2);
             btn_loopOut_ch2.BackColor = Color.YellowGreen;
         }
 
         private void loopIn_ch2_Click(object sender, EventArgs e)
         {
-            audioSource2.Loop.SetLoopIn(audioSource2.AudioFileReader.CurrentTime);
-            audioSource2.Loop.LoopActive = true;
+            LoopIn(audioSource2);
             btn_loopIn_ch2.BackColor = Color.YellowGreen;
         }
 
         private void exitLoop_ch2_Click(object sender, EventArgs e)
         {
-            audioSource2.Loop.LoopActive = false;
-            CleanLoop(audioSource2);
+            ExitLoop(audioSource2);
 
             btn_loopIn_ch2.BackColor = Color.White;
             btn_loopOut_ch2.BackColor = Color.White;
         }
 
-        public void CleanLoop(AudioSourceHandler audioSource)
+        private void LoopIn(AudioSourceHandler audioSource)
         {
-            audioSource.Loop.CleanLoop();
+            audioSource.Loop.SetLoopIn(audioSource.AudioFileReader.CurrentTime);
+        }
+
+        private void LoopOut(AudioSourceHandler audioSource)
+        {
+            audioSource.Loop.SetLoopOut(audioSource.AudioFileReader.CurrentTime);
+        }
+
+        public void ExitLoop(AudioSourceHandler audioSource)
+        {
+            audioSource.Loop.ExitLoop();
         }
 
         private void BlockLoopButtons()
@@ -352,7 +359,6 @@ namespace iRANE_62
             btn_cue3_ch2.Enabled = false;
             btn_cue4_ch2.Enabled = false;
             btn_cue5_ch2.Enabled = false;
-
         }
 
         public void EnableCuePoints(int playerId)
@@ -510,7 +516,7 @@ namespace iRANE_62
             if (!microphoneHandler.IsActive)
             {
                 volumeMeter_mic_volume.Amplitude = 0;
-                microphoneHandler.UpdateMicLevels(0,0);
+                microphoneHandler.UpdateMicLevels(0, 0);
                 UpdateMainVolumeMeters();
                 TurnOffMicrophoneOver();
             }
@@ -566,7 +572,6 @@ namespace iRANE_62
         #endregion
 
         #region Volume + Faders
-
         public void CleanVolumeMeters(AudioSourceHandler audioSource)
         {
             if (audioSource.Id == 1)
@@ -663,9 +668,6 @@ namespace iRANE_62
 
         private void pot_filter_ch2_DoubleClick(object sender, EventArgs e) => doubleClick((Pot)sender);
 
-        private void pot_headphones_gain_DoubleClick(object sender, EventArgs e) => doubleClick((Pot)sender);
-
-        private void pot_phones_pan_DoubleClick(object sender, EventArgs e) => doubleClick((Pot)sender);
         #endregion
 
     }
