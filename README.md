@@ -64,8 +64,5 @@ Wykres (6) pokazuje aktualne natężenie sygnału mikrofonu.
        
 
 Backlog:
-- efekty
-- poprawić generowanie waveform dla plików .wave
+- poprawienie generowanie waveform dla plików .wave
 - poprawne/dokładne rozmieszczenie GUI
-- przerywanie odtwarzania przy włączaniu mikrofonu (nie wiem czy jest to wgl możliwe)
-
