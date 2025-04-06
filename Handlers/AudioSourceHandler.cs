@@ -15,6 +15,7 @@ namespace iRANE_62.Handlers
         private float rightChanelVolumeLevel;
         private ISampleProvider outputProvider;
         private ChannelVolumeHandler channelVolumeHandler;
+        private readonly AudioOutputHandler audioOutputHandler;
 
         private EventHandler<StreamVolumeEventArgs> volumeMeteredHandlers;
 
@@ -36,6 +37,11 @@ namespace iRANE_62.Handlers
             Id = id;
             Loop = new Loop();
             Equalizer = new EqSectionHandler();
+        }
+
+        public AudioSourceHandler(int id, AudioOutputHandler audioOutputHandler) : this(id)
+        {
+            this.audioOutputHandler = audioOutputHandler;
         }
 
         public bool IsPlaying => isPlaying;
@@ -66,42 +72,48 @@ namespace iRANE_62.Handlers
         public void LoadFile(string fileName)
         {
             FileName = fileName;
-            AudioFileReader = new AudioFileReader(fileName);
-            Song = new Song(fileName);
+            Song = new Song(FileName);
+            Load();
+        }
+
+        private void Load()
+        {
+            RemovePlayback();
+            AudioFileReader = new AudioFileReader(FileName);
             SetupAudioChain();
         }
 
-        public void Play(AudioOutputHandler outputManager)
+        public void Play()
         {
             if (AudioFileReader == null) throw new InvalidOperationException("Brak wybranego pliku do odtworzenia.");
             if (!isPlaying)
             {
-                outputManager.AddSource(this, outputProvider);
+                audioOutputHandler.AddSource(this, outputProvider);
                 isPlaying = true;
             }
         }
 
-        public void Pause(AudioOutputHandler outputManager)
+        public void Pause()
         {
             if (isPlaying)
             {
-                outputManager.RemoveSource(this);
+                audioOutputHandler.RemoveSource(this);
                 isPlaying = false;
-                leftChanelVolumeLevel = 0f;
-                rightChanelVolumeLevel = 0f;
             }
         }
 
-        public void Stop(AudioOutputHandler outputManager)
+        public void Stop()
         {
-            outputManager.RemoveSource(this);
-            AudioFileReader.Position = 0;
-            isPlaying = false;
-            leftChanelVolumeLevel = 0f;
-            rightChanelVolumeLevel = 0f;
-            AudioFileReader.Dispose();
-            LoadFile(FileName);
+            Load();
         }
+
+        private void RemovePlayback()
+        {
+            audioOutputHandler.RemoveSource(this);
+            isPlaying = false;
+            AudioFileReader?.Dispose();
+        }
+
         public void UpdateChannelVolumeHandler(Pot gainPot, VerticalVolumeSlider fader, Pot mainVolumePot)
         {
             channelVolumeHandler = new ChannelVolumeHandler(this, gainPot, fader, mainVolumePot);
@@ -130,7 +142,7 @@ namespace iRANE_62.Handlers
 
             var sampleChannel = new SampleChannel(resampler, true);
             VolumeUpdateDelegate = vol => sampleChannel.Volume = vol;
-            
+
             Equalizer.FilterSampleProvider = new FilterSampleProvider(sampleChannel, AudioFileReader.WaveFormat.SampleRate);
             Equalizer.PanningProvider = new StereoPanningSampleProvider(Equalizer.FilterSampleProvider);
             Equalizer.Equalizer = new Equalizer(Equalizer.PanningProvider, Equalizer.Bands);
