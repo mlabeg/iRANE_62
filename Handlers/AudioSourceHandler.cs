@@ -10,11 +10,12 @@ namespace iRANE_62.Handlers
 {
     public class AudioSourceHandler
     {
+        private bool isPlaying;
         private float leftChanelVolumeLevel;
         private float rightChanelVolumeLevel;
         private ISampleProvider outputProvider;
-        private bool isPlaying;
         private ChannelVolumeHandler channelVolumeHandler;
+        private readonly AudioOutputHandler audioOutputHandler;
 
         private EventHandler<StreamVolumeEventArgs> volumeMeteredHandlers;
 
@@ -24,20 +25,24 @@ namespace iRANE_62.Handlers
         public Song? Song { get; set; }
         public EqSectionHandler Equalizer { get; set; }
         public Loop Loop { get; set; }
-        public int CurrentPlaybackPosition { get; set; }
-
+        public int CurrentPlaybackPosition { get; set; } = 0;
         public EffectsHandler EffectsHandler { get; private set; }
 
-        public Action<float> SetVolumeDelegate;
+        public Action<float> VolumeUpdateDelegate;
         public Action<float, bool> EffectUpdateDelegate;
-        public Action<EqSectionHolder> EqUpdateDelegate;
+        public Action<EqSectionHolder> EqualizerUpdateDelegate;
 
         public AudioSourceHandler(int id)
         {
             Id = id;
-            Equalizer = new EqSectionHandler();
             Loop = new Loop();
-            CurrentPlaybackPosition = 0;
+            Loop.LoopOutChanged += OnLoopOutChanged;
+            Equalizer = new EqSectionHandler();
+        }
+
+        public AudioSourceHandler(int id, AudioOutputHandler audioOutputHandler) : this(id)
+        {
+            this.audioOutputHandler = audioOutputHandler;
         }
 
         public bool IsPlaying => isPlaying;
@@ -68,44 +73,56 @@ namespace iRANE_62.Handlers
         public void LoadFile(string fileName)
         {
             FileName = fileName;
-            AudioFileReader = new AudioFileReader(fileName);
-            Song = new Song(fileName);
+            Song = new Song(FileName);
+            Load();
+        }
+
+        private void Load()
+        {
+            RemovePlayback();
+            AudioFileReader = new AudioFileReader(FileName);
             SetupAudioChain();
         }
 
-        public void Play(AudioOutputHandler outputManager)
+        public void Play()
         {
             if (AudioFileReader == null) throw new InvalidOperationException("Brak wybranego pliku do odtworzenia.");
             if (!isPlaying)
             {
-                outputManager.AddSource(this, outputProvider);
+                audioOutputHandler.AddSource(this, outputProvider);
                 isPlaying = true;
             }
         }
 
-        public void Pause(AudioOutputHandler outputManager)
+        public void Pause()
         {
             if (isPlaying)
             {
-                outputManager.RemoveSource(this);
+                audioOutputHandler.RemoveSource(this);
                 isPlaying = false;
-                leftChanelVolumeLevel = 0f;
-                rightChanelVolumeLevel = 0f;
             }
         }
 
-        public void Stop(AudioOutputHandler outputManager)
+        public void Stop()
         {
-            outputManager.RemoveSource(this);
-            AudioFileReader.Position = 0;
-            isPlaying = false;
-            leftChanelVolumeLevel = 0f;
-            rightChanelVolumeLevel = 0f;
+            Load();
         }
 
-        public void SetVolume(float volume)
+        private void RemovePlayback()
         {
-            SetVolumeDelegate?.Invoke(volume);
+            audioOutputHandler.RemoveSource(this);
+            isPlaying = false;
+            AudioFileReader?.Dispose();
+        }
+
+        public void UpdateChannelVolumeHandler(Pot gainPot, VerticalVolumeSlider fader, Pot mainVolumePot)
+        {
+            channelVolumeHandler = new ChannelVolumeHandler(this, gainPot, fader, mainVolumePot);
+        }
+
+        public void UpdateVolume(float volume)
+        {
+            VolumeUpdateDelegate?.Invoke(volume);
         }
 
         public void UpdateEffect(float gain, bool enabled)
@@ -113,28 +130,24 @@ namespace iRANE_62.Handlers
             EffectUpdateDelegate?.Invoke(gain, enabled);
         }
 
-        public void EqUpdate(EqSectionHolder eqSectionHolder)
+        public void UpdateEqualizer(EqSectionHolder eqSectionHolder)
         {
-            EqUpdateDelegate?.Invoke(eqSectionHolder);
+            EqualizerUpdateDelegate?.Invoke(eqSectionHolder);
         }
 
         private void SetupAudioChain()
         {
             if (AudioFileReader == null) return;
 
-            var targetWaveFormat = WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
-            var resampler = new MediaFoundationResampler(AudioFileReader, targetWaveFormat)
-            {
-                ResamplerQuality = 60
-            };
+            var resampler = ResampleSource();
 
             var sampleChannel = new SampleChannel(resampler, true);
-            SetVolumeDelegate = vol => sampleChannel.Volume = vol;
-            
+            VolumeUpdateDelegate = vol => sampleChannel.Volume = vol;
+
             Equalizer.FilterSampleProvider = new FilterSampleProvider(sampleChannel, AudioFileReader.WaveFormat.SampleRate);
             Equalizer.PanningProvider = new StereoPanningSampleProvider(Equalizer.FilterSampleProvider);
             Equalizer.Equalizer = new Equalizer(Equalizer.PanningProvider, Equalizer.Bands);
-            EqUpdateDelegate = Equalizer.UpdateEqSection;
+            EqualizerUpdateDelegate = Equalizer.UpdateEqSection;
 
             EffectsHandler = new EffectsHandler(Equalizer.Equalizer);
 
@@ -151,9 +164,34 @@ namespace iRANE_62.Handlers
             };
         }
 
-        public void UpdateChannelVolumeHandler(Pot gainPot, VerticalVolumeSlider fader, Pot mainVolumePot)
+        private MediaFoundationResampler ResampleSource()
         {
-            channelVolumeHandler = new ChannelVolumeHandler(this, gainPot, fader, mainVolumePot);
+            var targetWaveFormat = WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
+            var resampler = new MediaFoundationResampler(AudioFileReader, targetWaveFormat)
+            {
+                ResamplerQuality = 60
+            };
+
+            return resampler;
+        }
+
+        public void LoopLogic()
+        {
+            if (Loop.LoopActive && Loop.LoopOut != TimeSpan.Zero && Loop.LoopIn != TimeSpan.Zero)
+            {
+                if (AudioFileReader.CurrentTime >= Loop.LoopOut)
+                {
+                    AudioFileReader.CurrentTime = Loop.LoopIn;
+                }
+            }
+        }
+
+        public void OnLoopOutChanged(object sender, EventArgs e)
+        {
+            if(Loop.LoopIn != TimeSpan.Zero)
+            {
+                AudioFileReader.CurrentTime = Loop.LoopIn;
+            }
         }
 
         public void Dispose()

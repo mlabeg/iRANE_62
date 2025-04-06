@@ -1,22 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace iRANE_62.Models
+﻿namespace iRANE_62.Models
 {
     public class Loop
     {
-        public TimeSpan LoopIn { get; set; }
-        public TimeSpan LoopOut { get; set; }
+        private TimeSpan loopIn = TimeSpan.Zero;
+        private TimeSpan loopOut = TimeSpan.Zero;
+        private bool loopActive = true;
 
-        public bool LoopActive = true;
-
-        public Loop()
+        public bool LoopActive
         {
-            CleanLoop();
+            get => loopActive;
+            set => loopActive = value;
         }
+
+
+        public TimeSpan LoopIn
+        {
+            get => loopIn;
+            set
+            {
+                loopIn = value;
+                loopActive = true;
+            }
+        }
+
+        public TimeSpan LoopOut
+        {
+            get => loopOut;
+            set
+            {
+                if (loopOut != value)
+                {
+                    loopOut = value;
+                    LoopOutChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
+
+        public event EventHandler LoopOutChanged;
+
+        public Loop() { }
 
         public void SetLoopIn(TimeSpan time)
         {
@@ -28,10 +50,11 @@ namespace iRANE_62.Models
             LoopOut = time;
         }
 
-        public void CleanLoop()
+        public void ExitLoop()
         {
+            LoopActive = false;
             LoopIn = TimeSpan.Zero;
-            LoopOut = TimeSpan.Zero;
+            loopOut = TimeSpan.Zero;
         }
     }
 }
