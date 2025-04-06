@@ -99,6 +99,8 @@ namespace iRANE_62.Handlers
             isPlaying = false;
             leftChanelVolumeLevel = 0f;
             rightChanelVolumeLevel = 0f;
+            AudioFileReader.Dispose();
+            LoadFile(FileName);
         }
         public void UpdateChannelVolumeHandler(Pot gainPot, VerticalVolumeSlider fader, Pot mainVolumePot)
         {
