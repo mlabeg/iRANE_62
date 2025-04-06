@@ -10,10 +10,10 @@ namespace iRANE_62.Handlers
 {
     public class AudioSourceHandler
     {
+        private bool isPlaying;
         private float leftChanelVolumeLevel;
         private float rightChanelVolumeLevel;
         private ISampleProvider outputProvider;
-        private bool isPlaying;
         private ChannelVolumeHandler channelVolumeHandler;
 
         private EventHandler<StreamVolumeEventArgs> volumeMeteredHandlers;
@@ -24,20 +24,18 @@ namespace iRANE_62.Handlers
         public Song? Song { get; set; }
         public EqSectionHandler Equalizer { get; set; }
         public Loop Loop { get; set; }
-        public int CurrentPlaybackPosition { get; set; }
-
+        public int CurrentPlaybackPosition { get; set; } = 0;
         public EffectsHandler EffectsHandler { get; private set; }
 
-        public Action<float> SetVolumeDelegate;
+        public Action<float> VolumeUpdateDelegate;
         public Action<float, bool> EffectUpdateDelegate;
-        public Action<EqSectionHolder> EqUpdateDelegate;
+        public Action<EqSectionHolder> EqualizerUpdateDelegate;
 
         public AudioSourceHandler(int id)
         {
             Id = id;
-            Equalizer = new EqSectionHandler();
             Loop = new Loop();
-            CurrentPlaybackPosition = 0;
+            Equalizer = new EqSectionHandler();
         }
 
         public bool IsPlaying => isPlaying;
@@ -102,10 +100,14 @@ namespace iRANE_62.Handlers
             leftChanelVolumeLevel = 0f;
             rightChanelVolumeLevel = 0f;
         }
-
-        public void SetVolume(float volume)
+        public void UpdateChannelVolumeHandler(Pot gainPot, VerticalVolumeSlider fader, Pot mainVolumePot)
         {
-            SetVolumeDelegate?.Invoke(volume);
+            channelVolumeHandler = new ChannelVolumeHandler(this, gainPot, fader, mainVolumePot);
+        }
+
+        public void UpdateVolume(float volume)
+        {
+            VolumeUpdateDelegate?.Invoke(volume);
         }
 
         public void UpdateEffect(float gain, bool enabled)
@@ -113,28 +115,24 @@ namespace iRANE_62.Handlers
             EffectUpdateDelegate?.Invoke(gain, enabled);
         }
 
-        public void EqUpdate(EqSectionHolder eqSectionHolder)
+        public void UpdateEqualizer(EqSectionHolder eqSectionHolder)
         {
-            EqUpdateDelegate?.Invoke(eqSectionHolder);
+            EqualizerUpdateDelegate?.Invoke(eqSectionHolder);
         }
 
         private void SetupAudioChain()
         {
             if (AudioFileReader == null) return;
 
-            var targetWaveFormat = WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
-            var resampler = new MediaFoundationResampler(AudioFileReader, targetWaveFormat)
-            {
-                ResamplerQuality = 60
-            };
+            var resampler = ResampleSource();
 
             var sampleChannel = new SampleChannel(resampler, true);
-            SetVolumeDelegate = vol => sampleChannel.Volume = vol;
+            VolumeUpdateDelegate = vol => sampleChannel.Volume = vol;
             
             Equalizer.FilterSampleProvider = new FilterSampleProvider(sampleChannel, AudioFileReader.WaveFormat.SampleRate);
             Equalizer.PanningProvider = new StereoPanningSampleProvider(Equalizer.FilterSampleProvider);
             Equalizer.Equalizer = new Equalizer(Equalizer.PanningProvider, Equalizer.Bands);
-            EqUpdateDelegate = Equalizer.UpdateEqSection;
+            EqualizerUpdateDelegate = Equalizer.UpdateEqSection;
 
             EffectsHandler = new EffectsHandler(Equalizer.Equalizer);
 
@@ -151,9 +149,15 @@ namespace iRANE_62.Handlers
             };
         }
 
-        public void UpdateChannelVolumeHandler(Pot gainPot, VerticalVolumeSlider fader, Pot mainVolumePot)
+        private MediaFoundationResampler ResampleSource()
         {
-            channelVolumeHandler = new ChannelVolumeHandler(this, gainPot, fader, mainVolumePot);
+            var targetWaveFormat = WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
+            var resampler = new MediaFoundationResampler(AudioFileReader, targetWaveFormat)
+            {
+                ResamplerQuality = 60
+            };
+
+            return resampler;
         }
 
         public void Dispose()
