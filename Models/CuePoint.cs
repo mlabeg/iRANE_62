@@ -10,15 +10,31 @@ namespace iRANE_62.Models
 {
     public class CuePoint
     {
-        public TimeSpan? StartTime { get; set; }
+        public TimeSpan? startTime;
         public Color Color { get; set; }
+
+        public TimeSpan? StartTime 
+        { 
+            get => startTime;
+            set
+            {
+                if (value < TimeSpan.Zero)
+                {
+                    startTime = TimeSpan.Zero;
+                }
+                else
+                {
+                    startTime = value;
+                }
+            } 
+        }
 
         public CuePoint()
         {
             StartTime = null;
         }
 
-        public CuePoint(Color color):this()
+        public CuePoint(Color color) : this()
         {
             this.Color = color;
         }
