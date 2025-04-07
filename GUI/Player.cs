@@ -438,6 +438,21 @@ namespace iRANE_62
             waveform.Invalidate();
         }
 
+        private void PlayingPositionLineUpdate(AudioSourceHandler audioSource)
+        {
+            double progress = audioSource.AudioFileReader.CurrentTime.TotalSeconds / audioSource.AudioFileReader.TotalTime.TotalSeconds;
+            audioSource.CurrentPlaybackPosition = (int)(waveform_ch1.Width * progress);
+
+            if (audioSource.Id == 1)
+            {
+                waveform_ch1.Invalidate();
+            }
+            else
+            {
+                waveform_ch2.Invalidate();
+            }
+        }
+
         #endregion
 
         private void SetupVolumeMeters()
@@ -475,22 +490,6 @@ namespace iRANE_62
                 audioSource2.LoopLogic();
                 PlayingPositionLineUpdate(audioSource2);
             }
-        }
-
-        private void PlayingPositionLineUpdate(AudioSourceHandler audioSource)
-        {
-            double progress = audioSource.AudioFileReader.CurrentTime.TotalSeconds / audioSource.AudioFileReader.TotalTime.TotalSeconds;
-            audioSource.CurrentPlaybackPosition = (int)(waveform_ch1.Width * progress);
-
-            if (audioSource.Id == 1)
-            {
-                waveform_ch1.Invalidate();
-            }
-            else
-            {
-                waveform_ch2.Invalidate();
-            }
-
         }
 
         private static string FormatTimeSpan(TimeSpan ts)
