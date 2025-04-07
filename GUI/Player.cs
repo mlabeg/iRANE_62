@@ -326,6 +326,8 @@ namespace iRANE_62
             player.Stop();
             mixer.ExitLoop(player);
             mixer.CleanVolumeMeters(player);
+            PlayingPositionLineUpdate(player);
+            timer1.Stop();
         }
 
         #endregion
@@ -336,6 +338,7 @@ namespace iRANE_62
         {
             player.Pause();
             mixer.CleanVolumeMeters(player);
+            timer1.Stop();
         }
 
         #endregion
