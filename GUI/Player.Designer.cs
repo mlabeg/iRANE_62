@@ -215,7 +215,6 @@
             waveform_ch1.Size = new Size(524, 100);
             waveform_ch1.TabIndex = 4;
             waveform_ch1.TabStop = false;
-            waveform_ch1.Paint += waveform_ch1_Paint;
             waveform_ch1.MouseClick += waveform_ch1_MouseClick;
             // 
             // labelRendering1
@@ -239,7 +238,6 @@
             waveform_ch2.Size = new Size(524, 100);
             waveform_ch2.TabIndex = 4;
             waveform_ch2.TabStop = false;
-            waveform_ch2.Paint += waveform_ch2_Paint;
             waveform_ch2.MouseClick += waveform_ch2_MouseClick;
             // 
             // labelRendering2
