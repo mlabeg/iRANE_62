@@ -15,11 +15,15 @@ namespace iRANE_62.Handlers
         private readonly AudioSourceHandler audioSource;
         private Image waveformImage;
 
+        private Dictionary<string, WaveFormRendererSettings> renderSettings = new Dictionary<string, WaveFormRendererSettings>();
+
         public WaveformHandler(PictureBox waveformControl, Label label, AudioSourceHandler audioSource)
         {
             this.waveform = waveformControl ?? throw new ArgumentNullException(nameof(waveformControl));
             this.renderingLabel = label ?? throw new ArgumentNullException(nameof(renderingLabel));
             this.audioSource = audioSource ?? throw new ArgumentNullException(nameof(audioSource));
+
+            GenerateRenderSettings();
 
             waveform.Paint += Waveform_Paint;
             waveform.MouseClick += Waveform_MouseClick;
@@ -29,18 +33,13 @@ namespace iRANE_62.Handlers
         {
             if (string.IsNullOrEmpty(audioSource.FileName)) return;
 
-            var settings = new StandardWaveFormRendererSettings()
-            {
-                BackgroundColor = Color.Black,
-                TopPeakPen = new Pen(Color.White),
-                BottomPeakPen = new Pen(Color.White),
-            };
-
             waveform.Image = null;
             waveform.Enabled = false;
             renderingLabel.Visible = true;
 
-            var peakProvider = new RmsPeakProvider(100);
+            var peakProvider = GetPeakProvider();
+            var settings = renderSettings["SoundCloud Orange Transparent Blocks"];
+
             Task.Factory.StartNew(() => RenderThreadFunc(peakProvider, settings));
         }
 
@@ -126,6 +125,70 @@ namespace iRANE_62.Handlers
                 audioSource.CurrentPlaybackPosition = (int)(waveform.Width * progress);
                 waveform.Invalidate();
             }
+        }
+
+        private void GenerateRenderSettings()
+        {
+            var soundcloudOriginalSettings = new SoundCloudOriginalSettings() { Name = "SoundCloud Original" };
+
+            var soundCloudLightBlocks = new SoundCloudBlockWaveFormSettings(Color.FromArgb(102, 102, 102), Color.FromArgb(103, 103, 103), Color.FromArgb(179, 179, 179),
+                Color.FromArgb(218, 218, 218))
+            { Name = "SoundCloud Light Blocks" };
+
+            var soundCloudDarkBlocks = new SoundCloudBlockWaveFormSettings(Color.FromArgb(52, 52, 52), Color.FromArgb(55, 55, 55), Color.FromArgb(154, 154, 154),
+                Color.FromArgb(204, 204, 204))
+            { Name = "SoundCloud Darker Blocks" };
+
+            var soundCloudOrangeBlocks = new SoundCloudBlockWaveFormSettings(Color.FromArgb(255, 76, 0), Color.FromArgb(255, 52, 2), Color.FromArgb(255, 171, 141),
+                Color.FromArgb(255, 213, 199))
+            { Name = "SoundCloud Orange Blocks" };
+
+            var topSpacerColor = Color.FromArgb(64, 83, 22, 3);
+            var soundCloudOrangeTransparentBlocks = new SoundCloudBlockWaveFormSettings(Color.FromArgb(196, 197, 53, 0), topSpacerColor, Color.FromArgb(196, 79, 26, 0),
+                Color.FromArgb(64, 79, 79, 79))
+            {
+                Name = "SoundCloud Orange Transparent Blocks",
+                PixelsPerPeak = 2,
+                SpacerPixels = 1,
+                TopSpacerGradientStartColor = topSpacerColor,
+                BackgroundColor = Color.Transparent
+            };
+
+            var topSpacerColor2 = Color.FromArgb(64, 224, 224, 224);
+            var soundCloudGrayTransparentBlocks = new SoundCloudBlockWaveFormSettings(Color.FromArgb(196, 224, 225, 224), topSpacerColor2, Color.FromArgb(196, 128, 128, 128),
+                Color.FromArgb(64, 128, 128, 128))
+            {
+                Name = "SoundCloud Gray Transparent Blocks",
+                PixelsPerPeak = 2,
+                SpacerPixels = 1,
+                TopSpacerGradientStartColor = topSpacerColor2,
+                BackgroundColor = Color.Transparent
+            };
+
+            var standardSettings = new StandardWaveFormRendererSettings()
+            {
+                Name = "Standard",
+                BackgroundColor = Color.Black,
+                TopPeakPen = new Pen(Color.White),
+                BottomPeakPen = new Pen(Color.White)
+            };
+
+
+            renderSettings.Add(standardSettings.Name, standardSettings);
+            renderSettings.Add(soundcloudOriginalSettings.Name, soundcloudOriginalSettings);
+            renderSettings.Add(soundCloudLightBlocks.Name, soundCloudLightBlocks);
+            renderSettings.Add(soundCloudDarkBlocks.Name, soundCloudDarkBlocks);
+            renderSettings.Add(soundCloudOrangeBlocks.Name, soundCloudOrangeBlocks);
+            renderSettings.Add(soundCloudOrangeTransparentBlocks.Name, soundCloudOrangeTransparentBlocks);
+            renderSettings.Add(soundCloudGrayTransparentBlocks.Name, soundCloudGrayTransparentBlocks);
+        }
+
+        private IPeakProvider GetPeakProvider()
+        {
+            //return new MaxPeakProvider();
+            //return new RmsPeakProvider(100);
+            //return new SamplingPeakProvider(100);
+            return new AveragePeakProvider(4);
         }
 
         public void ClearWaveform()
