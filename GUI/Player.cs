@@ -9,10 +9,10 @@ namespace iRANE_62
     public partial class Player : Form
     {
         private readonly Mixer mixer;
-
         private AudioSourceHandler audioSource1;
         private AudioSourceHandler audioSource2;
-
+        private WaveformHandler waveformHandler1;
+        private WaveformHandler waveformHandler2;
         private readonly AudioOutputHandler audioOutputHandler;
 
         public Player()
@@ -25,9 +25,13 @@ namespace iRANE_62
             audioOutputHandler = new AudioOutputHandler();
             audioSource1 = new AudioSourceHandler(1, audioOutputHandler);
             audioSource2 = new AudioSourceHandler(2, audioOutputHandler);
+            waveformHandler1 = new WaveformHandler(waveform_ch1, labelRendering1, audioSource1);
+            waveformHandler2 = new WaveformHandler(waveform_ch2, labelRendering2, audioSource2);
+
             mixer = new Mixer(audioSource1, audioSource2, audioOutputHandler);
 
-            mixer.CuePointAdded += DrawCuePoint;
+            mixer.CuePointAdded += (player, cuePoint, color) =>
+                (player.Id == 1 ? waveformHandler1 : waveformHandler2).DrawCuePoint(cuePoint, color);
             mixer.Show();
             SetupVolumeMeters();
         }
@@ -92,7 +96,7 @@ namespace iRANE_62
             {
                 player.LoadFile(fileName);
                 LabelTrackUpdate(player);
-                RenderWaveform(player);
+                (player.Id == 1 ? waveformHandler1 : waveformHandler2).RenderWaveform();
                 UpadteTotalSongTime(player);
                 EnableGuiOnChanel(player.Id);
                 mixer.CueColorClear(player.Id);
@@ -197,14 +201,14 @@ namespace iRANE_62
             if (playerId == 1)
             {
                 audioSource1.CurrentPlaybackPosition = 0;
+                waveformHandler1.ClearWaveform();
                 waveform_ch1.Enabled = true;
-                waveform_ch1.Invalidate();
             }
             else
             {
                 audioSource2.CurrentPlaybackPosition = 0;
+                waveformHandler2.ClearWaveform();
                 waveform_ch2.Enabled = true;
-                waveform_ch2.Invalidate();
             }
         }
 
@@ -326,6 +330,8 @@ namespace iRANE_62
             player.Stop();
             mixer.ExitLoop(player);
             mixer.CleanVolumeMeters(player);
+            (player.Id == 1 ? waveformHandler1 : waveformHandler2).UpdatePlayingPositionLine();
+            timer1.Stop();
         }
 
         #endregion
@@ -336,106 +342,7 @@ namespace iRANE_62
         {
             player.Pause();
             mixer.CleanVolumeMeters(player);
-        }
-
-        #endregion
-
-        #region Waveform Rendering
-
-        private void RenderWaveform(AudioSourceHandler player)
-        {
-            if (player.FileName == null) return;
-
-            var settings = new StandardWaveFormRendererSettings()
-            {
-                BackgroundColor = Color.Black,
-                TopPeakPen = new Pen(Color.White),
-                BottomPeakPen = new Pen(Color.White),
-            };
-
-            if (player.Id == 1) waveform_ch1.Image = null;
-            else waveform_ch2.Image = null;
-
-            Enabled = false;
-            var peakProvider = new RmsPeakProvider(100);
-            Task.Factory.StartNew(() => RenderThreadFunc(peakProvider, settings, player));
-        }
-
-        private void RenderThreadFunc(IPeakProvider peakProvider, WaveFormRendererSettings settings, AudioSourceHandler player)
-        {
-            WaveFormRenderer waveFormRenderer = new WaveFormRenderer();
-            Image image = null;
-            try
-            {
-                using (var wavestream = new AudioFileReader(player.FileName))
-                {
-                    image = waveFormRenderer.Render(wavestream, peakProvider, settings);
-                }
-
-                BeginInvoke((Action)(() => FinishedRender(image, player)));
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
-        }
-
-        private void FinishedRender(Image image, AudioSourceHandler player)
-        {
-            if (player.Id == 1)
-            {
-                labelRendering1.Visible = false;
-                waveform_ch1.Image = image;
-                Enabled = true;
-            }
-            else
-            {
-                labelRendering2.Visible = false;
-                waveform_ch2.Image = image;
-                Enabled = true;
-            }
-        }
-
-        private void waveform_ch1_Paint(object sender, PaintEventArgs e)
-        {
-            using (Pen pen = new Pen(Color.Red, 2))
-            {
-                e.Graphics.DrawLine(pen, audioSource1.CurrentPlaybackPosition, 0, audioSource1.CurrentPlaybackPosition, waveform_ch1.Height);
-            }
-        }
-
-        private void waveform_ch2_Paint(object sender, PaintEventArgs e)
-        {
-            using (Pen pen = new Pen(Color.Red, 2))
-            {
-                e.Graphics.DrawLine(pen, audioSource2.CurrentPlaybackPosition, 0, audioSource2.CurrentPlaybackPosition, waveform_ch2.Height);
-            }
-        }
-
-        public void DrawCuePoint(AudioSourceHandler player, TimeSpan cuePoint, Color color)
-        {
-            if (player.Song == null || player.AudioFileReader == null)
-                return;
-
-            PictureBox waveform = (player.Id == 1) ? waveform_ch1 : waveform_ch2;
-
-            if (waveform.Image == null)
-                return;
-
-            using (Graphics g = Graphics.FromImage(waveform.Image))
-            {
-                if (cuePoint.TotalSeconds >= 0 && cuePoint < player.AudioFileReader.TotalTime)
-                {
-                    int xPos = (int)(waveform.Width * (cuePoint.TotalSeconds / player.AudioFileReader.TotalTime.TotalSeconds));
-
-                    using (Pen pen = new Pen(color, 3))
-                    {
-                        g.DrawLine(pen, xPos, 0, xPos, waveform.Height);
-                    }
-                }
-            }
-
-            waveform.Invalidate();
+            timer1.Stop();
         }
 
         #endregion
@@ -444,6 +351,30 @@ namespace iRANE_62
         {
             audioSource1.VolumeMetered += mixer.OnPostChanel1VolumeMeter;
             audioSource2.VolumeMetered += mixer.OnPostChanel2VolumeMeter;
+        }
+
+        private void OnTimerTick(object sender, EventArgs e)
+        {
+            if (audioSource1.IsPlaying)
+            {
+                labelNowTime_1.Text = FormatTimeSpan(audioSource1.AudioFileReader.CurrentTime);
+
+                audioSource1.LoopLogic();
+                waveformHandler1.UpdatePlayingPositionLine();
+            }
+
+            if (audioSource2.IsPlaying)
+            {
+                labelNowTime_2.Text = FormatTimeSpan(audioSource2.AudioFileReader.CurrentTime);
+
+                audioSource2.LoopLogic();
+                waveformHandler2.UpdatePlayingPositionLine();
+            }
+        }
+
+        private static string FormatTimeSpan(TimeSpan ts)
+        {
+            return string.Format("{0:D2}:{1:D2}", (int)ts.TotalMinutes, ts.Seconds);
         }
 
         private void PlaybackPanel_Disposed(object sender, EventArgs e)
@@ -456,46 +387,6 @@ namespace iRANE_62
             audioSource1.Dispose();
             audioSource2.Dispose();
             audioOutputHandler.Dispose();
-        }
-
-        void OnTimerTick(object sender, EventArgs e)
-        {
-            if (audioSource1.IsPlaying)
-            {
-                labelNowTime_1.Text = FormatTimeSpan(audioSource1.AudioFileReader.CurrentTime);
-                
-                audioSource1.LoopLogic();
-                PlayingPositionLineUpdate(audioSource1);
-            }
-
-            if (audioSource2.IsPlaying)
-            {
-                labelNowTime_2.Text = FormatTimeSpan(audioSource2.AudioFileReader.CurrentTime);
-
-                audioSource2.LoopLogic();
-                PlayingPositionLineUpdate(audioSource2);
-            }
-        }
-
-        private void PlayingPositionLineUpdate(AudioSourceHandler audioSource)
-        {
-            double progress = audioSource.AudioFileReader.CurrentTime.TotalSeconds / audioSource.AudioFileReader.TotalTime.TotalSeconds;
-            audioSource.CurrentPlaybackPosition = (int)(waveform_ch1.Width * progress);
-
-            if (audioSource.Id == 1)
-            {
-                waveform_ch1.Invalidate();
-            }
-            else
-            {
-                waveform_ch2.Invalidate();
-            }
-
-        }
-
-        private static string FormatTimeSpan(TimeSpan ts)
-        {
-            return string.Format("{0:D2}:{1:D2}", (int)ts.TotalMinutes, ts.Seconds);
         }
     }
 }

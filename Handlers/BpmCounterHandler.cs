@@ -6,7 +6,7 @@
         private readonly int maxSamples;
         private int bpm;
 
-        public BpmCounterHandler(int maxSamples = 5)
+        public BpmCounterHandler(int maxSamples = 20)
         {
             this.maxSamples = maxSamples;
             this.tapTimestamps = new List<DateTime>(maxSamples);
@@ -24,6 +24,7 @@
                 }
             }
         }
+
         public void AddTap()
         {
             DateTime now = DateTime.Now;
@@ -41,12 +42,6 @@
             }
 
             CalculateBpm();
-        }
-
-        public void Reset()
-        {
-            tapTimestamps.Clear();
-            Bpm = 0;
         }
 
         private void CalculateBpm()
