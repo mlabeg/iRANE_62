@@ -9,10 +9,11 @@ namespace iRANE_62.Handlers
         private WaveOutEvent micOutput;
         private WaveInEvent microphoneInput;
         private BufferedWaveProvider micBuffer;
-        private MixingSampleProvider mixerProvider;
         private VolumeSampleProvider volumeProvider;
         private MeteringSampleProvider meteringProvider;
         private EqSectionHandler equalizer;
+
+        private readonly AudioOutputHandler audioOutputHandler;
 
         private bool isActive;
         private bool isMicOverActive;
@@ -26,21 +27,9 @@ namespace iRANE_62.Handlers
         public event EventHandler<StreamVolumeEventArgs> VolumeIndicator;
         public event Action<bool> IsActiveChanged;
 
-        public MicrophoneHandler()
+        public MicrophoneHandler(AudioOutputHandler outputHandler)
         {
-            Initialize();
-        }
-
-        private void Initialize()
-        {
-            mixerProvider = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2))
-            {
-                ReadFully = true
-            };
-
-            micOutput = new WaveOutEvent();
-            micOutput.Init(mixerProvider);
-            micOutput.Play();
+            audioOutputHandler = outputHandler;
         }
 
         public float Volume
@@ -65,11 +54,14 @@ namespace iRANE_62.Handlers
                 {
                     if (value)
                     {
+
                         EnableMicrophone();
+                        audioOutputHandler.AddSource(this, meteringProvider);
                     }
                     else
                     {
                         DisableMicrophone();
+                        audioOutputHandler?.RemoveSource(this);
                         UpdateMicLevels(0, 0);
                     }
 
@@ -112,7 +104,7 @@ namespace iRANE_62.Handlers
             microphoneInput = new WaveInEvent
             {
                 WaveFormat = new WaveFormat(44100, 2),
-                BufferMilliseconds = 20
+                BufferMilliseconds = 100
             };
 
             micBuffer = new BufferedWaveProvider(microphoneInput.WaveFormat)
@@ -134,7 +126,6 @@ namespace iRANE_62.Handlers
             meteringProvider = new MeteringSampleProvider(EffectsHandler.GetOutputProvider());
             meteringProvider.StreamVolume += (s, e) => VolumeIndicator?.Invoke(this, e);
 
-            mixerProvider.AddMixerInput(meteringProvider);
             microphoneInput.DataAvailable += MicrophoneDataAvailable;
             microphoneInput.StartRecording();
         }
@@ -151,7 +142,6 @@ namespace iRANE_62.Handlers
             microphoneInput = null;
             micBuffer = null;
             meteringProvider = null;
-            mixerProvider.RemoveAllMixerInputs();
         }
 
         private void MicrophoneDataAvailable(object sender, WaveInEventArgs e)

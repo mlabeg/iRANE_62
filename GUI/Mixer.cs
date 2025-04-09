@@ -32,7 +32,7 @@ namespace iRANE_62
             audioSource2 = player2 ?? throw new ArgumentNullException(nameof(player2));
             this.audioOutputHandler = audioOutputHandler ?? throw new ArgumentNullException(nameof(audioOutputHandler));
 
-            microphoneHandler = new MicrophoneHandler();
+            microphoneHandler = new MicrophoneHandler(audioOutputHandler);
             bpmCounterHandler = new BpmCounterHandler();
             systemVolumeHandler = new SystemVolumeHandler();
             InitializeComponent();
@@ -46,7 +46,6 @@ namespace iRANE_62
             SetupVolumeMeters();
             SetupSystemVolume();
             SetupCrossfader();
-            microphoneHandler.IsActiveChanged += UpdateMicrophoneOutput;
         }
 
         #region FX
@@ -487,24 +486,10 @@ namespace iRANE_62
 
         #region Microphone
 
-        private void UpdateMicrophoneOutput(bool isActive)
-        {
-            if (isActive)
-            {
-                audioOutputHandler.AddSource(microphoneHandler, microphoneHandler.GetMeteringSampleProvider());
-            }
-            else
-            {
-                audioOutputHandler.RemoveSource(microphoneHandler);
-            }
-        }
-
         private void SetupMicrophoneControls()
         {
             microphoneHandler.VolumeIndicator += OnMicrophoneVolumeMeter;
             microphoneHandler.Volume = (float)pot_mic_level.Value;
-            if (microphoneHandler.IsActive)
-                UpdateMicrophoneOutput(true);
 
             btn_micOnOff.BackColor = microphoneHandler.IsActive ? Color.Green : SystemColors.Control;
             btn_micOver.BackColor = microphoneHandler.IsMicOverActive ? Color.Green : SystemColors.Control;
