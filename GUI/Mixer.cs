@@ -32,7 +32,7 @@ namespace iRANE_62
             audioSource2 = player2 ?? throw new ArgumentNullException(nameof(player2));
             this.audioOutputHandler = audioOutputHandler ?? throw new ArgumentNullException(nameof(audioOutputHandler));
 
-            microphoneHandler = new MicrophoneHandler();
+            microphoneHandler = new MicrophoneHandler(audioOutputHandler);
             bpmCounterHandler = new BpmCounterHandler();
             systemVolumeHandler = new SystemVolumeHandler();
             InitializeComponent();
@@ -46,7 +46,6 @@ namespace iRANE_62
             SetupVolumeMeters();
             SetupSystemVolume();
             SetupCrossfader();
-            microphoneHandler.IsActiveChanged += UpdateMicrophoneOutput;
         }
 
         #region FX
@@ -178,7 +177,7 @@ namespace iRANE_62
         {
             if (audioSource1.AudioFileReader != null)
             {
-                audioSource1.Equalizer.UpdateEqHigh((float)pot_high_ch1.Value);
+                audioSource1.EqSectionHandler.EqualizerWithBands.UpdateEqHigh((float)pot_high_ch1.Value);
             }
         }
 
@@ -186,7 +185,7 @@ namespace iRANE_62
         {
             if (audioSource1.AudioFileReader != null)
             {
-                audioSource1.Equalizer.UpdateEqMid((float)pot_mid_ch1.Value);
+                audioSource1.EqSectionHandler.EqualizerWithBands.UpdateEqMid((float)pot_mid_ch1.Value);
             }
         }
 
@@ -194,7 +193,7 @@ namespace iRANE_62
         {
             if (audioSource1.AudioFileReader != null)
             {
-                audioSource1.Equalizer.UpdateEqLow((float)pot_low_ch1.Value);
+                audioSource1.EqSectionHandler.EqualizerWithBands.UpdateEqLow((float)pot_low_ch1.Value);
             }
         }
 
@@ -202,7 +201,7 @@ namespace iRANE_62
         {
             if (audioSource2.AudioFileReader != null)
             {
-                audioSource2.Equalizer.UpdateEqHigh((float)pot_high_ch2.Value);
+                audioSource2.EqSectionHandler.EqualizerWithBands.UpdateEqHigh((float)pot_high_ch2.Value);
             }
         }
 
@@ -210,7 +209,7 @@ namespace iRANE_62
         {
             if (audioSource2.AudioFileReader != null)
             {
-                audioSource2.Equalizer.UpdateEqMid((float)pot_mid_ch2.Value);
+                audioSource2.EqSectionHandler.EqualizerWithBands.UpdateEqMid((float)pot_mid_ch2.Value);
             }
         }
 
@@ -218,16 +217,16 @@ namespace iRANE_62
         {
             if (audioSource2.AudioFileReader != null)
             {
-                audioSource2.Equalizer.UpdateEqLow((float)pot_low_ch2.Value);
+                audioSource2.EqSectionHandler.EqualizerWithBands.UpdateEqLow((float)pot_low_ch2.Value);
             }
         }
 
         private void pan_odt1_PanChanged(object sender, EventArgs e)
         {
-            if (audioSource1.Equalizer.PanningProvider != null)
+            if (audioSource1.EqSectionHandler.PanningProvider != null)
             {
                 float panValue = (float)panSlider_ch1.Pan;
-                audioSource1.Equalizer.PanningProvider.Pan = panValue;
+                audioSource1.EqSectionHandler.PanningProvider.Pan = panValue;
             }
         }
 
@@ -236,7 +235,7 @@ namespace iRANE_62
             if (audioSource2.AudioFileReader != null)
             {
                 float panValue = (float)panSlider_ch2.Pan;
-                audioSource2.Equalizer.PanningProvider.Pan = panValue;
+                audioSource2.EqSectionHandler.PanningProvider.Pan = panValue;
             }
         }
 
@@ -245,7 +244,7 @@ namespace iRANE_62
             if (audioSource1.AudioFileReader != null)
             {
                 float potValue = (float)pot_filter_ch1.Value;
-                audioSource1.Equalizer.FilterSampleProvider.FilterValue = potValue;
+                audioSource1.EqSectionHandler.FilterSampleProvider.FilterValue = potValue;
             }
         }
 
@@ -254,7 +253,7 @@ namespace iRANE_62
             if (audioSource2.AudioFileReader != null)
             {
                 float potValue = (float)pot_filter_ch2.Value;
-                audioSource2.Equalizer.FilterSampleProvider.FilterValue = potValue;
+                audioSource2.EqSectionHandler.FilterSampleProvider.FilterValue = potValue;
             }
         }
         #endregion
@@ -438,11 +437,29 @@ namespace iRANE_62
             CueButtonClick(audioSource2, 3, currentTime);
             btn_cue4_ch2.BackColor = CuePointsColors.Colors[3];
         }
+
         private void cue5_ch2_Click(object sender, EventArgs e)
         {
             TimeSpan currentTime = audioSource2.AudioFileReader.CurrentTime;
+
             CueButtonClick(audioSource2, 4, currentTime);
             btn_cue5_ch2.BackColor = CuePointsColors.Colors[4];
+        }
+
+        private void CueButtonClick(AudioSourceHandler player, int cue, TimeSpan currentTime)
+        {
+            var cuePoint = player.Song.CuePoints[cue];
+
+            if (cuePoint.StartTime.HasValue)
+            {
+                player.AudioFileReader.CurrentTime = (TimeSpan)cuePoint.StartTime;
+            }
+            else
+            {
+                cuePoint.StartTime = currentTime - TimeSpan.FromMilliseconds(1430);
+
+                CuePointAdded?.Invoke(player, (TimeSpan)cuePoint.StartTime, cuePoint.Color);
+            }
         }
 
         public void CueColorClear(int playerId)
@@ -457,7 +474,6 @@ namespace iRANE_62
             }
             else
             {
-
                 btn_cue1_ch2.BackColor = Color.White;
                 btn_cue2_ch2.BackColor = Color.White;
                 btn_cue3_ch2.BackColor = Color.White;
@@ -465,44 +481,15 @@ namespace iRANE_62
                 btn_cue5_ch2.BackColor = Color.White;
             }
         }
-        private void CueButtonClick(AudioSourceHandler player, int cue, TimeSpan currentTime)
-        {
-            var cuePoint = player.Song.CuePoints[cue];
-
-            if (cuePoint.StartTime.HasValue)
-            {
-                player.AudioFileReader.CurrentTime = (TimeSpan)cuePoint.StartTime;
-            }
-            else
-            {
-                cuePoint.StartTime = currentTime - TimeSpan.FromMilliseconds(700);
-
-                CuePointAdded?.Invoke(player, (TimeSpan)cuePoint.StartTime, cuePoint.Color);
-            }
-        }
 
         #endregion
 
         #region Microphone
 
-        private void UpdateMicrophoneOutput(bool isActive)
-        {
-            if (isActive)
-            {
-                audioOutputHandler.AddSource(microphoneHandler, microphoneHandler.GetMeteringSampleProvider());
-            }
-            else
-            {
-                audioOutputHandler.RemoveSource(microphoneHandler);
-            }
-        }
-
         private void SetupMicrophoneControls()
         {
             microphoneHandler.VolumeIndicator += OnMicrophoneVolumeMeter;
             microphoneHandler.Volume = (float)pot_mic_level.Value;
-            if (microphoneHandler.IsActive)
-                UpdateMicrophoneOutput(true);
 
             btn_micOnOff.BackColor = microphoneHandler.IsActive ? Color.Green : SystemColors.Control;
             btn_micOver.BackColor = microphoneHandler.IsMicOverActive ? Color.Green : SystemColors.Control;
@@ -516,7 +503,6 @@ namespace iRANE_62
             if (!microphoneHandler.IsActive)
             {
                 volumeMeter_mic_volume.Amplitude = 0;
-                microphoneHandler.UpdateMicLevels(0, 0);
                 UpdateMainVolumeMeters();
                 TurnOffMicrophoneOver();
             }

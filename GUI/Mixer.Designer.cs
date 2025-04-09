@@ -956,7 +956,7 @@ namespace iRANE_62
             Controls.Add(panel_volume);
             Margin = new Padding(2);
             Name = "Mixer";
-            Text = "Form1";
+            Text = "Mixer";
             panel_chanel1.ResumeLayout(false);
             panel_chanel1.PerformLayout();
             panel_chanel2.ResumeLayout(false);
@@ -1008,7 +1008,6 @@ namespace iRANE_62
         private Button btn_fx_tap;
         private Panel panel_efx_wyswietlacz;
         private CheckBox chBox_efx_on;
-        private CheckBox chBox_efx_cue;
         private NAudio.Gui.Pot Pot_fx_gain;
         private Panel panel_efx;
         private Panel panel_loops2;
@@ -1026,7 +1025,6 @@ namespace iRANE_62
         private Button btn_cue4_ch2;
         private Button btn_cue5_ch2;
         private Panel panel_cue;
-        //private NumericUpDown cross_fader;
         private NAudio.Gui.Pot pot_low_ch1;
         private CheckBox chBox_flexfx_ch1;
         private Panel panel_mic;
@@ -1042,9 +1040,6 @@ namespace iRANE_62
         private Controls.VerticalVolumeSlider verticalVolumeSlider_ch2;
         private Controls.VerticalVolumeSlider verticalVolumeSlider_ch1;
         private Controls.CrossfaderSlider crossfaderSlider;
-        //private Label fect_time_ms;
-        //private Label Effect_time;
-        //private Label Effect_freq;
         private Label label_Bpm_count;
         private Label label_Bpm_text;
         private Label label_Effect_text;

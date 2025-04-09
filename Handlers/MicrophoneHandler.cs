@@ -1,8 +1,7 @@
-﻿using NAudio.Extras;
+﻿using iRANE_62.Models;
+using NAudio.Extras;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
-using System;
-using System.Xml.Linq;
 
 namespace iRANE_62.Handlers
 {
@@ -10,72 +9,28 @@ namespace iRANE_62.Handlers
     {
         private WaveInEvent microphoneInput;
         private BufferedWaveProvider micBuffer;
-        private WaveOutEvent micOutput;
-        private MixingSampleProvider mixerProvider;
-        private MeteringSampleProvider meteringProvider;
         private VolumeSampleProvider volumeProvider;
-        private EqSectionHandler equalizer;
+        private MeteringSampleProvider meteringProvider;
+        private EqualizerWithBands equalizer;
+
+        private readonly AudioOutputHandler audioOutputHandler;
 
         private bool isActive;
         private bool isMicOverActive;
 
         private float micLeftLevel;
         private float micRightLevel;
-        
+        private float volume = 0.5f;
+
         public EffectsHandler EffectsHandler;
 
         public event EventHandler<StreamVolumeEventArgs> VolumeIndicator;
         public event Action<bool> IsActiveChanged;
 
-        public MicrophoneHandler()
+        public MicrophoneHandler(AudioOutputHandler outputHandler)
         {
-            Initialize();
+            audioOutputHandler = outputHandler;
         }
-
-        private void Initialize()
-        {
-            mixerProvider = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2))
-            {
-                ReadFully = true
-            };
-
-            micOutput = new WaveOutEvent();
-            micOutput.Init(mixerProvider);
-            micOutput.Play();
-        }
-
-        public bool IsActive
-        {
-            get => isActive;
-            set
-            {
-                if (value != isActive)
-                {
-                    ToggleMicrophone(value);
-                    isActive = value;
-                    IsActiveChanged?.Invoke(isActive);
-                }
-            }
-        }
-        public bool IsMicOverActive
-        {
-            get => isMicOverActive;
-            set => isMicOverActive = value;
-        }
-
-
-        public float MicLeftLevel
-        {
-            get => micLeftLevel;
-        }
-
-        public float MicRightLevel
-        {
-            get => micRightLevel;
-        }
-
-
-        private float volume { get; set; } = 0.5f;
 
         public float Volume
         {
@@ -90,61 +45,104 @@ namespace iRANE_62.Handlers
             }
         }
 
-        public EqSectionHandler Equalizer => equalizer;
+        public bool IsActive
+        {
+            get => isActive;
+            set
+            {
+                if (value != isActive)
+                {
+                    if (value)
+                    {
+
+                        EnableMicrophone();
+                        audioOutputHandler.AddSource(this, meteringProvider);
+                    }
+                    else
+                    {
+                        DisableMicrophone();
+                        audioOutputHandler?.RemoveSource(this);
+                        UpdateMicLevels(0, 0);
+                    }
+
+                    isActive = value;
+                    IsActiveChanged?.Invoke(isActive);
+                }
+            }
+        }
+
+        public bool IsMicOverActive
+        {
+            get => isMicOverActive;
+            set => isMicOverActive = value;
+        }
+
+        public float MicLeftLevel
+        {
+            get => micLeftLevel;
+        }
+
+        public float MicRightLevel
+        {
+            get => micRightLevel;
+        }
+
+        public EqualizerWithBands Equalizer => equalizer;
+
 
         public MeteringSampleProvider GetMeteringSampleProvider()
         {
             return meteringProvider;
         }
 
-        private void ToggleMicrophone(bool enable)
+        private void EnableMicrophone()
         {
-            if (enable)
+            if (microphoneInput != null)
             {
-                if (microphoneInput == null)
-                {
-                    microphoneInput = new WaveInEvent
-                    {
-                        WaveFormat = new WaveFormat(44100, 2),
-                        BufferMilliseconds = 20
-                    };
-
-                    micBuffer = new BufferedWaveProvider(microphoneInput.WaveFormat)
-                    {
-                        DiscardOnBufferOverflow = true
-                    };
-
-                    var sampleProvider = new WaveInProvider(microphoneInput);
-                    volumeProvider = new VolumeSampleProvider(sampleProvider.ToSampleProvider())
-                    {
-                        Volume = Volume
-                    };
-
-                    equalizer = new EqSectionHandler();
-                    equalizer.Equalizer = new Equalizer(volumeProvider, equalizer.Bands);
-
-                    EffectsHandler = new EffectsHandler(equalizer.Equalizer);
-
-                    meteringProvider = new MeteringSampleProvider(EffectsHandler.GetOutputProvider());
-                    meteringProvider.StreamVolume += (s, e) => VolumeIndicator?.Invoke(this, e);
-
-                    mixerProvider.AddMixerInput(meteringProvider);
-                    microphoneInput.DataAvailable += MicrophoneDataAvailable;
-                    microphoneInput.StartRecording();
-                }
+                return;
             }
-            else
+
+            microphoneInput = new WaveInEvent
             {
-                if (microphoneInput != null)
-                {
-                    microphoneInput.StopRecording();
-                    microphoneInput.Dispose();
-                    microphoneInput = null;
-                    micBuffer = null;
-                    meteringProvider = null;
-                    mixerProvider.RemoveAllMixerInputs();
-                }
+                WaveFormat = new WaveFormat(44100, 2),
+                BufferMilliseconds = 20
+            };
+
+            micBuffer = new BufferedWaveProvider(microphoneInput.WaveFormat)
+            {
+                DiscardOnBufferOverflow = true
+            };
+
+            var sampleProvider = new WaveInProvider(microphoneInput);
+            volumeProvider = new VolumeSampleProvider(sampleProvider.ToSampleProvider())
+            {
+                Volume = Volume
+            };
+
+            equalizer = new EqualizerWithBands();
+            equalizer.Equalizer = new Equalizer(volumeProvider, equalizer.Bands);
+
+            EffectsHandler = new EffectsHandler(equalizer.Equalizer);
+
+            meteringProvider = new MeteringSampleProvider(EffectsHandler.GetOutputProvider());
+            meteringProvider.StreamVolume += (s, e) => VolumeIndicator?.Invoke(this, e);
+
+            microphoneInput.DataAvailable += MicrophoneDataAvailable;
+            microphoneInput.StartRecording();
+        }
+
+        private void DisableMicrophone()
+        {
+            if (microphoneInput == null)
+            {
+                return;
             }
+
+            microphoneInput.StopRecording();
+            microphoneInput.Dispose();
+            microphoneInput = null;
+            micBuffer = null;
+            meteringProvider = null;
         }
 
         private void MicrophoneDataAvailable(object sender, WaveInEventArgs e)
@@ -154,18 +152,16 @@ namespace iRANE_62.Handlers
 
         public void UpdateMicLevels(float leftChannelLevel, float rightChannelLevel)
         {
-            micLeftLevel=leftChannelLevel;
-            micRightLevel=rightChannelLevel;
+            micLeftLevel = leftChannelLevel;
+            micRightLevel = rightChannelLevel;
         }
 
         public void Dispose()
         {
             if (isActive)
             {
-                ToggleMicrophone(false);
+                DisableMicrophone();
             }
-            micOutput?.Stop();
-            micOutput?.Dispose();
         }
     }
 }

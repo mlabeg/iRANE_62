@@ -23,7 +23,7 @@ namespace iRANE_62.Handlers
         public AudioFileReader AudioFileReader { get; private set; }
         public string FileName { get; private set; }
         public Song? Song { get; set; }
-        public EqSectionHandler Equalizer { get; set; }
+        public EqSectionHandler EqSectionHandler { get; set; }
         public Loop Loop { get; set; }
         public int CurrentPlaybackPosition { get; set; } = 0;
         public EffectsHandler EffectsHandler { get; private set; }
@@ -32,16 +32,12 @@ namespace iRANE_62.Handlers
         public Action<float, bool> EffectUpdateDelegate;
         public Action<EqSectionHolder> EqualizerUpdateDelegate;
 
-        public AudioSourceHandler(int id)
+        public AudioSourceHandler(int id, AudioOutputHandler audioOutputHandler)
         {
             Id = id;
             Loop = new Loop();
             Loop.LoopOutChanged += OnLoopOutChanged;
-            Equalizer = new EqSectionHandler();
-        }
-
-        public AudioSourceHandler(int id, AudioOutputHandler audioOutputHandler) : this(id)
-        {
+            EqSectionHandler = new EqSectionHandler();
             this.audioOutputHandler = audioOutputHandler;
         }
 
@@ -144,12 +140,10 @@ namespace iRANE_62.Handlers
             var sampleChannel = new SampleChannel(resampler, true);
             VolumeUpdateDelegate = vol => sampleChannel.Volume = vol;
 
-            Equalizer.FilterSampleProvider = new FilterSampleProvider(sampleChannel, AudioFileReader.WaveFormat.SampleRate);
-            Equalizer.PanningProvider = new StereoPanningSampleProvider(Equalizer.FilterSampleProvider);
-            Equalizer.Equalizer = new Equalizer(Equalizer.PanningProvider, Equalizer.Bands);
-            EqualizerUpdateDelegate = Equalizer.UpdateEqSection;
+            EqSectionHandler = new EqSectionHandler(sampleChannel, AudioFileReader.WaveFormat.SampleRate);
+            EqualizerUpdateDelegate = EqSectionHandler.UpdateEqSection;
 
-            EffectsHandler = new EffectsHandler(Equalizer.Equalizer);
+            EffectsHandler = new EffectsHandler(EqSectionHandler.GetOutputProvider());
 
             outputProvider = new MeteringSampleProvider(EffectsHandler.GetOutputProvider());
 
@@ -188,7 +182,7 @@ namespace iRANE_62.Handlers
 
         public void OnLoopOutChanged(object sender, EventArgs e)
         {
-            if(Loop.LoopIn != TimeSpan.Zero)
+            if (Loop.LoopIn != TimeSpan.Zero)
             {
                 AudioFileReader.CurrentTime = Loop.LoopIn;
             }
