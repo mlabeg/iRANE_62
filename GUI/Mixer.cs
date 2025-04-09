@@ -438,11 +438,29 @@ namespace iRANE_62
             CueButtonClick(audioSource2, 3, currentTime);
             btn_cue4_ch2.BackColor = CuePointsColors.Colors[3];
         }
+
         private void cue5_ch2_Click(object sender, EventArgs e)
         {
             TimeSpan currentTime = audioSource2.AudioFileReader.CurrentTime;
+
             CueButtonClick(audioSource2, 4, currentTime);
             btn_cue5_ch2.BackColor = CuePointsColors.Colors[4];
+        }
+       
+        private void CueButtonClick(AudioSourceHandler player, int cue, TimeSpan currentTime)
+        {
+            var cuePoint = player.Song.CuePoints[cue];
+
+            if (cuePoint.StartTime.HasValue)
+            {
+                player.AudioFileReader.CurrentTime = (TimeSpan)cuePoint.StartTime;
+            }
+            else
+            {
+                cuePoint.StartTime = currentTime - TimeSpan.FromMilliseconds(1430);
+
+                CuePointAdded?.Invoke(player, (TimeSpan)cuePoint.StartTime, cuePoint.Color);
+            }
         }
 
         public void CueColorClear(int playerId)
@@ -457,27 +475,11 @@ namespace iRANE_62
             }
             else
             {
-
                 btn_cue1_ch2.BackColor = Color.White;
                 btn_cue2_ch2.BackColor = Color.White;
                 btn_cue3_ch2.BackColor = Color.White;
                 btn_cue4_ch2.BackColor = Color.White;
                 btn_cue5_ch2.BackColor = Color.White;
-            }
-        }
-        private void CueButtonClick(AudioSourceHandler player, int cue, TimeSpan currentTime)
-        {
-            var cuePoint = player.Song.CuePoints[cue];
-
-            if (cuePoint.StartTime.HasValue)
-            {
-                player.AudioFileReader.CurrentTime = (TimeSpan)cuePoint.StartTime;
-            }
-            else
-            {
-                cuePoint.StartTime = currentTime - TimeSpan.FromMilliseconds(700);
-
-                CuePointAdded?.Invoke(player, (TimeSpan)cuePoint.StartTime, cuePoint.Color);
             }
         }
 
@@ -516,7 +518,6 @@ namespace iRANE_62
             if (!microphoneHandler.IsActive)
             {
                 volumeMeter_mic_volume.Amplitude = 0;
-                microphoneHandler.UpdateMicLevels(0, 0);
                 UpdateMainVolumeMeters();
                 TurnOffMicrophoneOver();
             }
