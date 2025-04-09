@@ -1,4 +1,5 @@
-﻿using NAudio.Extras;
+﻿using iRANE_62.Models;
+using NAudio.Extras;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 
@@ -6,12 +7,11 @@ namespace iRANE_62.Handlers
 {
     public class MicrophoneHandler : IDisposable
     {
-        private WaveOutEvent micOutput;
         private WaveInEvent microphoneInput;
         private BufferedWaveProvider micBuffer;
         private VolumeSampleProvider volumeProvider;
         private MeteringSampleProvider meteringProvider;
-        private EqSectionHandler equalizer;
+        private EqualizerWithBands equalizer;
 
         private readonly AudioOutputHandler audioOutputHandler;
 
@@ -87,7 +87,8 @@ namespace iRANE_62.Handlers
             get => micRightLevel;
         }
 
-        public EqSectionHandler Equalizer => equalizer;
+        public EqualizerWithBands Equalizer => equalizer;
+
 
         public MeteringSampleProvider GetMeteringSampleProvider()
         {
@@ -104,7 +105,7 @@ namespace iRANE_62.Handlers
             microphoneInput = new WaveInEvent
             {
                 WaveFormat = new WaveFormat(44100, 2),
-                BufferMilliseconds = 100
+                BufferMilliseconds = 20
             };
 
             micBuffer = new BufferedWaveProvider(microphoneInput.WaveFormat)
@@ -118,7 +119,7 @@ namespace iRANE_62.Handlers
                 Volume = Volume
             };
 
-            equalizer = new EqSectionHandler();
+            equalizer = new EqualizerWithBands();
             equalizer.Equalizer = new Equalizer(volumeProvider, equalizer.Bands);
 
             EffectsHandler = new EffectsHandler(equalizer.Equalizer);
@@ -161,8 +162,6 @@ namespace iRANE_62.Handlers
             {
                 DisableMicrophone();
             }
-            micOutput?.Stop();
-            micOutput?.Dispose();
         }
     }
 }
