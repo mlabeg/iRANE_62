@@ -1,12 +1,7 @@
 using iRANE_62.Handlers;
 using iRANE_62.Models;
-using NAudio.Extras;
 using NAudio.Gui;
-using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
-using System.ComponentModel;
-using System.Drawing;
-using System.Numerics;
 
 namespace iRANE_62
 {
@@ -18,6 +13,7 @@ namespace iRANE_62
         private readonly BpmCounterHandler bpmCounterHandler;
         private readonly AudioOutputHandler audioOutputHandler;
         private readonly SystemVolumeHandler systemVolumeHandler;
+        private CueButtonHandler cueButtonHandler;
         private List<CheckBox> effectCheckBoxes;
 
         public EffectParametersHolder EffectHolder;
@@ -33,10 +29,10 @@ namespace iRANE_62
             this.audioOutputHandler = audioOutputHandler ?? throw new ArgumentNullException(nameof(audioOutputHandler));
 
             microphoneHandler = new MicrophoneHandler(audioOutputHandler);
-            bpmCounterHandler = new BpmCounterHandler();
             systemVolumeHandler = new SystemVolumeHandler();
-            InitializeComponent();
+            bpmCounterHandler = new BpmCounterHandler();
 
+            InitializeComponent();
             BlockCueButtons();
             BlockLoopButtons();
             InitializeHolders();
@@ -345,6 +341,15 @@ namespace iRANE_62
 
         #region CuePoint
 
+        public void InitializeCueButtonHandler()
+        {
+            if (cueButtonHandler == null)
+            {
+                cueButtonHandler = new CueButtonHandler();
+                cueButtonHandler.CuePointAdded += CuePointAdded;
+            }
+        }
+
         private void BlockCueButtons()
         {
             btn_cue1_ch1.Enabled = false;
@@ -382,84 +387,50 @@ namespace iRANE_62
 
         private void cue1_ch1_Click(object sender, EventArgs e)
         {
-            TimeSpan currentTime = audioSource1.AudioFileReader.CurrentTime;
-
-            CueButtonClick(audioSource1, 0, currentTime);
-            btn_cue1_ch1.BackColor = CuePointsColors.Colors[0];
+            CueButtonClick(audioSource1, 0, btn_cue1_ch1);
         }
         private void cue2_ch1_Click(object sender, EventArgs e)
         {
-            TimeSpan currentTime = audioSource1.AudioFileReader.CurrentTime;
-
-            CueButtonClick(audioSource1, 1, currentTime);
-            btn_cue2_ch1.BackColor = CuePointsColors.Colors[1];
-
+            CueButtonClick(audioSource1, 1, btn_cue2_ch1);
         }
         private void cue3_ch1_Click(object sender, EventArgs e)
         {
-            TimeSpan currentTime = audioSource1.AudioFileReader.CurrentTime;
-            CueButtonClick(audioSource1, 2, currentTime);
-            btn_cue3_ch1.BackColor = CuePointsColors.Colors[2];
+            CueButtonClick(audioSource1, 2, btn_cue3_ch1);
         }
         private void cue4_ch1_Click(object sender, EventArgs e)
         {
-            TimeSpan currentTime = audioSource1.AudioFileReader.CurrentTime;
-            CueButtonClick(audioSource1, 3, currentTime);
-            btn_cue4_ch1.BackColor = CuePointsColors.Colors[3];
+            CueButtonClick(audioSource1, 3, btn_cue4_ch1);
         }
         private void cue5_ch1_Click(object sender, EventArgs e)
         {
-            TimeSpan currentTime = audioSource1.AudioFileReader.CurrentTime;
-            CueButtonClick(audioSource1, 4, currentTime);
-            btn_cue5_ch1.BackColor = CuePointsColors.Colors[4];
+            CueButtonClick(audioSource1, 4, btn_cue5_ch1);
         }
         private void cue1_ch2_Click(object sender, EventArgs e)
         {
-            TimeSpan currentTime = audioSource2.AudioFileReader.CurrentTime;
-            CueButtonClick(audioSource2, 0, currentTime);
-            btn_cue1_ch2.BackColor = CuePointsColors.Colors[0];
+            CueButtonClick(audioSource2, 0, btn_cue1_ch2);
         }
         private void cue2_ch2_Click(object sender, EventArgs e)
         {
-            TimeSpan currentTime = audioSource2.AudioFileReader.CurrentTime;
-            CueButtonClick(audioSource2, 1, currentTime);
-            btn_cue2_ch2.BackColor = CuePointsColors.Colors[1];
+
+            CueButtonClick(audioSource2, 1, btn_cue2_ch2);
         }
         private void cue3_ch2_Click(object sender, EventArgs e)
         {
-            TimeSpan currentTime = audioSource2.AudioFileReader.CurrentTime;
-            CueButtonClick(audioSource2, 2, currentTime);
-            btn_cue3_ch2.BackColor = CuePointsColors.Colors[2];
+            CueButtonClick(audioSource2, 2, btn_cue3_ch2);
         }
         private void cue4_ch2_Click(object sender, EventArgs e)
         {
-            TimeSpan currentTime = audioSource2.AudioFileReader.CurrentTime;
-            CueButtonClick(audioSource2, 3, currentTime);
-            btn_cue4_ch2.BackColor = CuePointsColors.Colors[3];
+            CueButtonClick(audioSource2, 3, btn_cue4_ch2);
         }
 
         private void cue5_ch2_Click(object sender, EventArgs e)
         {
-            TimeSpan currentTime = audioSource2.AudioFileReader.CurrentTime;
-
-            CueButtonClick(audioSource2, 4, currentTime);
-            btn_cue5_ch2.BackColor = CuePointsColors.Colors[4];
+            CueButtonClick(audioSource2, 4, btn_cue5_ch2);
         }
 
-        private void CueButtonClick(AudioSourceHandler player, int cue, TimeSpan currentTime)
+        private void CueButtonClick(AudioSourceHandler player, int cue, Button cueButton)
         {
-            var cuePoint = player.Song.CuePoints[cue];
-
-            if (cuePoint.StartTime.HasValue)
-            {
-                player.AudioFileReader.CurrentTime = (TimeSpan)cuePoint.StartTime;
-            }
-            else
-            {
-                cuePoint.StartTime = currentTime - TimeSpan.FromMilliseconds(1430);
-
-                CuePointAdded?.Invoke(player, (TimeSpan)cuePoint.StartTime, cuePoint.Color);
-            }
+            cueButtonHandler.CueButtonClick(player, cue, cueButton);
         }
 
         public void CueColorClear(int playerId)

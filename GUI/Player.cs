@@ -1,8 +1,5 @@
 ﻿using iRANE_62.Handlers;
 using iRANE_62.Models;
-using NAudio.Wave;
-using NAudio.WaveFormRenderer;
-
 
 namespace iRANE_62
 {
@@ -30,8 +27,8 @@ namespace iRANE_62
 
             mixer = new Mixer(audioSource1, audioSource2, audioOutputHandler);
 
-            mixer.CuePointAdded += (player, cuePoint, color) =>
-                (player.Id == 1 ? waveformHandler1 : waveformHandler2).DrawCuePoint(cuePoint, color);
+            CueButtonHandlerInitialization();
+
             mixer.Show();
             SetupVolumeMeters();
         }
@@ -60,7 +57,7 @@ namespace iRANE_62
                 }
                 else
                 {
-                    UpdateEqSection(audioSource);
+                    UpdateFromMixerState(audioSource);
 
                     audioSource.Play();
                     timer1.Enabled = true;
@@ -72,7 +69,7 @@ namespace iRANE_62
             }
         }
 
-        private void UpdateEqSection(AudioSourceHandler audioSource)
+        private void UpdateFromMixerState(AudioSourceHandler audioSource)
         {
             audioSource.ChannelVolumeHandler.UpdateVolume();
             audioSource.UpdateEffect(mixer.EffectHolder.Gain, mixer.EffectHolder.EffectEnabled);
@@ -346,6 +343,14 @@ namespace iRANE_62
         }
 
         #endregion
+
+        private void CueButtonHandlerInitialization()
+        {
+            mixer.CuePointAdded += (player, cuePoint, color) =>
+                (player.Id == 1 ? waveformHandler1 : waveformHandler2).DrawCuePoint(cuePoint, color);
+
+            mixer.InitializeCueButtonHandler();
+        }
 
         private void SetupVolumeMeters()
         {
