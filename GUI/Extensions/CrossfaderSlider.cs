@@ -1,8 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-
-namespace iRANE_62.Controls
+﻿namespace iRANE_62.Controls
 {
     public class CrossfaderSlider : Control
     {
@@ -51,7 +47,6 @@ namespace iRANE_62.Controls
                 g.DrawRectangle(borderPen, area.X, area.Y, area.Width - 1, area.Height - 1);
             }
 
-            //Slider
             float sliderWidth = area.Width * 0.1f;  
             float trackWidth = area.Width - sliderWidth; 
             float sliderLeft = trackWidth * position; 
