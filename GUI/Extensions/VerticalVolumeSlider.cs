@@ -1,9 +1,4 @@
-﻿using NAudio.Gui;
-using System;
-using System.Drawing;
-using System.Windows.Forms;
-
-namespace iRANE_62.Controls
+﻿namespace iRANE_62.Controls
 {
     public class VerticalVolumeSlider : Control
     {
@@ -44,7 +39,7 @@ namespace iRANE_62.Controls
             set
             {
                 if (value >= Maximum)
-                    throw new ArgumentException("Minimum must be less than Maximum.");
+                    throw new ArgumentException("Minimum musi być mniejsze niż Maximum.");
                 minimum = value;
                 if (Volume < minimum) Volume = minimum;
                 Invalidate();
@@ -57,7 +52,7 @@ namespace iRANE_62.Controls
             set
             {
                 if (value <= Minimum)
-                    throw new ArgumentException("Maximum must be greater than Minimum.");
+                    throw new ArgumentException("Maximum musi być większe niż Minimum.");
                 maximum = value;
                 if (Volume > maximum) Volume = maximum;
                 Invalidate();
@@ -80,7 +75,6 @@ namespace iRANE_62.Controls
                 g.DrawRectangle(borderPen, area.X, area.Y, area.Width - 1, area.Height - 1);
             }
 
-            //Slider
             float range = Maximum - Minimum;
             float sliderHeight = area.Height * 0.1f;
             float volumeProportion = (Volume - Minimum) / range;
