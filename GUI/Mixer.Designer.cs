@@ -51,6 +51,8 @@ namespace iRANE_62
             btn_micOver = new Button();
             chBox_flexfx_ch2 = new CheckBox();
             panel_chanel1 = new Panel();
+            label16 = new Label();
+            label14 = new Label();
             label12 = new Label();
             label10 = new Label();
             label8 = new Label();
@@ -60,6 +62,9 @@ namespace iRANE_62
             chBox_flexfx_ch1 = new CheckBox();
             volumeMeter_mic_volume = new NAudio.Gui.VolumeMeter();
             panel_chanel2 = new Panel();
+            label17 = new Label();
+            label15 = new Label();
+            label13 = new Label();
             label11 = new Label();
             label9 = new Label();
             label7 = new Label();
@@ -110,12 +115,8 @@ namespace iRANE_62
             verticalVolumeSlider_ch2 = new Controls.VerticalVolumeSlider();
             verticalVolumeSlider_ch1 = new Controls.VerticalVolumeSlider();
             crossfaderSlider = new Controls.CrossfaderSlider();
-            label13 = new Label();
-            label14 = new Label();
-            label15 = new Label();
-            label16 = new Label();
-            label17 = new Label();
             label18 = new Label();
+            label1 = new Label();
             panel_chanel1.SuspendLayout();
             panel_chanel2.SuspendLayout();
             panel_loops1.SuspendLayout();
@@ -359,6 +360,24 @@ namespace iRANE_62
             panel_chanel1.Size = new Size(225, 340);
             panel_chanel1.TabIndex = 7;
             // 
+            // label16
+            // 
+            label16.AutoSize = true;
+            label16.Location = new Point(32, 180);
+            label16.Name = "label16";
+            label16.Size = new Size(42, 20);
+            label16.TabIndex = 26;
+            label16.Text = "Filter";
+            // 
+            // label14
+            // 
+            label14.AutoSize = true;
+            label14.Location = new Point(20, 70);
+            label14.Name = "label14";
+            label14.Size = new Size(75, 20);
+            label14.TabIndex = 25;
+            label14.Text = "Panorama";
+            // 
             // label12
             // 
             label12.AutoSize = true;
@@ -466,6 +485,33 @@ namespace iRANE_62
             panel_chanel2.Name = "panel_chanel2";
             panel_chanel2.Size = new Size(225, 340);
             panel_chanel2.TabIndex = 7;
+            // 
+            // label17
+            // 
+            label17.AutoSize = true;
+            label17.Location = new Point(147, 180);
+            label17.Name = "label17";
+            label17.Size = new Size(42, 20);
+            label17.TabIndex = 27;
+            label17.Text = "Filter";
+            // 
+            // label15
+            // 
+            label15.AutoSize = true;
+            label15.Location = new Point(130, 70);
+            label15.Name = "label15";
+            label15.Size = new Size(75, 20);
+            label15.TabIndex = 26;
+            label15.Text = "Panorama";
+            // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.Location = new Point(21, 220);
+            label13.Name = "label13";
+            label13.Size = new Size(35, 20);
+            label13.TabIndex = 24;
+            label13.Text = "Mid";
             // 
             // label11
             // 
@@ -744,6 +790,7 @@ namespace iRANE_62
             // panel_efx
             // 
             panel_efx.BorderStyle = BorderStyle.FixedSingle;
+            panel_efx.Controls.Add(label1);
             panel_efx.Controls.Add(btn_fx_tap);
             panel_efx.Controls.Add(chBox_efx_on);
             panel_efx.Controls.Add(Pot_fx_gain);
@@ -1049,51 +1096,6 @@ namespace iRANE_62
             crossfaderSlider.Text = "crossfaderSlider1";
             crossfaderSlider.PositionChanged += crossfaderSlider_PositionChanged;
             // 
-            // label13
-            // 
-            label13.AutoSize = true;
-            label13.Location = new Point(21, 220);
-            label13.Name = "label13";
-            label13.Size = new Size(35, 20);
-            label13.TabIndex = 24;
-            label13.Text = "Mid";
-            // 
-            // label14
-            // 
-            label14.AutoSize = true;
-            label14.Location = new Point(20, 70);
-            label14.Name = "label14";
-            label14.Size = new Size(75, 20);
-            label14.TabIndex = 25;
-            label14.Text = "Panorama";
-            // 
-            // label15
-            // 
-            label15.AutoSize = true;
-            label15.Location = new Point(130, 70);
-            label15.Name = "label15";
-            label15.Size = new Size(75, 20);
-            label15.TabIndex = 26;
-            label15.Text = "Panorama";
-            // 
-            // label16
-            // 
-            label16.AutoSize = true;
-            label16.Location = new Point(32, 180);
-            label16.Name = "label16";
-            label16.Size = new Size(42, 20);
-            label16.TabIndex = 26;
-            label16.Text = "Filter";
-            // 
-            // label17
-            // 
-            label17.AutoSize = true;
-            label17.Location = new Point(147, 180);
-            label17.Name = "label17";
-            label17.Size = new Size(42, 20);
-            label17.TabIndex = 27;
-            label17.Text = "Filter";
-            // 
             // label18
             // 
             label18.AutoSize = true;
@@ -1102,6 +1104,15 @@ namespace iRANE_62
             label18.Size = new Size(47, 20);
             label18.TabIndex = 27;
             label18.Text = "MAIN";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(717, 132);
+            label1.Name = "label1";
+            label1.Size = new Size(39, 20);
+            label1.TabIndex = 28;
+            label1.Text = "Gain";
             // 
             // Mixer
             // 
@@ -1228,5 +1239,6 @@ namespace iRANE_62
         private Label label15;
         private Label label13;
         private Label label18;
+        private Label label1;
     }
 }
